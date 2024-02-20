@@ -1,5 +1,9 @@
+import Link from "next/link";
 export default function Home() {
   return (
-    <main></main>
+    <>
+      <h1>Home</h1>
+      {/* <Link href='/api/auth/signin'>route</Link> */}
+    </>
   );
 }
