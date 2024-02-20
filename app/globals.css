@@ -33,4 +33,10 @@ body {
   .center {
       @apply flex justify-center items-center
     }
+  .borderButtonStyle {
+      @apply border p-1.5 border-githubBorder rounded-md hover:border-buttonhover
+  }
+  .simpleButtonStyle {
+      @apply p-1.5 text-sm font-light hover:bg-repohover rounded-md
+  }
 }

@@ -1,9 +1,11 @@
-import Link from "next/link";
-export default function Home() {
+import Nav from './components/Nav'
+import { options } from './api/auth/[...nextauth]/options';
+import { getServerSession } from 'next-auth';
+export default async function Home() {
+  const session = await getServerSession(options)
   return (
     <>
-      <h1>Home</h1>
-      {/* <Link href='/api/auth/signin'>route</Link> */}
+      <Nav user={session?.user}/>
     </>
   );
 }
