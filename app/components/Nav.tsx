@@ -1,145 +1,37 @@
 'use client'
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
-import { TbMenu2 } from "react-icons/tb";
-import { IoSearchOutline } from "react-icons/io5";
-import { LiaGreaterThanEqualSolid } from "react-icons/lia";
-import { FaPlus } from "react-icons/fa6";
-import { IoMdArrowDropdown } from "react-icons/io";
-import { VscRecord } from "react-icons/vsc";
-import { BsUsbSymbol } from "react-icons/bs";
-import { PiBagSimpleLight } from "react-icons/pi";
-import WhiteMark from "../../public/WhiteMark.svg"
-import Image from 'next/image';
-type Anchor = 'top' | 'left' | 'bottom' | 'right';
-type User = {
-    name?: string | null | undefined
-    email?: string | null | undefined
-    image?: string | null | undefined
-} | undefined
-type Props = {
-    user: User,
-}
-export default function Nav({ user } : Props) {
-  const [state, setState] = React.useState({
-    top: false,
-    left: false,
-    bottom: false,
-    right: false,
-  });
+import Link from 'next/link'
+import React from 'react'
+import Code from '../../public/code.svg'
+import Image from 'next/image'
+import Issues from '../../public/issue.svg'
+import pullRequest from '../../public/pullRequest.svg'
+import Actions from '../../public/actions.svg'
+import Projects from '../../public/projects.png'
+import Wiki from '../../public/wiki.svg'
+import Insights from '../../public/insights.svg'
+import Settings from '../../public/settings.svg'
+import { usePathname } from 'next/navigation'
+const navOptions: [string, string, string][] = [[Code, 'Code', 'code'], [Issues, 'Issues', 'issues'], [pullRequest, 'Pull request', 'pulls'], [Actions, 'Actions', 'actions'],[Projects, 'Projects', 'projects'], [Wiki, 'Wiki', 'wiki'], [Insights, 'Insights', 'insights'], [Settings, 'Settings', 'settings']]
 
-  const toggleDrawer =
-    (anchor: Anchor, open: boolean) =>
-    (event: React.KeyboardEvent | React.MouseEvent) => {
-      if (
-        event.type === 'keydown' &&
-        ((event as React.KeyboardEvent).key === 'Tab' ||
-          (event as React.KeyboardEvent).key === 'Shift')
-      ) {
-        return;
-      }
-
-      setState({ ...state, [anchor]: open });
-    };
-
-  const list = (anchor: Anchor) => (
-    <Box
-      sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
-      role="presentation"
-      onClick={toggleDrawer(anchor, false)}
-      onKeyDown={toggleDrawer(anchor, false)}
-    >
-      <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-    </Box>
-  );
-    console.log(user)
+const Nav: React.FC  = () => {
+    const pathname = usePathname()
+    const path : string = pathname.split('/')[1]
+    
   return (
-    <div className='p-4 flex justify-between'>
-      <div className='flex gap-4 items-center h-[32px]'>
-        {(['left'] as const).map((anchor) => (
-        <React.Fragment key={anchor}>
-          <button onClick={toggleDrawer(anchor, true)} className='borderButtonStyle'>
-            <TbMenu2 className='text-slate-400 text-xl'/>
-          </button>
-          <Drawer
-            anchor={anchor}
-            open={state[anchor]}
-            onClose={toggleDrawer(anchor, false)}
-          >
-            {list(anchor)}
-          </Drawer>
-        </React.Fragment>
-      ))}
-        <div className='w-[32px] h-[32px] cursor-pointer'>
-            <Image src={WhiteMark} alt='mark'/>
-        </div>
-        <div>
-            <button className='simpleButtonStyle'>{'username'}</button>
-            <span className='font-light text-slate-500'>/</span>
-            <button className='simpleButtonStyle'>{'repo'}</button>
-        </div>
-      </div>
-      <div className='flex gap-2.5 h-[32px]'>
-        <button className='border p-1 border-githubBorder rounded-md flex items-center gap-1 justify-between w-[350px]'>
-            <div className='flex items-center'>
-                <IoSearchOutline className='m-[3px] text-md text-slate-400'/>
-                <div className='text-sm font-light text-slate-400 ml-1'>Type <span className='text-[12px] border-[0.5px]  rounded-sm border-slate-400 px-1 py-[1px]'>/</span> to search</div>
-            </div>
-            <div className='border-l m-1 border-githubBorder'>
-                <LiaGreaterThanEqualSolid className='ml-2 text-slate-400'/>
-            </div>
-        </button>
-        <div className='my-1.5 border-[0.5px] border-githubBorder'></div>
-        <button className='borderButtonStyle hover:bg-repohover flex gap-1 items-center'>
-            <FaPlus className='ml-1 text-slate-400 text-sm'/>
-            <IoMdArrowDropdown className='mr-1 text-slate-400'/>
-        </button>
-        <button className='borderButtonStyle hover:bg-repohover center'>
-            <VscRecord className='text-slate-400 text-[18px]'/>
-        </button>
-        <button className='borderButtonStyle hover:bg-repohover center'>
-            <BsUsbSymbol className='text-slate-400 text-[18px]'/>
-        </button>
-        <button className='borderButtonStyle hover:bg-repohover center'>
-            <PiBagSimpleLight className='text-slate-400 text-[18px]'/>
-        </button>
-        <div className='rounded-full'>
-            {user?.image ? <Image alt={user?.name ?? "Profile Pic"} src={user?.image} width={32} height={32} className='rounded-full cursor-pointer'/> : <></>}
-        </div>
-      </div>
+    <div className='w-full px-4 pb-2 pt-1 border-b border-bordercolor sticky z-999 bg-black'>
+        <ul className='flex gap-4 '>
+            {navOptions.map((options => (
+                <li key={options[1]} className='hover:bg-repohover rounded-lg flex items-center relative'>
+                <Link href={`/${options[2]}`} className={`flex gap-2 items-center h-full mx-2 my-1.5 ${path ===  options[2] && 'activeStyle'}`}>
+                    <Image alt='icon' src={options[0]} width={17} height={17}/>
+                    <div className={` text-white  text-sm ${path ===  options[2] && 'font-semibold'}`}>{options[1]}</div>
+                </Link>
+            </li>
+            )))}
+            
+        </ul>
     </div>
-  );
+  )
 }
+
+export default Nav

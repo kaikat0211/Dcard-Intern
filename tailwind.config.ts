@@ -11,7 +11,10 @@ const config: Config = {
       colors:{
         'githubBorder': '#30363C',
         'buttonhover' : '#8B949E',
-        'repohover' : '#171B20'
+        'repohover' : '#171B20',
+        'bordercolor' : '#21262C',
+        'aftercolor' : '#F68166',
+        'bodycolor' : '#0E1117'
       }
     },
   },
