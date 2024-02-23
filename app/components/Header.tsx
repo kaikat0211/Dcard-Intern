@@ -1,5 +1,7 @@
 'use client'
 import * as React from 'react';
+import { auth } from '../api/auth/[...nextauth]/options';
+import { useEffect, useState } from 'react';
 import { IoSearchOutline } from "react-icons/io5";
 import { LiaGreaterThanEqualSolid } from "react-icons/lia";
 import { FaPlus } from "react-icons/fa6";
@@ -8,6 +10,7 @@ import { VscRecord } from "react-icons/vsc";
 import { BsUsbSymbol } from "react-icons/bs";
 import { IoBagHandleOutline } from "react-icons/io5";
 import WhiteMark from "../../public/WhiteMark.svg"
+
 import Image from 'next/image';
 import LeftDrawer from './LeftDrawer';
 type User = {
@@ -15,10 +18,30 @@ type User = {
     email?: string | null | undefined
     image?: string | null | undefined
 } | undefined
+
+type Repo = {
+    name: string
+}[]
+
 type Props = {
     user: User,
 }
-export default function Header({ user } : Props) {
+export default  function Header({ user } : Props) {
+    // const [repo, setRepo] = useState<Repo>([])
+    // useEffect(()=>{
+    //     const fetchRepo = async () => {
+    //         const session = await auth();
+    //         const token = session?.token;
+    //         const response = await fetch(`https://api.github.com/users/${session?.user?.name}/repos`, {
+    //           headers: {
+    //             Authorization: `Bearer ${token}`,
+    //           },
+    //         });
+    //         const data = await response.json();
+    //         setRepo(data)
+    //     }
+    //     fetchRepo()
+    // },[])
   return (
     <div className='p-4 flex justify-between sticky z-999 bg-black'>
       <div className='flex gap-4 items-center h-[32px]'>  
