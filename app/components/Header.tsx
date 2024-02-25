@@ -19,29 +19,10 @@ type User = {
     image?: string | null | undefined
 } | undefined
 
-type Repo = {
-    name: string
-}[]
-
 type Props = {
     user: User,
 }
 export default  function Header({ user } : Props) {
-    // const [repo, setRepo] = useState<Repo>([])
-    // useEffect(()=>{
-    //     const fetchRepo = async () => {
-    //         const session = await auth();
-    //         const token = session?.token;
-    //         const response = await fetch(`https://api.github.com/users/${session?.user?.name}/repos`, {
-    //           headers: {
-    //             Authorization: `Bearer ${token}`,
-    //           },
-    //         });
-    //         const data = await response.json();
-    //         setRepo(data)
-    //     }
-    //     fetchRepo()
-    // },[])
   return (
     <div className='p-4 flex justify-between sticky z-999 bg-black'>
       <div className='flex gap-4 items-center h-[32px]'>  

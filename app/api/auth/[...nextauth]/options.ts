@@ -45,19 +45,6 @@ const githubConfig = {
         }
     })
   ],
-    // session: {
-    //     strategy: 'jwt',  // <-- make sure to use jwt here
-    //     maxAge: 30 * 24 * 60 * 60,
-    // },
-    // callbacks: {
-    //     jwt: async ({ token, user, account }) => {
-    //         if (account && account.access_token) {
-    //             token.accessToken = account.access_token // <-- adding the access_token here
-    //         }
-    //         return token
-    //     },
-    // },
-    // secret: process.env.NEXTAUTH_SECRET,
     session: {
         strategy: 'jwt',
         maxAge: 30 * 24 * 60 * 60, // 30 days
