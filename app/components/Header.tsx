@@ -1,7 +1,5 @@
 'use client'
 import * as React from 'react';
-import { auth } from '../api/auth/[...nextauth]/options';
-import { useEffect, useState } from 'react';
 import { IoSearchOutline } from "react-icons/io5";
 import { LiaGreaterThanEqualSolid } from "react-icons/lia";
 import { FaPlus } from "react-icons/fa6";
@@ -10,19 +8,34 @@ import { VscRecord } from "react-icons/vsc";
 import { BsUsbSymbol } from "react-icons/bs";
 import { IoBagHandleOutline } from "react-icons/io5";
 import WhiteMark from "../../public/WhiteMark.svg"
-
+import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import Image from 'next/image';
 import LeftDrawer from './LeftDrawer';
-type User = {
-    name?: string | null | undefined
-    email?: string | null | undefined
-    image?: string | null | undefined
-} | undefined
+import { fetchProfile } from '@/lib/features/profileSlice';
+// type User = {
+//     name?: string | null | undefined
+//     email?: string | null | undefined
+//     image?: string | null | undefined
+// } | undefined
 
-type Props = {
-    user: User,
-}
-export default  function Header({ user } : Props) {
+// type Props = {
+//     user: User,
+// }
+// export default  function Header({ user } : Props) {
+    interface ProfileData {
+        login: string;
+        avatar_url: string;
+        repos_url: string;
+      }
+
+    export default  function Header({ profileData } : { profileData: ProfileData }) {
+    const dispatch = useAppDispatch();
+    const state = useAppSelector(state => state.profile)
+    
+    useEffect(() => {
+        dispatch(fetchProfile(profileData));
+    }, [dispatch, profileData]);
   return (
     <div className='p-4 flex justify-between sticky z-999 bg-black'>
       <div className='flex gap-4 items-center h-[32px]'>  
@@ -61,7 +74,7 @@ export default  function Header({ user } : Props) {
             <IoBagHandleOutline className='text-slate-400 text-[18px]'/>
         </button>
         <div className='rounded-full'>
-            {user?.image ? <Image alt={user?.name ?? "Profile Pic"} src={user?.image} width={32} height={32} className='rounded-full cursor-pointer'/> : <></>}
+            {state.photo ? <Image alt={state.photo ?? "Profile Pic"} src={state.photo} width={32} height={32} className='rounded-full cursor-pointer'/> : <></>}
         </div>
       </div>
     </div>

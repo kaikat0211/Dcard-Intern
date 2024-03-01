@@ -1,10 +1,14 @@
+'use client'
+import { RootState } from '@/lib/store'
 import React from 'react'
-import Fetchrepo from '../components/Fetchrepo'
+import FetchProfileComponent from '../components/FetchProfileComponent'
+
 
 const Code = () => {
+
   return (
     <>
-    <Fetchrepo />
+    <FetchProfileComponent />
     </>
   )
 }

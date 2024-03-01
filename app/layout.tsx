@@ -3,7 +3,19 @@ import Header from './components/Header'
 import Nav from './components/Nav'
 import { options, auth } from './api/auth/[...nextauth]/options';
 import "./globals.css";
+import StoreProvider from "./StoreProvider";
+async function getServerSideProps() {
+  const session = await auth();
+  const token = session?.token;
+  const response = await fetch(`https://api.github.com/users/${session?.user?.name}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const data = await response.json();
 
+  return data
+}
 
 export const metadata: Metadata = {
   title: "Dcard Intern",
@@ -17,15 +29,20 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) 
 {
-  // const session = await getServerSession(options)
-  const session = await auth()
+  const data = await getServerSideProps()
+  
   return (
+  <StoreProvider>
     <html lang="en">
-      <body className='bg-bodycolor'>
-        <Header user={session?.user}/>
-        <Nav />
-        {children}
-      </body>
+        <body className='bg-bodycolor'>
+          <Header profileData={data}/>
+          <Nav />
+          {children}
+        </body>
     </html>
+  </StoreProvider>
   );
 }
+
+
+
