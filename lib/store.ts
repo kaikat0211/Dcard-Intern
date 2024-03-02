@@ -1,11 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
-import profileSlice from './features/profileSlice'
+import userSlice from './features/userSlice'
 
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
-        profile : profileSlice
+        user : userSlice
     }
   })
 }

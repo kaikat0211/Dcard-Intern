@@ -12,29 +12,29 @@ import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import Image from 'next/image';
 import LeftDrawer from './LeftDrawer';
-import { fetchProfile } from '@/lib/features/profileSlice';
-// type User = {
-//     name?: string | null | undefined
-//     email?: string | null | undefined
-//     image?: string | null | undefined
-// } | undefined
+import { fetchUser } from '@/lib/features/userSlice';
 
-// type Props = {
-//     user: User,
-// }
-// export default  function Header({ user } : Props) {
     interface ProfileData {
-        login: string;
-        avatar_url: string;
-        repos_url: string;
-      }
+      userInfo: UserInfo,
+      repoInfo: RepoInfo
+    }
+    interface UserInfo {
+      login: string;
+      avatar_url: string;
+    }
+  
+  interface RepoInfo {
+      [repoName: string]: {
+        getIssueUrl: string;
+      };
+    }
 
     export default  function Header({ profileData } : { profileData: ProfileData }) {
     const dispatch = useAppDispatch();
-    const state = useAppSelector(state => state.profile)
+    const state = useAppSelector(state => state.user)
     
     useEffect(() => {
-        dispatch(fetchProfile(profileData));
+        dispatch(fetchUser(profileData));
     }, [dispatch, profileData]);
   return (
     <div className='p-4 flex justify-between sticky z-999 bg-black'>

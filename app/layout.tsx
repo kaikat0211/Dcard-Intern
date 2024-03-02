@@ -4,7 +4,7 @@ import Nav from './components/Nav'
 import { options, auth } from './api/auth/[...nextauth]/options';
 import "./globals.css";
 import StoreProvider from "./StoreProvider";
-async function getServerSideProps() {
+async function getUserData() {
   const session = await auth();
   const token = session?.token;
   const response = await fetch(`https://api.github.com/users/${session?.user?.name}`, {
@@ -12,10 +12,19 @@ async function getServerSideProps() {
       Authorization: `Bearer ${token}`,
     },
   });
-  const data = await response.json();
-
-  return data
+  const userInfo = await response.json();
+  const repoRes = await fetch(userInfo.repos_url)
+  const repoData = await repoRes.json()
+  const repoInfo: { [key: string]: { getIssueUrl: string } } = {};
+  repoData.forEach((r : { name: string; issues_url: string })  => {
+      repoInfo[r.name] = {
+        getIssueUrl: r.issues_url.replace(/{\/number}/g, '')
+      }
+  }
+  )
+  return {userInfo, repoInfo}
 }
+
 
 export const metadata: Metadata = {
   title: "Dcard Intern",
@@ -29,7 +38,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) 
 {
-  const data = await getServerSideProps()
+  const data = await getUserData()
   
   return (
   <StoreProvider>
