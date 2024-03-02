@@ -35,7 +35,7 @@ import { fetchUser } from '@/lib/features/userSlice';
     
     useEffect(() => {
         dispatch(fetchUser(profileData));
-    }, [dispatch, profileData]);
+    }, [dispatch]);  //先不放profileData
   return (
     <div className='p-4 flex justify-between sticky z-999 bg-black'>
       <div className='flex gap-4 items-center h-[32px]'>  
