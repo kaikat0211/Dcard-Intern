@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Header from './components/Header'
-import Nav from './components/Nav'
 import { options, auth } from './api/auth/[...nextauth]/options';
 import "./globals.css";
 import StoreProvider from "./StoreProvider";
+import { usePathname } from "next/navigation";
 async function getUserData() {
   const session = await auth();
   const token = session?.token;
@@ -13,17 +13,29 @@ async function getUserData() {
     },
   });
   const userInfo = await response.json();
-  const repoRes = await fetch(userInfo.repos_url)
-  const repoData = await repoRes.json()
+  const repoRes = await fetch(userInfo.repos_url);
+  const repoData = await repoRes.json() ; //origin
+  const copyRepoData = JSON.parse(JSON.stringify(repoData))
+  const repoInfoPromises = copyRepoData.map((repo: any) => {
+    const repoName = repo.name;
+    const issuesUrl = repo.issues_url.replace(/{\/number}/g, '');
+    return { [repoName]: { getIssueUrl: issuesUrl }};
+  });
+
+  // 等待所有存储库的信息都被获取
+  const repoInfos = await Promise.all(repoInfoPromises);
+
+  // 将存储库信息整合到一个对象中
   const repoInfo: { [key: string]: { getIssueUrl: string } } = {};
-  repoData.forEach((r : { name: string; issues_url: string })  => {
-      repoInfo[r.name] = {
-        getIssueUrl: r.issues_url.replace(/{\/number}/g, '')
-      }
-  }
-  )
-  return {userInfo, repoInfo}
+  repoInfos.forEach((info: any) => {
+    const repoName = Object.keys(info)[0];
+    const { getIssueUrl } = info[repoName];
+    repoInfo[repoName] = { getIssueUrl };
+  });
+
+  return { userInfo, repoInfo };
 }
+
 
 
 export const metadata: Metadata = {
@@ -39,13 +51,21 @@ export default async function RootLayout({
 }>) 
 {
   const data = await getUserData()
-  
+  if (!data) {
+    return (
+      <html lang="en">
+        <body className='bg-bodycolor'>
+          <div className="text-white text-2xl">Loading...</div>
+        </body>
+      </html>
+    )
+  }
   return (
   <StoreProvider>
     <html lang="en">
         <body className='bg-bodycolor'>
           <Header profileData={data}/>
-          <Nav />
+          {/* <Nav /> */}
           {children}
         </body>
     </html>

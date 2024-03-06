@@ -46,8 +46,6 @@ const userSlice = createSlice({
     extraReducers: builder => {
         builder
         .addCase(fetchUser.pending, (state, action) => {
-            console.log('fetchUser.pending');
-            
         })
         .addCase(fetchUser.fulfilled, (state, action: PayloadAction<UserData>) => {
             const { userInfo, repoInfo } = action.payload;

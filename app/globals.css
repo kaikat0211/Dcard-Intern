@@ -23,10 +23,10 @@ body {
       @apply flex justify-center items-center
     }
   .borderButtonStyle {
-      @apply border p-1.5 border-githubBorder rounded-md hover:border-buttonhover
+      @apply border p-[5px] border-githubBorder rounded-md hover:border-buttonhover mr-1
   }
   .simpleButtonStyle {
-      @apply p-1.5 text-sm font-light hover:bg-repohover rounded-md text-white
+      @apply p-1.5 text-sm  hover:bg-repohover rounded-md text-white
   }
   .activeStyle {
       @apply after:block after:absolute  after:-bottom-2 after:bg-aftercolor after:h-0.5 after:w-full after:right-0
