@@ -2,7 +2,7 @@ import React from 'react'
 
 const page = () => {
   return (
-    <div>Issue</div>
+    <h1 className='text-white'>404 - Page Not Found</h1>
   )
 }
 

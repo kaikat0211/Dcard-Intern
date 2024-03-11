@@ -14,7 +14,12 @@ const config: Config = {
         'repohover' : '#171B20',
         'bordercolor' : '#21262C',
         'aftercolor' : '#F68166',
-        'bodycolor' : '#0E1117'
+        'bodycolor' : '#0E1117',
+        'inputcolor' : '#3080F7',
+        'submitbuttoncolor' : '#1D572A',
+        'disablecolor' : '#7F9D83',
+        'textgray' : '#848D97'
+
       }
     },
   },

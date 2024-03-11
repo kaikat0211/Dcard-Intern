@@ -37,7 +37,7 @@ import { usePathname, useRouter } from 'next/navigation';
     const state = useAppSelector(state => state.user)
     const pathname = usePathname()
     const router = useRouter()
-    const path = pathname.split('/')[1]
+    const path = pathname.split('/')[2]
     useEffect(() => {
         dispatch(fetchUser(profileData));
     }, [dispatch]);  //先不放profileData
@@ -50,7 +50,7 @@ import { usePathname, useRouter } from 'next/navigation';
           className='cursor-pointer' 
           onClick={() => {router.push('http://localhost:3000/')}}
           >
-              <Image src={WhiteMark} alt='mark' width={32} height={32} />
+              <Image src={WhiteMark} alt='mark' width={32} height={32}  className='w-[32px] h-[32px]'/>
           </div>
           <div>
               <button 
@@ -59,8 +59,8 @@ import { usePathname, useRouter } from 'next/navigation';
               >
               {state.name}
               </button>
-              {path && <span className='font-light text-slate-500'>/</span>}
-              {path && <button className='simpleButtonStyle font-semibold'>{path}</button>}
+              {path !== '404' && path && <span className='font-light text-slate-500'>/</span>}
+              {path !== '404' && path  && <button className='simpleButtonStyle font-semibold'>{path}</button>}
           </div>
         </div>
         <div className='flex gap-2.5 h-[32px]'>

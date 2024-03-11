@@ -1,10 +1,17 @@
-import ChooseRepo from "./components/ChooseRepo";
+'use client'
+import React, { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import { useAppSelector } from '@/lib/hooks'
 
-export default async function Home() {
+export default function Home() {
+  const router = useRouter()
+  const userName = useAppSelector(state => state.user.name)
 
-  return (
-    <>
-      <ChooseRepo />
-    </>
-  );
+  useEffect(() => {
+    if (userName) {
+      router.push(`/${userName}`)
+    }
+  }, [userName])
+
+  return <></>
 }

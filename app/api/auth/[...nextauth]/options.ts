@@ -6,12 +6,13 @@ import {
 import { NextAuthOptions ,getServerSession} from 'next-auth';
 // import CredentialsProvider  from 'next-auth/providers/credentials';
 import GithubProvider from 'next-auth/providers/github';
+
 const githubConfig = {
     clientId: process.env.GITHUB_ID as string,
     clientSecret: process.env.GITHUB_SECRET as string,
     authorization: {
         url: "https://github.com/login/oauth/authorize",
-        params: { scope: "repo user" },  
+        params: { scope: "repo user issues:write" },  
     },
     
     

@@ -17,17 +17,17 @@ const Nav: React.FC  = () => {
     const pathname = usePathname()
     const [asPath, setAsPath] = useState(pathname)
     useEffect(()=>{
-        if(pathname.split('/').length < 2) return
-        setAsPath(pathname.split('/')[1])
+        if(pathname.split('/').length < 3) return
+        setAsPath(pathname.split('/').slice(0, 3).join('/'))
     },[pathname])
-    const path : string = pathname.split('/')[2]
+    const path : string = pathname.split('/')[3]
   return (
     <div className='w-full px-4 pb-2 pt-1 border-b border-bordercolor sticky z-999 bg-black'>
         <ul className='flex gap-4 '>
             {navOptions.map((options => (
                 <li key={options[1]} className='hover:bg-repohover rounded-lg flex items-center relative'>
-                <Link href={`/${asPath}/${options[2]}`} className={`flex gap-2 items-center h-full mx-2 my-1.5 ${path === undefined && options[2] === navOptions[0][2] ? 'activeStyle' : path === options[2] && 'activeStyle'}`}>
-                    <Image alt='icon' src={options[0]} width={17} height={17}/>
+                <Link href={`${asPath}/${options[2]}`} as={`${asPath}/${options[2]}`} className={`flex gap-2 items-center h-full mx-2 my-1.5 ${path === undefined && options[2] === navOptions[0][2] ? 'activeStyle' : path === options[2] && 'activeStyle'}`}>
+                    <Image alt='icon' src={options[0]} width={17} height={17} className='w-[17px] h-[17px]'/>
                     <div className={` text-white  text-sm ${path ===  options[2] && 'font-semibold'}`}>{options[1]}</div>
                 </Link>
             </li>
