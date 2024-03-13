@@ -18,8 +18,13 @@ const config: Config = {
         'inputcolor' : '#3080F7',
         'submitbuttoncolor' : '#1D572A',
         'disablecolor' : '#7F9D83',
-        'textgray' : '#848D97'
-
+        'textgray' : '#848D97',
+        'labelscolor' : '#161B22',
+        'labelshover' : '#1F242C',
+        'bugtext' : '#EA9CA5',
+        'bugbg' : '#321A20',
+        'bugborder' : '#6A4149',
+                
       }
     },
   },

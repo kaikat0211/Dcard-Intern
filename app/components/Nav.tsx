@@ -26,7 +26,7 @@ const Nav: React.FC  = () => {
         <ul className='flex gap-4 '>
             {navOptions.map((options => (
                 <li key={options[1]} className='hover:bg-repohover rounded-lg flex items-center relative'>
-                <Link href={`${asPath}/${options[2]}`} as={`${asPath}/${options[2]}`} className={`flex gap-2 items-center h-full mx-2 my-1.5 ${path === undefined && options[2] === navOptions[0][2] ? 'activeStyle' : path === options[2] && 'activeStyle'}`}>
+                <Link href={`${asPath}/${options[2]}`}  className={`flex gap-2 items-center h-full mx-2 my-1.5 ${path === undefined && options[2] === navOptions[0][2] ? 'activeStyle' : path === options[2] && 'activeStyle'}`}>
                     <Image alt='icon' src={options[0]} width={17} height={17} className='w-[17px] h-[17px]'/>
                     <div className={` text-white  text-sm ${path ===  options[2] && 'font-semibold'}`}>{options[1]}</div>
                 </Link>

@@ -12,7 +12,7 @@ const githubConfig = {
     clientSecret: process.env.GITHUB_SECRET as string,
     authorization: {
         url: "https://github.com/login/oauth/authorize",
-        params: { scope: "repo user issues:write" },  
+        params: { scope: "repo user issues:write pull_requests:read" },  
     },
     
     

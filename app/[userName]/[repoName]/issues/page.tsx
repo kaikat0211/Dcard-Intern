@@ -1,15 +1,24 @@
-'use client'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { auth } from '@/app/api/auth/[...nextauth]/options';
+import CreateIssueButton from '@/app/components/CreateIssueButton'
+import Issue from '@/app/components/Issue'
 import React from 'react'
 
-const page = () => {
-  const pathname = usePathname()
-  console.log(pathname);
-  
+async function getToken() {
+  const session = await auth();
+  const token = session?.token;
+  return token
+}
+const page = async () => {
+  const token = await getToken()
   return (
     <>
-      <Link href={`${pathname}/new`} className='text-white'>Create new Issues</Link>
+      <div className='mx-20 mt-6 px-8 border border-bordercolor rounded-lg'>
+        <div>
+          <div className='bg-black p-4'>123</div>
+          <Issue token={token}/>
+        </div>
+        <CreateIssueButton />
+      </div>
     </>
   )
 }
