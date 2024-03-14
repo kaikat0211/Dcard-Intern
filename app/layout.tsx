@@ -65,7 +65,6 @@ export default async function RootLayout({
     <html lang="en">
         <body className='bg-bodycolor'>
           <Header profileData={data}/>
-          {/* <Nav /> */}
           {children}
         </body>
     </html>

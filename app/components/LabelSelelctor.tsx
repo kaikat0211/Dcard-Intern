@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { SlPencil } from "react-icons/sl";
 import Image from 'next/image';
 import Check from '@/public/check.svg'
+import Delete from '@/public/delete.svg'
 import { useAppDispatch } from '@/lib/hooks';
 import { setColor, setLebels } from '@/lib/features/labelsSlice';
 interface LabelsData {
@@ -22,6 +23,7 @@ const LabelSelelctor = ({ token, open, labelSelectorRef}: LabelSelectorProps) =>
     const pathname = usePathname()
     const [selectedLabels, setSelectedLabels] = useState<string[]>([])
     const [customLabels, setcustomLabels] = useState<LabelsData[]>([])
+    const [searchValue, setSearchValue] = useState<string>('')
     const dispatch = useAppDispatch()
     const getLebels = async () => {
         const octokit = new Octokit({
@@ -52,7 +54,15 @@ const LabelSelelctor = ({ token, open, labelSelectorRef}: LabelSelectorProps) =>
         }
         
     }
-    
+    const LabelArr = () => {
+        let mapArr
+        if(searchValue) {
+            mapArr = customLabels.filter( label => label.name.includes(searchValue) || label.description.includes(searchValue))
+        }else{
+            mapArr = customLabels
+        }
+        return mapArr
+    }
     useEffect(()=>{
         const fetchLabels = async () => {
             try {
@@ -60,6 +70,7 @@ const LabelSelelctor = ({ token, open, labelSelectorRef}: LabelSelectorProps) =>
                 const colors = allLabels.map(label => label.color);
                 setcustomLabels(allLabels)
                 dispatch(setColor(colors));
+                console.log('getLables')
             }catch(error){
                 console.error('Error fetching labels:', error);
             }
@@ -76,19 +87,21 @@ const LabelSelelctor = ({ token, open, labelSelectorRef}: LabelSelectorProps) =>
                     className='w-full text-sm rounded-md outline-0 border border-bordercolor py-[5px] px-3 bg-bodycolor focus:ring-inputcolor focus:ring-2 placeholder:text-textgray'
                     name='labels'
                     placeholder={'Filter labels'} 
+                    onChange={(event)=>{setSearchValue(event.target.value)}}
                 />
             </div>
         </div>
         <div className='overflow-auto h-[380px]'>
             {
-                customLabels.map((label) => (
+                LabelArr().map((label) => (
                 <div className='pl-[30px] py-2 pr-2 border-b border-bordercolor hover:bg-labelshover group cursor-pointer' key={label.name} onClick={() => handleLabelsState(label.name)}>
                     <div>
-                        <div className='flex mb-1 relative'>
+                        <div className='flex mb-1 relative items-center'>
                             {selectedLabels.includes(label.name) && <Image alt='checkIcon' src={Check} width={16} height={16} className=' absolute left-[-8%]'/>}
                             <div className='rounded-full w-[14px] h-[14px] mt-0.5 mr-2' style={{backgroundColor: `#${label.color}`}}>
                             </div>
                             <span className='text-xs'>{label.name}</span>
+                            {selectedLabels.includes(label.name) && <Image alt='deleteIcon' src={Delete} width={14} height={12} className=' absolute right-[3%]'/>}
                         </div>
                         <div className='text-xs text-textgray group-hover:text-white'>{label.description}</div>
                     </div>

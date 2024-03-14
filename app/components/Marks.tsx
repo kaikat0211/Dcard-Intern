@@ -23,7 +23,8 @@ function hexToRgba(hex: string, alpha: number): string {
 
 const Marks = ({ props, token } : { props : string[], token: string}) => {
     const [open, setOpen] = useState(false)
-    const labelSelectorRef = useRef<HTMLDivElement>(null);
+    const labelSelectorRef = useRef<HTMLDivElement>(null)
+    const divRef = useRef<HTMLDivElement>(null)
     const labelsState = useAppSelector(state => state.labels.labels)
     const colorState = useAppSelector(state => state.labels.color)
     const handleOpenLabelSelector = () => {
@@ -31,7 +32,7 @@ const Marks = ({ props, token } : { props : string[], token: string}) => {
     }
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
-            if (labelSelectorRef.current && !labelSelectorRef.current.contains(event.target as Node)) {
+            if (labelSelectorRef.current && !labelSelectorRef.current.contains(event.target as Node) && divRef.current && !divRef.current.contains(event.target as Node) ) {
                 setOpen(false);
             }
         };
@@ -43,7 +44,7 @@ const Marks = ({ props, token } : { props : string[], token: string}) => {
     }, [labelSelectorRef]);
   return (
     <div className="border-b pb-4 mb-4 border-githubBorder relative " key={props[0]}>
-        <div className="flex justify-between text-textgray hover:text-inputcolor text-sm font-semibold cursor-pointer relative" onClick={handleOpenLabelSelector}>
+        <div className="flex justify-between text-textgray hover:text-inputcolor text-sm font-semibold cursor-pointer relative" onClick={handleOpenLabelSelector} ref={divRef}>
             <div>{props[0]}</div>
             <IoSettingsOutline className=" w-[15px] h-[16px]"/>
         </div>
