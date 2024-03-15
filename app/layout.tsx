@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Header from './components/Header'
-import { options, auth } from './api/auth/[...nextauth]/options';
+import { auth } from './api/auth/[...nextauth]/options';
 import "./globals.css";
 import StoreProvider from "./StoreProvider";
 import { usePathname } from "next/navigation";

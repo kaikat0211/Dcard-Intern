@@ -5,7 +5,30 @@ import { IoMdCheckmark } from "react-icons/io";
 import { GoIssueOpened } from "react-icons/go";
 import { IoMdArrowDropdown } from "react-icons/io";
 import IssueTableContent from './IssueTableContent';
-const IssueTable = () => {
+
+interface Label {
+    name: string;
+    color: string;
+    description: string;
+}
+
+interface Issue {
+    number: number;
+    title: string;
+    body: string;
+    createdAt: string;
+    updatedAt: string;
+    labels: {
+        nodes: Label[];
+    };
+    comments: {
+        totalCount: number;
+    };
+    repository: {
+        nameWithOwner: string;
+    };
+}
+const IssueTable = ({ initIssue } : { initIssue : Issue[] | undefined }) => {
   return (
     <div className='w-full mt-5 border border-githubBorder rounded-md'>
         <div className='p-4 bg-labelscolor rounded-md flex justify-between'>
@@ -34,7 +57,7 @@ const IssueTable = () => {
                 </button>
             </div>
         </div>
-        <IssueTableContent />
+        <IssueTableContent initIssue={initIssue}/>
     </div>
   )
 }

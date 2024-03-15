@@ -51,59 +51,12 @@ const getDiffDay = (day : string) => {
     if(Math.abs(diffDay) < 1) return 'yesterday'
     else return `${Math.abs(diffDay)} days ago`
 }
-const IssueTableContent = () => {
+const IssueTableContent = ({ initIssue } : { initIssue : Issue[] | undefined }) => {
     const userState = useAppSelector(state => state.user)
-    const [newIssue, setNewIssue] = useState<Issue[]>([])
-    useEffect(() => {
-        if (userState.token && userState.name) {
-          const getNewIssues = async () => {
-            try {
-              const response: { user?: { issues?: { nodes?: Issue[] } } } = await graphql(`
-                query {
-                  user(login: "${userState.name}") {
-                    issues(first: 10, orderBy: {field: CREATED_AT, direction: DESC}) {
-                      nodes {
-                        number
-                        title
-                        body
-                        createdAt
-                        updatedAt
-                        labels(first: 10) {
-                            nodes {
-                              name
-                              color
-                              description
-                            }
-                        }
-                        comments {
-                          totalCount
-                        }
-                        repository {
-                          nameWithOwner
-                        }
-                      }
-                    }
-                  }
-                }
-              `, {
-                headers: {
-                  authorization: `token ${userState.token}`,
-                },
-              });
-            if (response && response.user && response.user.issues && response.user.issues.nodes) {
-                setNewIssue(response.user.issues.nodes);
-            }
-            } catch (error) {
-              console.error('Error fetching new issues:', error);
-            }
-          };
-      
-          getNewIssues();
-        }
-      }, [userState.token, userState.name]);
+    const [newIssue, setNewIssue] = useState<Issue[] | undefined>(initIssue)
   return (
     <>
-    {newIssue.map(i => (
+    {newIssue!.map(i => (
         <div className='text-white px-4 py-2 border-t border-githubBorder flex' key={i.title}>
             <div className='pt-1'>
                 <GoIssueOpened style={{color: '#3FB950'}} className='text-md mr-2'/>
@@ -117,6 +70,7 @@ const IssueTableContent = () => {
                         {i.labels.nodes.map( label => (
                             <span 
                             className='px-[7px] rounded-full cursor-pointer font-semibold text-xs border' 
+                            key={label.name}
                             style={{
                                 color: hexToRgba(label.color, 0.9), 
                                 borderColor: hexToRgba(label.color, 0.3), 
