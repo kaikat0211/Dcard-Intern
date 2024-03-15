@@ -6,7 +6,7 @@ import { SlPencil } from "react-icons/sl";
 import Image from 'next/image';
 import Check from '@/public/check.svg'
 import Delete from '@/public/delete.svg'
-import { useAppDispatch } from '@/lib/hooks';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { setColor, setLebels } from '@/lib/features/labelsSlice';
 interface LabelsData {
     name: string
@@ -14,17 +14,17 @@ interface LabelsData {
     description: string
 } 
 interface LabelSelectorProps {
-    token: string;
     open: boolean;
     labelSelectorRef: React.RefObject<HTMLDivElement>;
 }
 
-const LabelSelelctor = ({ token, open, labelSelectorRef}: LabelSelectorProps) => {
+const LabelSelelctor = ({  open, labelSelectorRef}: LabelSelectorProps) => {
     const pathname = usePathname()
     const [selectedLabels, setSelectedLabels] = useState<string[]>([])
     const [customLabels, setcustomLabels] = useState<LabelsData[]>([])
     const [searchValue, setSearchValue] = useState<string>('')
     const dispatch = useAppDispatch()
+    const token = useAppSelector(state => state.user.token)
     const getLebels = async () => {
         const octokit = new Octokit({
             auth: token

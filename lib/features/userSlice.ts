@@ -6,10 +6,12 @@ const initialUser = {
     photo: '',
     repoInfo: {},
     login: false,
+    token: ''
 }
 interface UserData {
     userInfo: UserInfo,
-    repoInfo: RepoInfo
+    repoInfo: RepoInfo,
+    token: string
 }
 interface UserInfo {
     login: string;
@@ -33,13 +35,14 @@ const userSlice = createSlice({
     initialState: initialUser,
     reducers:{
         setUser(state, action: PayloadAction<UserData>){
-            const { userInfo, repoInfo } = action.payload
+            const { userInfo, repoInfo , token} = action.payload
             return {
                 ...state,
                 name: userInfo.login,
                 photo: userInfo.avatar_url,
                 repoInfo: repoInfo,
-                login: true
+                login: true,
+                token: token
             };
         }
     },
@@ -48,11 +51,12 @@ const userSlice = createSlice({
         .addCase(fetchUser.pending, (state, action) => {
         })
         .addCase(fetchUser.fulfilled, (state, action: PayloadAction<UserData>) => {
-            const { userInfo, repoInfo } = action.payload;
+            const { userInfo, repoInfo, token } = action.payload;
             state.name = userInfo.login
             state.photo = userInfo.avatar_url
             state.repoInfo = repoInfo
             state.login = true 
+            state.token = token
         })
     },
 })

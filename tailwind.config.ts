@@ -7,6 +7,19 @@ const config: Config = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    screens: {
+      'xs': '540px',
+
+      'sm': '640px',
+
+      'md': '768px',
+
+      'lg': '1012px',
+
+      'xl': '1280px',
+
+      '2xl': '1536px',
+    },
     extend: {
       colors:{
         'githubBorder': '#30363C',
@@ -21,10 +34,8 @@ const config: Config = {
         'textgray' : '#848D97',
         'labelscolor' : '#161B22',
         'labelshover' : '#1F242C',
-        'bugtext' : '#EA9CA5',
-        'bugbg' : '#321A20',
-        'bugborder' : '#6A4149',
-                
+        'linkactive' : '#1F6EEB',
+        'hoverblue' : '#2D7BEC'
       }
     },
   },

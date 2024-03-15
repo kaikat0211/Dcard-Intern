@@ -26,7 +26,7 @@ interface IssueData {
     body: string;
     labels: string[];
 }
-const Form = ({token} : { token : string }) => {
+const Form = () => {
     const [value, setValue] = useState('');
     const [error, setError] = useState<ReactNode>(null)
     const [titleValue, setTitleValue] = useState('');
@@ -37,6 +37,7 @@ const Form = ({token} : { token : string }) => {
     const bodyRef = useRef<HTMLTextAreaElement>(null)
     const router = useRouter()
     const pathname = usePathname()
+    const token = userState.token
     useEffect(()=> {
         setIsTitleEmpty(!titleValue)
     },[titleValue])
@@ -114,7 +115,7 @@ const Form = ({token} : { token : string }) => {
                 <div className="w-1/5 ml-4 ">
                     {marksArr.map( (s, index) => (
                         <div key={index}>
-                            <Marks props={s} token={token}/>
+                            <Marks props={s}/>
                         </div>
                     ))}
                 </div>

@@ -16,17 +16,17 @@ import LeftDrawer from './LeftDrawer';
 import { fetchUser } from '@/lib/features/userSlice';
 import { usePathname, useRouter } from 'next/navigation';
 
-
     interface ProfileData {
       userInfo: UserInfo,
-      repoInfo: RepoInfo
+      repoInfo: RepoInfo,
+      token: string
     }
     interface UserInfo {
       login: string;
       avatar_url: string;
     }
   
-  interface RepoInfo {
+    interface RepoInfo {
       [repoName: string]: {
         getIssueUrl: string;
       };
@@ -40,7 +40,7 @@ import { usePathname, useRouter } from 'next/navigation';
     const path = pathname.split('/')[2]
     useEffect(() => {
         dispatch(fetchUser(profileData));
-    }, [dispatch]);  //先不放profileData
+    }, [dispatch]);
   return (
     <>
       <div className='p-4 flex justify-between sticky z-999 bg-black'>
@@ -53,12 +53,20 @@ import { usePathname, useRouter } from 'next/navigation';
               <Image src={WhiteMark} alt='mark' width={32} height={32}  className='w-[32px] h-[32px]'/>
           </div>
           <div>
-              <button 
-              className={`simpleButtonStyle ${path ? 'font-light' : 'font-semibold'}`}
-              onClick={() => {router.push('http://localhost:3000/')}}
-              >
-              {state.name}
-              </button>
+              {pathname.split('/')[1] !== 'issues' ? 
+              (<button 
+                className={`simpleButtonStyle ${path ? 'font-light' : 'font-semibold'}`}
+                onClick={() => {router.push('http://localhost:3000/')}}
+                >
+                {pathname.split('/')[1]}
+                </button>
+              ) :
+              (
+                <div className='p-1.5 text-sm rounded-md text-white font-semibold'>
+                  Issues
+                </div>
+              )
+              }
               {path !== '404' && path && <span className='font-light text-slate-500'>/</span>}
               {path !== '404' && path  && <button className='simpleButtonStyle font-semibold'>{path}</button>}
           </div>
@@ -78,7 +86,7 @@ import { usePathname, useRouter } from 'next/navigation';
               <FaPlus className='ml-1 text-slate-400 text-sm'/>
               <IoMdArrowDropdown className='mr-1 text-slate-400'/>
           </button>
-          <button className='borderButtonStyle hover:bg-repohover center'>
+          <button className='borderButtonStyle hover:bg-repohover center' onClick={()=> router.push('http://localhost:3000/issues')}>
               <VscRecord className='text-slate-400 text-[18px]'/>
           </button>
           <button className='borderButtonStyle hover:bg-repohover center'>

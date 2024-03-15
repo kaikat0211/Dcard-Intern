@@ -21,10 +21,11 @@ function hexToRgba(hex: string, alpha: number): string {
     return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
-const Marks = ({ props, token } : { props : string[], token: string}) => {
+const Marks = ({ props } : { props : string[]}) => {
     const [open, setOpen] = useState(false)
     const labelSelectorRef = useRef<HTMLDivElement>(null)
     const divRef = useRef<HTMLDivElement>(null)
+    const token = useAppSelector(state => state.user.token)
     const labelsState = useAppSelector(state => state.labels.labels)
     const colorState = useAppSelector(state => state.labels.color)
     const handleOpenLabelSelector = () => {
@@ -48,7 +49,7 @@ const Marks = ({ props, token } : { props : string[], token: string}) => {
             <div>{props[0]}</div>
             <IoSettingsOutline className=" w-[15px] h-[16px]"/>
         </div>
-        {props[0] === 'Labels' && <LabelSelelctor token={token} open={open} labelSelectorRef={labelSelectorRef}/>}
+        {props[0] === 'Labels' && <LabelSelelctor open={open} labelSelectorRef={labelSelectorRef}/>}
         <div className='text-xs mt-2'>
             {props[0] === 'Labels' && labelsState[0] !== '' && (
                 <div className=''>
