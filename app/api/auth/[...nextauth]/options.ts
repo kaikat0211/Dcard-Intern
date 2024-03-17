@@ -15,7 +15,6 @@ const githubConfig = {
         params: { scope: "repo user issues:write pull_requests:read" },  
     },
     
-    
   }
 
  const options: NextAuthOptions = {
@@ -51,7 +50,7 @@ const githubConfig = {
         maxAge: 30 * 24 * 60 * 60, // 30 days
     },
     callbacks: {
-        jwt: async ({ token, user, account }) => {
+        jwt: async ({ token, account }) => {
             if (account && account.access_token) {
                 // set access_token to the token payload
                 token.accessToken = account.access_token
@@ -59,10 +58,10 @@ const githubConfig = {
 
             return token
         },
-        redirect: async ({ url, baseUrl }) => {
+        redirect: async ({ baseUrl }) => {
             return baseUrl
         },
-        session: async ({ session, token, user }) => {
+        session: async ({ session, token }) => {
             // If we want to make the accessToken available in components, then we have to explicitly forward it here.
             return { ...session, token: token.accessToken }
         },

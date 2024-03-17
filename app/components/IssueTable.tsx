@@ -13,11 +13,13 @@ interface Label {
 }
 
 interface Issue {
+    id: string;
     number: number;
     title: string;
     body: string;
     createdAt: string;
     updatedAt: string;
+    cursor: string;
     labels: {
         nodes: Label[];
     };
@@ -33,13 +35,13 @@ const IssueTable = ({ initIssue } : { initIssue : Issue[] | undefined }) => {
     <div className='w-full mt-5 border border-githubBorder rounded-md'>
         <div className='p-4 bg-labelscolor rounded-md flex justify-between'>
             <div className='flex gap-4'>
-                <Link className='flex items-center text-white' href={'/'}>
+                <Link className='flex items-center text-white cursor-pointer' href={'/'}>
                     <GoIssueOpened  className='text-md'/>
                     <span className='ml-2 text-sm'>10 Open</span>
                 </Link>
-                <Link className='flex items-center text-textgray hover:text-white' href={'/'} >
+                <Link className='flex items-center text-textgray hover:text-white cursor-pointer' href={'/'} >
                     <IoMdCheckmark className=' text-md'/>
-                    <span className='ml-2 text-sm'>10 Closed</span>
+                    <span className='ml-2 text-sm'>0 Closed</span>
                 </Link>
             </div>
             <div className='flex items-center text-textgray gap-7'>

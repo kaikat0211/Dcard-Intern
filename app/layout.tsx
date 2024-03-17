@@ -1,39 +1,9 @@
 import type { Metadata } from "next";
 import Header from './components/Header'
-import { auth } from './api/auth/[...nextauth]/options';
 import "./globals.css";
 import StoreProvider from "./StoreProvider";
-import { usePathname } from "next/navigation";
-async function getUserData() {
-  const session = await auth();
-  const token = session?.token;
-  const response = await fetch(`https://api.github.com/users/${session?.user?.name}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  const userInfo = await response.json();
-  const repoRes = await fetch(userInfo.repos_url);
-  const repoData = await repoRes.json() ; //origin
-  const copyRepoData = JSON.parse(JSON.stringify(repoData))
-  const repoInfoPromises = copyRepoData.map((repo: any) => {
-    const repoName = repo.name;
-    const issuesUrl = repo.issues_url.replace(/{\/number}/g, '');
-    return { [repoName]: { getIssueUrl: issuesUrl }};
-  });
-
-  const repoInfos = await Promise.all(repoInfoPromises);
-
-  const repoInfo: { [key: string]: { getIssueUrl: string } } = {};
-  repoInfos.forEach((info: any) => {
-    const repoName = Object.keys(info)[0];
-    const { getIssueUrl } = info[repoName];
-    repoInfo[repoName] = { getIssueUrl };
-  });
-
-  return { userInfo, repoInfo, token };
-}
-
+import { getUserGitHubId } from "./useractions";
+import getUserData from "@/lib/user/fetchUserData";
 
 
 export const metadata: Metadata = {
@@ -48,7 +18,8 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) 
 {
-  const data = await getUserData()
+  const userID = await getUserGitHubId()
+  const data = await getUserData(userID)
   if (!data) {
     return (
       <html lang="en">
