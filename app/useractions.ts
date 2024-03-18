@@ -16,8 +16,8 @@ export async function getUserGitHubId() {
     const response = await octokit.request('GET /user')
 
     const userId = response.data.login
-
-    return userId
+    const userPhoto = response.data.avatar_url
+    return {userId, userPhoto}
   } catch (error) {
     console.error('Error fetching user information:', error)
     throw new Error('Failed to fetch user information from GitHub')

@@ -1,6 +1,6 @@
 'use client'
 import Link from 'next/link'
-import React from 'react'
+import React, { useState } from 'react'
 import { IoMdCheckmark } from "react-icons/io";
 import { GoIssueOpened } from "react-icons/go";
 import { IoMdArrowDropdown } from "react-icons/io";
@@ -30,14 +30,15 @@ interface Issue {
         nameWithOwner: string;
     };
 }
-const IssueTable = ({ initIssue } : { initIssue : Issue[] | undefined }) => {
+const IssueTable = ({ initIssue, userID } : { initIssue : Issue[] | undefined, userID: string | undefined }) => {
+    const [newIssue, setNewIssue] = useState<Issue[] | undefined>(initIssue)
   return (
     <div className='w-full mt-5 border border-githubBorder rounded-md'>
         <div className='p-4 bg-labelscolor rounded-md flex justify-between'>
             <div className='flex gap-4'>
                 <Link className='flex items-center text-white cursor-pointer' href={'/'}>
                     <GoIssueOpened  className='text-md'/>
-                    <span className='ml-2 text-sm'>10 Open</span>
+                    <span className='ml-2 text-sm'>{newIssue?.length} Open</span>
                 </Link>
                 <Link className='flex items-center text-textgray hover:text-white cursor-pointer' href={'/'} >
                     <IoMdCheckmark className=' text-md'/>
@@ -59,7 +60,7 @@ const IssueTable = ({ initIssue } : { initIssue : Issue[] | undefined }) => {
                 </button>
             </div>
         </div>
-        <IssueTableContent initIssue={initIssue}/>
+        <IssueTableContent initIssue={initIssue} userID={userID} newIssue={newIssue} setNewIssue={setNewIssue}/>
     </div>
   )
 }

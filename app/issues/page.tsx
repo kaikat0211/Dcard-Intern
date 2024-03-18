@@ -5,7 +5,8 @@ import IssueTable from '../components/IssueTable'
 import { fetchNewIssues } from './issuesactions';
 import { getUserGitHubId } from '../useractions';
 const page = async () => {
-  const userID = await getUserGitHubId()
+  const userInfo = await getUserGitHubId()
+  const userID = userInfo.userId
   const data = await fetchNewIssues({cursor: "", user: userID})
   return (
     <div className='w-full flex justify-center'>
@@ -15,7 +16,7 @@ const page = async () => {
                     <LinkGroup />
                     <ListInput />
                 </div>
-                <IssueTable initIssue={data}/> 
+                <IssueTable initIssue={data} userID={userID}/> 
             </div>
             
         </div>

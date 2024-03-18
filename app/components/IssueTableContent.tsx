@@ -6,7 +6,7 @@ import { differenceInDays } from 'date-fns'
 import Link from 'next/link';
 import { useInView } from 'react-intersection-observer';
 import { fetchNewIssues } from '../issues/issuesactions';
-import { getUserGitHubId } from '../useractions';
+import { useRouter } from 'next/navigation';
 
 interface Label {
     name: string;
@@ -31,6 +31,13 @@ interface Issue {
     repository: {
         nameWithOwner: string;
     };
+    
+}
+interface Props {
+    initIssue: Issue[] | undefined;
+    userID: string | undefined
+    newIssue: Issue[] | undefined;
+    setNewIssue: React.Dispatch<React.SetStateAction<Issue[] | undefined>>;
 }
 function hexToRgba(hex: string, alpha: number): string {
     const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
@@ -55,9 +62,8 @@ const getDiffDay = (day : string) => {
     if(Math.abs(diffDay) < 2) return 'yesterday'
     else return `${Math.abs(diffDay)} days ago`
 }
-const IssueTableContent = ({ initIssue } : { initIssue : Issue[] | undefined }) => {
-    const userState = useAppSelector(state => state.user)
-    const [newIssue, setNewIssue] = useState<Issue[] | undefined>(initIssue)
+const IssueTableContent = ({ initIssue, userID, newIssue, setNewIssue } : Props) => {
+    const router = useRouter()
     const [end, setEnd] = useState(false)
     const [recentCursor, setRecentCursor] = useState<string | undefined>(
         initIssue && initIssue.length > 0 ? initIssue[initIssue.length - 1].cursor : undefined
@@ -65,7 +71,7 @@ const IssueTableContent = ({ initIssue } : { initIssue : Issue[] | undefined }) 
     const [ref, inView] = useInView()
 
     async function fetchMoreIssues() {
-        const issues = await fetchNewIssues({ cursor: recentCursor  , user: userState.name})
+        const issues = await fetchNewIssues({ cursor: recentCursor  , user: userID})
         if(issues?.length){
             setNewIssue((prev : Issue[] | undefined) => [
                 ...(prev?.length ? prev : []),
@@ -116,7 +122,9 @@ const IssueTableContent = ({ initIssue } : { initIssue : Issue[] | undefined }) 
                 <div className='text-xs text-textgray mt-1'>#{i.number} opened 
                 <span> {getDiffDay(i.createdAt)} </span> 
                 by 
-                <span className='hover:text-hoverblue'> {userState.name}</span>
+                <span className='hover:text-hoverblue cursor-pointer' onClick={()=>{
+                    
+                }}> {userID}</span>
                 </div>
             </div>
             
@@ -125,7 +133,7 @@ const IssueTableContent = ({ initIssue } : { initIssue : Issue[] | undefined }) 
 
     {!end && <div
     ref={ref}
-    className='col-span-1 mt-16 flex items-center justify-center sm:col-span-2 md:col-span-3 lg:col-span-4'
+    className='col-span-1  flex items-center justify-center sm:col-span-2 md:col-span-3 lg:col-span-4'
     >
         <svg
           aria-hidden='true'

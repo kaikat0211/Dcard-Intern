@@ -18,7 +18,9 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) 
 {
-  const userID = await getUserGitHubId()
+  const userInfo = await getUserGitHubId()
+  const userID = userInfo.userId
+  const photo = userInfo.userPhoto
   const data = await getUserData(userID)
   if (!data) {
     return (
@@ -33,7 +35,7 @@ export default async function RootLayout({
   <StoreProvider>
     <html lang="en">
         <body className='bg-bodycolor'>
-          <Header profileData={data}/>
+          <Header profileData={data} photo={photo}/>
           {children}
         </body>
     </html>

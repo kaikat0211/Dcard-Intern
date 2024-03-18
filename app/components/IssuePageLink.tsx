@@ -21,10 +21,11 @@ const IssuePageLink = ({type} : {type: string}) => {
     }
   return (
     <Link className={`
-    ${type === 'Created' && 'rounded-l-md linkStyle '} 
+    ${type === 'Created' && 'rounded-l-md linkStyle'} 
     ${type === 'Assigned' && 'border-y border-githubBorder text-sm font-semibold text-white py-[5px] px-3'} 
     ${type === 'Mentioned' && 'rounded-r-md linkStyle'} 
-    ${path === compareType && 'bg-linkactive'} 
+    ${type !== 'Created' && path !== compareType && 'hover:bg-repohover'}
+    ${path === compareType && 'bg-linkactive '} 
     ${!path && type === 'Created' && 'bg-linkactive'}`} 
     href={router(type)}>{type}</Link>
   )

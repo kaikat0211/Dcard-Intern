@@ -10,6 +10,7 @@ const ListInput = () => {
         className='w-full text-sm rounded-md outline-0 border border-githubBorder pl-8 pr-3 py-[5px]  focus:ring-inputcolor focus:ring-2 text-white' 
         style={{background: '#02040A'}}
         name='title'
+        // value={`is:open is:issue author:kaikat0211 archived:false `}
         placeholder={'Title'} />
         </form>
     </div>

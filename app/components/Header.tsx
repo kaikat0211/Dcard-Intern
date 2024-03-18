@@ -9,7 +9,7 @@ import { VscRecord } from "react-icons/vsc";
 import { IoBagHandleOutline } from "react-icons/io5";
 import WhiteMark from "../../public/WhiteMark.svg"
 import { useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { useAppDispatch } from '@/lib/hooks';
 import Image from 'next/image';
 import pullRequest from '../../public/pullRequest.svg'
 import LeftDrawer from './LeftDrawer';
@@ -32,9 +32,8 @@ import { usePathname, useRouter } from 'next/navigation';
       };
     }
 
-    export default  function Header({ profileData } : { profileData: ProfileData }) {
+    export default  function Header({ profileData , photo} : { profileData: ProfileData , photo : string}) {
     const dispatch = useAppDispatch();
-    const state = useAppSelector(state => state.user)
     const pathname = usePathname()
     const router = useRouter()
     const path = pathname.split('/')[2]
@@ -67,8 +66,8 @@ import { usePathname, useRouter } from 'next/navigation';
                 </div>
               )
               }
-              {path !== '404' && path && <span className='font-light text-slate-500'>/</span>}
-              {path !== '404' && path  && <button className='simpleButtonStyle font-semibold'>{path}</button>}
+              {path !== '404' && pathname.split('/')[1] !== 'issues' && path && <span className='font-light text-slate-500'>/</span>}
+              {path !== '404' && pathname.split('/')[1] !== 'issues' && path  && <button className='simpleButtonStyle font-semibold'>{path}</button>}
           </div>
         </div>
         <div className='flex gap-2.5 h-[32px]'>
@@ -96,11 +95,11 @@ import { usePathname, useRouter } from 'next/navigation';
               <IoBagHandleOutline className='text-slate-400 text-[18px]'/>
           </button>
           <div className='rounded-full'>
-              {state.photo ? <Image alt={state.photo ?? "Profile Pic"} src={state.photo} width={32} height={32} className='rounded-full cursor-pointer'/> : <></>}
+              {photo ? <Image alt={photo ?? "Profile Pic"} src={photo} width={32} height={32} className='rounded-full cursor-pointer'/> : <></>}
           </div>
         </div>
       </div>
-      {path && <Nav />}
+      {path && pathname.split('/')[1] !== 'issues' && <Nav />}
     </>
   );
 }

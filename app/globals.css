@@ -35,6 +35,6 @@ body {
       @apply px-2 inline-flex mr-1 mb-1 justify-center items-center rounded-full border text-xs font-semibold
   }
   .linkStyle {
-      @apply border border-githubBorder font-semibold text-white py-[5px] px-3 text-sm
+      @apply border border-githubBorder font-semibold text-white py-[5px] px-3 text-sm 
   }
 }
