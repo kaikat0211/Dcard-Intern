@@ -1,6 +1,6 @@
 import { options } from "@/app/api/auth/[...nextauth]/options";
-import { graphql } from "@octokit/graphql";
 import { getServerSession } from "next-auth";
+import { graphql } from "@octokit/graphql";
 interface Label {
 name: string;
 color: string;
@@ -38,13 +38,23 @@ interface Response {
         }[]
     }
 }
-const getNewIssues = async (cursor: string, query?: string) => {
+const queryFunc = (query : string | undefined, userID?: string | undefined) => {
+    switch(query) {
+        case "" : 
+        return "is:issue is:open"
+        case undefined : 
+        return `is:issue is:open author:${userID}`
+        default:
+        return query;
+    }
+}
+const getNewIssues = async (cursor: string, query?: string | undefined, userID?: string | undefined) => {
     const session = await getServerSession(options)
     const token = session?.token
     try {
         const response:  Response  = await graphql(`
         query {
-            search(query: "${query ? `${query}`: query === "" ? "is:issue is:open" : "is:issue is:open author:kaikat0211" }", type: ISSUE, first: 10, ${cursor !== "" ? `after: "${cursor}"` : ""}) {
+            search(query: "${queryFunc(query, userID)}", type: ISSUE, first: 10, ${cursor !== "" ? `after: "${cursor}"` : ""}) {
                 edges {
                 cursor
                 node {

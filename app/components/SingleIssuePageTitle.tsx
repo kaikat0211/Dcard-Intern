@@ -5,15 +5,36 @@ import CreateIssueButton from './CreateIssueButton'
 import SaveEditButton from './SaveEditTitleButton'
 import CancelEditButton from './CancelEditTitleButton'
 
-const IssuePageTitle = () => {
+interface Label {
+    name: string;
+    color: string;
+    description: string;
+}
+interface SingleIssue {
+    number: number;
+    title: string;
+    body: string;
+    createdAt: string;
+    updatedAt: string;
+    comments: {
+        totalCount: number
+    }
+    author :{
+        login : string
+    }
+    labels: {
+        nodes?: Label[]
+    };
+}
+const SingleIssuePageTitle = ({ issueInfo } : { issueInfo :  SingleIssue | undefined }) => {
     const [edit, setEdit] = useState(false) //評估是否redux
-    const [title, setTitle] = useState('')
+    const [title, setTitle] = useState(issueInfo?.title)
   return (
     <div className='flex justify-between min-w-[768px]'>
         {!edit ?
-            <h1 className='text-[32px]'>
+            <h1 className='text-[32px] mb-2'>
                 <div className='text-white'>
-                    IssuePageTitle <span className=' text-textgray'>#number</span>
+                    {issueInfo?.title} <span className=' text-textgray'>#{issueInfo?.number}</span>
                 </div>
             </h1>
         :
@@ -44,4 +65,4 @@ const IssuePageTitle = () => {
   )
 }
 
-export default IssuePageTitle
+export default SingleIssuePageTitle

@@ -2,19 +2,15 @@
 import React, { useEffect, useState } from 'react'
 import Search from '@/public/search.svg'
 import Image from 'next/image'
-import { useSearchParams } from 'next/navigation'
-const ListInput = () => {
-  const searchParams = useSearchParams()
-  const [value, setValue] = useState<string | undefined>(`is:open is:issue author:kaikat0211`)
+const ListInput = ({ search } : { search : string | undefined }) => {
+  const [value, setValue] = useState<string | undefined>('')
   useEffect(()=>{
-    if(searchParams.has('p')){
-      const query : string = searchParams.get('p') || ""
-      const decodedString = decodeURIComponent(query);
-      setValue(decodedString)
+    if(search){
+      setValue(search);
     }else{
-      setValue(`is:open is:issue author:kaikat0211`)
+      setValue(`is:open is:issue`);
     }
-  },[])
+  }, [search]);
   return (
     <div className='w-full pl-4'>
         <form className='relative'>

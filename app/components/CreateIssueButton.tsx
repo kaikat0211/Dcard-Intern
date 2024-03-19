@@ -8,7 +8,7 @@ const CreateIssueButton = () => {
   
   return (
     <>
-      <Link href={`${pathname}/new`} className='bg-submitbuttoncolor px-2 rounded-md font-medium text-xs leading-7 text-white'>New issue</Link>
+      <Link href={`${pathname}/new`} className='bg-submitbuttonhovercolor px-2 rounded-md font-medium text-xs leading-7 text-white hover:bg-submitbuttoncolor'>New issue</Link>
     </>
   )
 }

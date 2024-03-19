@@ -4,6 +4,7 @@ import { useInView } from 'react-intersection-observer';
 import { fetchNewIssues } from '../issues/issuesactions';
 import { useSearchParams } from 'next/navigation';
 import IssueContent from './IssueContent';
+import { useAppSelector } from '@/lib/hooks';
 
 interface Label {
     name: string;
@@ -45,14 +46,18 @@ interface Props {
 
 const IssueTableContent = ({ initIssue, newIssue, setNewIssue } : Props) => {
     const searchParams = useSearchParams()
-    const query : string = searchParams.get('p') || ''
+    const userID = useAppSelector(state => state.user.name)
+    const query : string | undefined = searchParams.get('p') || undefined
     const [end, setEnd] = useState(false)
     const [recentCursor, setRecentCursor] = useState<string>(
         initIssue && initIssue.length > 0 ? initIssue[initIssue?.length - 1].cursor.toString() : ""
     );
     const [ref, inView] = useInView()
     async function fetchMoreIssues() {
-        const issues = await fetchNewIssues({ cursor: recentCursor , query: query})
+        const issues = await fetchNewIssues({
+            cursor: recentCursor , 
+            query: query, 
+            userID: query === undefined ? userID : undefined})
         if(issues?.length){
             const updatedIssues: FullIssue[] = issues.map(issue => ({
                 cursor: issue.cursor,
