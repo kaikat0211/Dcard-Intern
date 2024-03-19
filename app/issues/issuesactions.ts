@@ -2,7 +2,7 @@
 
 import getNewIssues from "@/lib/Issues/fetchIssues"
 
-export async function fetchNewIssues({ cursor, user } : { cursor?: string , user?: string}) {
-    const issues = await getNewIssues(cursor, user)
+export async function fetchNewIssues({ cursor , query} : { cursor: string , query?: string}) {
+    const issues = await getNewIssues(cursor, query)
     return issues
 }

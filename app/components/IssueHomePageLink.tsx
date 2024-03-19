@@ -2,7 +2,7 @@
 import React from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-const IssuePageLink = ({type} : {type: string}) => {
+const IssueHomePageLink = ({type} : {type: string}) => {
     const pathname = usePathname()
     const path = pathname.split('/')[2]
     const compareType = type.toLowerCase() 
@@ -31,4 +31,4 @@ const IssuePageLink = ({type} : {type: string}) => {
   )
 }
 
-export default IssuePageLink
+export default IssueHomePageLink

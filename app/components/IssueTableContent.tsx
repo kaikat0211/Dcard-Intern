@@ -1,19 +1,15 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import { useAppSelector } from '@/lib/hooks';
-import { GoIssueOpened } from "react-icons/go";
-import { differenceInDays } from 'date-fns'
-import Link from 'next/link';
 import { useInView } from 'react-intersection-observer';
 import { fetchNewIssues } from '../issues/issuesactions';
-import { useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
+import IssueContent from './IssueContent';
 
 interface Label {
     name: string;
     color: string;
     description: string;
 }
-
 interface Issue {
     id: string;
     number: number;
@@ -21,7 +17,9 @@ interface Issue {
     body: string;
     createdAt: string;
     updatedAt: string;
-    cursor: string;
+    author: {
+        login: string;
+    }
     labels: {
         nodes: Label[];
     };
@@ -31,52 +29,41 @@ interface Issue {
     repository: {
         nameWithOwner: string;
     };
-    
+}
+interface Cursor {
+    cursor: string
+  }
+interface FullIssue {
+    cursor: Cursor
+    node: Issue
 }
 interface Props {
-    initIssue: Issue[] | undefined;
-    userID: string | undefined
-    newIssue: Issue[] | undefined;
-    setNewIssue: React.Dispatch<React.SetStateAction<Issue[] | undefined>>;
+    initIssue: FullIssue[]
+    newIssue: FullIssue[] 
+    setNewIssue: React.Dispatch<React.SetStateAction<FullIssue[]>>;
 }
-function hexToRgba(hex: string, alpha: number): string {
-    const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-    hex = hex.replace(shorthandRegex, (m, r, g, b) => {
-        return r + r + g + g + b + b;
-    });
 
-    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    if (result === null) {
-        throw new Error("Invalid hex color string");
-    }
-    const r = parseInt(result[1]!, 16);
-    const g = parseInt(result[2]!, 16);
-    const b = parseInt(result[3]!, 16);
-
-    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-}
-const getDiffDay = (day : string) => {
-    const createDate = new Date(day)
-    const nowTime = new Date()
-    const diffDay = differenceInDays(createDate, nowTime)
-    if(Math.abs(diffDay) < 2) return 'yesterday'
-    else return `${Math.abs(diffDay)} days ago`
-}
-const IssueTableContent = ({ initIssue, userID, newIssue, setNewIssue } : Props) => {
-    const router = useRouter()
+const IssueTableContent = ({ initIssue, newIssue, setNewIssue } : Props) => {
+    const searchParams = useSearchParams()
+    const query : string = searchParams.get('p') || ''
     const [end, setEnd] = useState(false)
-    const [recentCursor, setRecentCursor] = useState<string | undefined>(
-        initIssue && initIssue.length > 0 ? initIssue[initIssue.length - 1].cursor : undefined
+    const [recentCursor, setRecentCursor] = useState<string>(
+        initIssue && initIssue.length > 0 ? initIssue[initIssue?.length - 1].cursor.toString() : ""
     );
     const [ref, inView] = useInView()
-
     async function fetchMoreIssues() {
-        const issues = await fetchNewIssues({ cursor: recentCursor  , user: userID})
+        const issues = await fetchNewIssues({ cursor: recentCursor , query: query})
         if(issues?.length){
-            setNewIssue((prev : Issue[] | undefined) => [
+            const updatedIssues: FullIssue[] = issues.map(issue => ({
+                cursor: issue.cursor,
+                node: issue.node
+            }));
+
+            setNewIssue((prev: FullIssue[]) => [
                 ...(prev?.length ? prev : []),
-                ...issues
-            ])
+                ...updatedIssues.filter(issue => !prev?.some(prevIssue => prevIssue.node.id === issue.node.id))
+            ]);
+            
         }else{
             setEnd(true)
         }
@@ -85,50 +72,21 @@ const IssueTableContent = ({ initIssue, userID, newIssue, setNewIssue } : Props)
     useEffect(() => {
         if (inView) {
             fetchMoreIssues()
+            console.log('get more')
         }
       }, [inView])
 
     useEffect(() => {
         if (newIssue && newIssue.length > 0) {
-            setRecentCursor(newIssue[newIssue.length - 1]?.cursor);
+            setRecentCursor(newIssue[newIssue?.length - 1].cursor.toString());
+            console.log('set cursor')
         }
+        
     }, [newIssue]);
   return (
     <>
     {newIssue!.map(i => (
-        <div className='text-white px-4 py-2 border-t border-githubBorder flex' key={i.id}>
-            <div className='pt-1'>
-                <GoIssueOpened style={{color: '#3FB950'}} className='text-md mr-2'/>
-            </div>
-            <div className='w-3/4'>
-                <div className='flex items-center gap-1  flex-auto flex-wrap'>
-                    <div className='' >
-                        <Link href={'/'} className='font-semibold text-textgray hover:text-hoverblue pr-1'>{i.repository.nameWithOwner}</Link>
-                        <Link href={'/'} className='font-semibold hover:text-hoverblue'>{i.title}</Link>
-                    </div>
-                        {i.labels.nodes.map( label => (
-                            <span 
-                            className='px-[7px] rounded-full cursor-pointer font-semibold text-xs border' 
-                            key={label.name}
-                            style={{
-                                color: hexToRgba(label.color, 0.9), 
-                                borderColor: hexToRgba(label.color, 0.3), 
-                                backgroundColor: hexToRgba(label.color, 0.2) 
-                            }}>
-                                {label.name}
-                            </span>
-                        ))}
-                </div>
-                <div className='text-xs text-textgray mt-1'>#{i.number} opened 
-                <span> {getDiffDay(i.createdAt)} </span> 
-                by 
-                <span className='hover:text-hoverblue cursor-pointer' onClick={()=>{
-                    
-                }}> {userID}</span>
-                </div>
-            </div>
-            
-        </div>
+        <IssueContent issue={i} key={i.node.id}/>
     ))}
 
     {!end && <div

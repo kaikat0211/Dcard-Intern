@@ -1,12 +1,12 @@
 import React from 'react'
-import IssuePageLink from './IssuePageLink'
+import IssueHomePageLink from './IssueHomePageLink'
 
 const LinkGroup = () => {
   return (
     <nav className='flex flex-grow-0'>
-        <IssuePageLink type={'Created'}/>
-        <IssuePageLink type={'Assigned'}/>
-        <IssuePageLink type={'Mentioned'}/>
+        <IssueHomePageLink type={'Created'}/>
+        <IssueHomePageLink type={'Assigned'}/>
+        <IssueHomePageLink type={'Mentioned'}/>
     </nav>
   )
 }

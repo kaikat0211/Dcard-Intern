@@ -87,7 +87,7 @@ const LabelSelelctor = ({  open, labelSelectorRef}: LabelSelectorProps) => {
                     className='w-full text-sm rounded-md outline-0 border border-bordercolor py-[5px] px-3 bg-bodycolor focus:ring-inputcolor focus:ring-2 placeholder:text-textgray'
                     name='labels'
                     placeholder={'Filter labels'} 
-                    onChange={(event)=>{setSearchValue(event.target.value)}}
+                    onChange={(event : React.ChangeEvent<HTMLInputElement>)=>{setSearchValue(event.target.value)}}
                 />
             </div>
         </div>

@@ -10,8 +10,10 @@ interface Label {
     name: string;
     color: string;
     description: string;
+}    
+interface Cursor {
+  cursor: string
 }
-
 interface Issue {
     id: string;
     number: number;
@@ -19,7 +21,9 @@ interface Issue {
     body: string;
     createdAt: string;
     updatedAt: string;
-    cursor: string;
+    author: {
+        login: string;
+    }
     labels: {
         nodes: Label[];
     };
@@ -30,15 +34,22 @@ interface Issue {
         nameWithOwner: string;
     };
 }
-const IssueTable = ({ initIssue, userID } : { initIssue : Issue[] | undefined, userID: string | undefined }) => {
-    const [newIssue, setNewIssue] = useState<Issue[] | undefined>(initIssue)
+interface FullIssue {
+    cursor: Cursor
+    node: Issue
+}
+interface Props {
+    initIssue: FullIssue[] 
+}
+const IssueTable = ({ initIssue } : Props) => {
+    const [newIssue, setNewIssue] = useState<FullIssue[]>(initIssue)
   return (
     <div className='w-full mt-5 border border-githubBorder rounded-md'>
         <div className='p-4 bg-labelscolor rounded-md flex justify-between'>
             <div className='flex gap-4'>
                 <Link className='flex items-center text-white cursor-pointer' href={'/'}>
                     <GoIssueOpened  className='text-md'/>
-                    <span className='ml-2 text-sm'>{newIssue?.length} Open</span>
+                    <span className='ml-2 text-sm font-semibold'>{newIssue?.length} Open</span>
                 </Link>
                 <Link className='flex items-center text-textgray hover:text-white cursor-pointer' href={'/'} >
                     <IoMdCheckmark className=' text-md'/>
@@ -60,7 +71,7 @@ const IssueTable = ({ initIssue, userID } : { initIssue : Issue[] | undefined, u
                 </button>
             </div>
         </div>
-        <IssueTableContent initIssue={initIssue} userID={userID} newIssue={newIssue} setNewIssue={setNewIssue}/>
+        <IssueTableContent initIssue={initIssue} newIssue={newIssue} setNewIssue={setNewIssue}/>
     </div>
   )
 }

@@ -29,13 +29,13 @@ const config: Config = {
         'aftercolor' : '#F68166',
         'bodycolor' : '#0E1117',
         'inputcolor' : '#3080F7',
-        'submitbuttoncolor' : '#1D572A',
+        'submitbuttoncolor' : '#2DA042',
         'disablecolor' : '#7F9D83',
         'textgray' : '#848D97',
         'labelscolor' : '#161B22',
         'labelshover' : '#1F242C',
         'linkactive' : '#1F6EEB',
-        'hoverblue' : '#2D7BEC'
+        'hoverblue' : '#2D7BEC',
       }
     },
   },
