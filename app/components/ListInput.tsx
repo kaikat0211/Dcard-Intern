@@ -2,13 +2,15 @@
 import React, { useEffect, useState } from 'react'
 import Search from '@/public/search.svg'
 import Image from 'next/image'
-const ListInput = ({ search } : { search : string | undefined }) => {
+const ListInput = ({ search, userID } : { search : string | undefined , userID?: string | undefined}) => {
   const [value, setValue] = useState<string | undefined>('')
   useEffect(()=>{
     if(search){
       setValue(search);
-    }else{
+    }else if(search === ""){
       setValue(`is:open is:issue`);
+    }else{
+      setValue(`is:open is:issue author:${userID}`)
     }
   }, [search]);
   return (

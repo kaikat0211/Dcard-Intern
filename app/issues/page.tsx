@@ -52,7 +52,7 @@ const page = async ({
               <div className='bg-bodycolor w-[980px] min-w-[980px] flex-row'>
                   <div className='flex w-full'>
                       <LinkGroup />
-                      <ListInput search={search}/>
+                      <ListInput search={search} userID={userID}/>
                   </div>
                   <IssueTable initIssue={data} /> 
               </div>

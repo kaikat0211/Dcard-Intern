@@ -47,8 +47,9 @@ interface Props {
 const IssueTableContent = ({ initIssue, newIssue, setNewIssue } : Props) => {
     const searchParams = useSearchParams()
     const userID = useAppSelector(state => state.user.name)
-    const query : string | undefined = searchParams.get('p') || undefined
+    const query : string | undefined = searchParams.has('p') ? (searchParams.get('p') === "" ? "" : (searchParams.get('p') || undefined)) : undefined
     const [end, setEnd] = useState(false)
+    const [isInitialLoad, setIsInitialLoad] = useState(true); 
     const [recentCursor, setRecentCursor] = useState<string>(
         initIssue && initIssue.length > 0 ? initIssue[initIssue?.length - 1].cursor.toString() : ""
     );
@@ -63,10 +64,10 @@ const IssueTableContent = ({ initIssue, newIssue, setNewIssue } : Props) => {
                 cursor: issue.cursor,
                 node: issue.node
             }));
-
+            console.log(updatedIssues)
             setNewIssue((prev: FullIssue[]) => [
                 ...(prev?.length ? prev : []),
-                ...updatedIssues.filter(issue => !prev?.some(prevIssue => prevIssue.node.id === issue.node.id))
+                ...updatedIssues
             ]);
             
         }else{
@@ -75,6 +76,10 @@ const IssueTableContent = ({ initIssue, newIssue, setNewIssue } : Props) => {
         
     }
     useEffect(() => {
+        if (isInitialLoad) {
+            setIsInitialLoad(false)
+            return
+        }
         if (inView) {
             fetchMoreIssues()
             console.log('get more')
@@ -96,7 +101,7 @@ const IssueTableContent = ({ initIssue, newIssue, setNewIssue } : Props) => {
 
     {!end && <div
     ref={ref}
-    className='col-span-1  flex items-center justify-center sm:col-span-2 md:col-span-3 lg:col-span-4'
+    className='col-span-1 mb-3  flex items-center justify-center sm:col-span-2 md:col-span-3 lg:col-span-4'
     >
         <svg
           aria-hidden='true'

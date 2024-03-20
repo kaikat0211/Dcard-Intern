@@ -1,10 +1,11 @@
 'use client'
 import React from 'react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useSearchParams } from 'next/navigation'
 const IssueHomePageLink = ({type} : {type: string}) => {
     const pathname = usePathname()
     const path = pathname.split('/')[2]
+    const search = useSearchParams()
     const compareType = type.toLowerCase() 
     // 
     const router = (type: string) => {
@@ -26,7 +27,7 @@ const IssueHomePageLink = ({type} : {type: string}) => {
     ${type === 'Mentioned' && 'rounded-r-md linkStyle'} 
     ${type !== 'Created' && path !== compareType && 'hover:bg-repohover'}
     ${path === compareType && 'bg-linkactive '} 
-    ${!path && type === 'Created' && 'bg-linkactive'}`} 
+    ${!path && type === 'Created' && search.get('p')?.includes('author:') && 'bg-linkactive'}`} 
     href={router(type)}>{type}</Link>
   )
 }
