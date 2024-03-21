@@ -48,13 +48,14 @@ const queryFunc = (query : string | undefined, userID?: string | undefined) => {
         return query;
     }
 }
-const getNewIssues = async (cursor: string, query?: string | undefined, userID?: string | undefined) => {
+const getNewIssues = async (cursor?: string | undefined, query?: string | undefined, userID?: string | undefined, time?: string | undefined) => {
     const session = await getServerSession(options)
     const token = session?.token
+    const searchQuery = `${queryFunc(query, userID)} ${time !== undefined ? `created:<${time}` : ''}`
     try {
         const response:  Response  = await graphql(`
         query {
-            search(query: "${queryFunc(query, userID)}", type: ISSUE, first: 10, ${cursor !== "" ? `after: "${cursor}"` : ""}) {
+            search(query: "${searchQuery}", type: ISSUE, first: 10, ${cursor !== undefined ? `after: "${cursor}"` : ""}) {
                 edges {
                 cursor
                 node {
@@ -84,7 +85,7 @@ const getNewIssues = async (cursor: string, query?: string | undefined, userID?:
                     }
                 }
                 }
-            }
+                }
             }
         `, {
             headers: {

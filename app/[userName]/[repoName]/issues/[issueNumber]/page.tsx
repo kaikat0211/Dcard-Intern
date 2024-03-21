@@ -2,6 +2,13 @@ import SingleIssuePageTitle from '@/app/components/SingleIssuePageTitle'
 import React from 'react'
 import { fetchSingleIssues } from './issueinfoaction'
 import SingleIssueTitleDescription from '@/app/components/SingleIssueTitleDescription';
+import { getUserGitHubId } from '@/app/useractions';
+import Image from 'next/image';
+import Link from 'next/link';
+import SingleIssueBody from '@/app/components/SingleIssueBody';
+import { options } from '@/app/api/auth/[...nextauth]/options';
+import { getServerSession } from 'next-auth';
+import { Octokit } from '@octokit/core';
 interface Label {
     name: string;
     color: string;
@@ -23,13 +30,47 @@ interface SingleIssue {
         nodes?: Label[]
     };
 }
+const getMarkDown = async ({ body, token } : {body: string | "", token: string}) => {
+    const octokit = new Octokit({
+        auth: token
+      })
+    const res = await octokit.request('POST /markdown', {
+        text: body,
+        headers: {
+          'X-GitHub-Api-Version': '2022-11-28'
+        }
+    })
+    return res.data
+}
+const getAuthorPhoto = async (username: string | undefined) => {
+    const res = await fetch(`https://api.github.com/users/${username}`)
+    return res.json()
+}
 const page = async ({ params } : { params: { userName: string, repoName: string , issueNumber: number } }) => {
-    const issueData: SingleIssue | undefined= await fetchSingleIssues({userName: params.userName, repoName: params.repoName, issueNumber: params.issueNumber})
+    const issueData: SingleIssue | undefined = await fetchSingleIssues({ownerName: params.userName, repoName: params.repoName, issueNumber: params.issueNumber})
+    const user = await getUserGitHubId()
+    const session = await getServerSession(options)
+    const token = session?.token
+    const IssueAuthor = await getAuthorPhoto(issueData?.author.login)
+    const markdownBody = await getMarkDown({body: issueData?.body || "", token: token})
+    const userID = user.userId
+    let userIdentity = userID === params.userName ? 'Owner' : 'viewer'
   return (
-    <div className='mt-6 mx-20 px-10'>
-        <SingleIssuePageTitle issueInfo={issueData}/>
-        <SingleIssueTitleDescription issueInfo={issueData}/>
-    </div>
+    <>
+        <div className='mt-6 mx-20 px-10'>
+            <div className='mb-8'>
+                <SingleIssuePageTitle issueInfo={issueData}/>
+                <SingleIssueTitleDescription issueInfo={issueData}/>
+            </div>
+            <div className='relative flex'>
+                <Link href={`/${IssueAuthor.login}`} className='absolute left-0 top-0'>
+                    <Image alt="photo" src={IssueAuthor.avatar_url} width={40} height={40} className='rounded-full'/>
+                </Link>   
+                <SingleIssueBody issueInfo={issueData} markdown={markdownBody} userIdentity={userIdentity}/>
+            </div>
+        </div>
+        
+    </>
   )
 }
 

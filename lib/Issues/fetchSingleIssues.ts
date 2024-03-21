@@ -28,13 +28,13 @@ interface Response {
         issue?: SingleIssue
     }
 }
-const getSingleIssue = async (userName : string , repoName: string, IssueNumber : number) => {
+const getSingleIssue = async (ownerName : string , repoName: string, IssueNumber : number) => {
     try {
         const session = await getServerSession(options)
         const token = session?.token
         const res : Response = await graphql(`
         query{
-            repository(owner:"${userName}" name:"${repoName}") {
+            repository(owner:"${ownerName}" name:"${repoName}") {
               issue(number:${IssueNumber}){
                 title
                 number

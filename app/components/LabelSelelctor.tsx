@@ -18,7 +18,7 @@ interface LabelSelectorProps {
     labelSelectorRef: React.RefObject<HTMLDivElement>;
 }
 
-const LabelSelelctor = ({  open, labelSelectorRef}: LabelSelectorProps) => {
+const LabelSelelctor = ({ open, labelSelectorRef }: LabelSelectorProps) => {
     const pathname = usePathname()
     const [selectedLabels, setSelectedLabels] = useState<string[]>([])
     const [customLabels, setcustomLabels] = useState<LabelsData[]>([])

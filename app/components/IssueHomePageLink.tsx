@@ -27,7 +27,10 @@ const IssueHomePageLink = ({type} : {type: string}) => {
     ${type === 'Mentioned' && 'rounded-r-md linkStyle'} 
     ${type !== 'Created' && path !== compareType && 'hover:bg-repohover'}
     ${path === compareType && 'bg-linkactive '} 
-    ${!path && type === 'Created' && search.get('p')?.includes('author:') && 'bg-linkactive'}`} 
+    ${!path && type === 'Created' && search.get('p')?.includes('author:') && 'bg-linkactive'}
+    ${!path && type === 'Created' && 'bg-linkactive'}`
+    }
+     
     href={router(type)}>{type}</Link>
   )
 }

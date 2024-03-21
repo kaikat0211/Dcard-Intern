@@ -50,30 +50,36 @@ const IssueTableContent = ({ initIssue, newIssue, setNewIssue } : Props) => {
     const query : string | undefined = searchParams.has('p') ? (searchParams.get('p') === "" ? "" : (searchParams.get('p') || undefined)) : undefined
     const [end, setEnd] = useState(false)
     const [isInitialLoad, setIsInitialLoad] = useState(true); 
-    const [recentCursor, setRecentCursor] = useState<string>(
-        initIssue && initIssue.length > 0 ? initIssue[initIssue?.length - 1].cursor.toString() : ""
+    const [recentCursor, setRecentCursor] = useState<string | undefined>(
+        initIssue && initIssue.length > 0 ? initIssue[initIssue?.length - 1].cursor.toString() : undefined
     );
+    const [time, setTime] = useState(initIssue && initIssue.length > 0 ? initIssue[initIssue?.length - 1].node.createdAt : "")
     const [ref, inView] = useInView()
+    const switchTimeFunc = () => {
+    }
     async function fetchMoreIssues() {
+        const openIssueQuery = "is:open is:issue"
         const issues = await fetchNewIssues({
-            cursor: recentCursor , 
+            cursor: recentCursor, 
             query: query, 
-            userID: query === undefined ? userID : undefined})
+            userID: query === undefined ? userID : undefined,
+            time : query?.split(" ").join("") === openIssueQuery.split(" ").join("")  || query === "" ? time : userID ? undefined : time
+        })
         if(issues?.length){
             const updatedIssues: FullIssue[] = issues.map(issue => ({
                 cursor: issue.cursor,
                 node: issue.node
             }));
-            console.log(updatedIssues)
+            setRecentCursor(issues[issues.length - 1].cursor.toString());
             setNewIssue((prev: FullIssue[]) => [
                 ...(prev?.length ? prev : []),
-                ...updatedIssues
+                // ...(updatedIssues.filter(issue => !prev?.some(prevIssue => prevIssue.node.id === issue.node.id))) 
+                ...updatedIssues 
             ]);
-            
+            setTime(updatedIssues[updatedIssues.length - 1].node.createdAt)//目前問題是同時間的會被略
         }else{
             setEnd(true)
         }
-        
     }
     useEffect(() => {
         if (isInitialLoad) {
@@ -85,14 +91,6 @@ const IssueTableContent = ({ initIssue, newIssue, setNewIssue } : Props) => {
             console.log('get more')
         }
       }, [inView])
-
-    useEffect(() => {
-        if (newIssue && newIssue.length > 0) {
-            setRecentCursor(newIssue[newIssue?.length - 1].cursor.toString());
-            console.log('set cursor')
-        }
-        
-    }, [newIssue]);
   return (
     <>
     {newIssue!.map(i => (
