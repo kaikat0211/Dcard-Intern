@@ -30,44 +30,18 @@ const Marks = ({ markTitle, initLabels } : { markTitle : string[], initLabels?: 
     const labelSelectorRef = useRef<HTMLDivElement>(null)
     const divRef = useRef<HTMLDivElement>(null)
     const labelsState = useAppSelector(state => state.labels.labels)
-    const colorState = useAppSelector(state => state.labels.color)
-    const initLabelsNameandColor = initLabels?.map(label => [label.name, label.color])
     const handleOpenLabelSelector = () => {
         setOpen(!open)
     }
-
-    // const renderChooseLabels = () => {
-    //     if(initLabels) {
-    //         return (initLabels?.map(label => (
-    //             <span 
-    //             style={{
-    //                 color: hexToRgba(label.color, 0.9), 
-    //                 borderColor: hexToRgba(label.color, 0.3), 
-    //                 backgroundColor: hexToRgba(label.color, 0.2) 
-    //             }}
-    //             className='labelsStyle text-opacity-10 bg-opacity-10 border-opacity-25' key={label.name}>{label.name}
-    //             </span>
-    //             )))
-            
-    //     }else if (labelsState[0] !== ''){
-    //         return (labelsState[0] !== '' && labelsState.slice().sort().map((label, index) => (<span 
-    //             style={{
-    //                 color: hexToRgba(colorState[index], 0.9), 
-    //                 borderColor: hexToRgba(colorState[index], 0.3), 
-    //                 backgroundColor: hexToRgba(colorState[index], 0.2) 
-    //             }}
-    //             className='labelsStyle text-opacity-10 bg-opacity-10 border-opacity-25' key={label}>{label}</span>)))
-    //     }
-    // }
 const renderChooseLabels = () => {
-        if (labelsState[0] !== ''){
-            return (labelsState[0] !== '' && labelsState.slice().sort().map((label, index) => (<span 
+        if (labelsState.length > 0){
+            return (labelsState.map((label) => (<span 
                 style={{
-                    color: hexToRgba(colorState[index], 0.9), 
-                    borderColor: hexToRgba(colorState[index], 0.3), 
-                    backgroundColor: hexToRgba(colorState[index], 0.2) 
+                    color: hexToRgba(label.color, 0.9), 
+                    borderColor: hexToRgba(label.color, 0.3), 
+                    backgroundColor: hexToRgba(label.color, 0.2) 
                 }}
-                className='labelsStyle text-opacity-10 bg-opacity-10 border-opacity-25' key={label}>{label}</span>)))
+                className='labelsStyle text-opacity-10 bg-opacity-10 border-opacity-25' key={label.label}>{label.label}</span>)))
         }
     }
     useEffect(() => {
@@ -93,10 +67,10 @@ const renderChooseLabels = () => {
         <div className='text-xs mt-2 text-white'>
             {markTitle[0] === 'Labels'  && (
                 <div className=''>
-                    {renderChooseLabels()}
+                    {renderChooseLabels()} 
                 </div>
             ) }
-            {markTitle[0] === 'Labels' ? (labelsState[0] === '' && !initLabels ? markTitle[1] : '') : markTitle[1]}
+            {markTitle[0] === 'Labels' ? (labelsState.length > 0 ? '' : markTitle[1]) : markTitle[1]}
             {markTitle[0] === 'Assignees' && <span className='text-textgray hover:text-inputcolor text-xs underline underline-offset-2 cursor-pointer'>assign yourself</span>}
         </div>   
     </div>

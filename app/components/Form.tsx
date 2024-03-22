@@ -65,13 +65,14 @@ const Form = () => {
             title: titleValue,
             body: bodyValue
         })
+        const postLabelsArr = labelsState.labels.map(l => l.label )
         const postIssueData: IssueData = {
             token: token,
             owner: pathname.split('/')[1],
             repo: pathname.split('/')[2],
             title: titleValue,
             body: bodyValue,
-            labels: labelsState.labels
+            labels: postLabelsArr
         }
         if(validationResult.success){
             setError(null)

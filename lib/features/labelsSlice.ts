@@ -1,27 +1,25 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface LabelsState {
-    labels: string[];
-    color: string[];
+interface LabelInfo{
+    label: string,
+    color: string
 }
-
-const initialLabels: LabelsState = {
-    labels: [''],
-    color: [''], 
+interface LabelsState{
+    labels: LabelInfo[]
+}
+const initialLabels: LabelsState | undefined = {
+    labels: []
 }
 
 const labelsSlice = createSlice({
     name: 'labels',
     initialState: initialLabels,
     reducers:{
-        setLabels(state, action: PayloadAction<string[]>){
+        setLabels(state, action: PayloadAction<LabelInfo[]>){
             state.labels = action.payload;
         },
-        setColor(state, action: PayloadAction<string[]>) {
-            state.color = action.payload;
-        }
     }
 })
 
-export const { setLabels, setColor } = labelsSlice.actions
+export const { setLabels } = labelsSlice.actions
 export default labelsSlice.reducer
