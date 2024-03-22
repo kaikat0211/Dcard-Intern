@@ -9,6 +9,7 @@ import SingleIssueBody from '@/app/components/SingleIssueBody';
 import { options } from '@/app/api/auth/[...nextauth]/options';
 import { getServerSession } from 'next-auth';
 import { Octokit } from '@octokit/core';
+import Marks from '@/app/components/Marks';
 interface Label {
     name: string;
     color: string;
@@ -46,6 +47,7 @@ const getAuthorPhoto = async (username: string | undefined) => {
     const res = await fetch(`https://api.github.com/users/${username}`)
     return res.json()
 }
+const marksArr = [['Assignees', 'No one—'],['Labels', 'none yet'],['Projects', 'none yet'],['Milestone', 'No milestone']]
 const page = async ({ params } : { params: { userName: string, repoName: string , issueNumber: number } }) => {
     const issueData: SingleIssue | undefined = await fetchSingleIssues({ownerName: params.userName, repoName: params.repoName, issueNumber: params.issueNumber})
     const user = await getUserGitHubId()
@@ -62,11 +64,18 @@ const page = async ({ params } : { params: { userName: string, repoName: string 
                 <SingleIssuePageTitle issueInfo={issueData}/>
                 <SingleIssueTitleDescription issueInfo={issueData}/>
             </div>
-            <div className='relative flex'>
+            <div className='relative flex gap-4'>
                 <Link href={`/${IssueAuthor.login}`} className='absolute left-0 top-0'>
                     <Image alt="photo" src={IssueAuthor.avatar_url} width={40} height={40} className='rounded-full'/>
                 </Link>   
                 <SingleIssueBody issueInfo={issueData} markdown={markdownBody} userIdentity={userIdentity}/>
+                <div className='w-1/4'>
+                    {marksArr.map( (s, index) => (
+                        <div key={index}>
+                            <Marks markTitle={s} initLabels={issueData?.labels.nodes}/>
+                        </div>
+                    ))}
+                </div>
             </div>
         </div>
         

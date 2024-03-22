@@ -101,6 +101,12 @@ const Form = () => {
                 </div>
                 <div className="w-3/4">
                     <Title titleValue={titleValue} setTitleValue={setTitleValue} titleRef={titleRef}/>
+                    <div className='mt-3'>
+                        <legend>
+                            <h3 className='font-semibold mb-2'>Add a description</h3>
+                        </legend>
+
+                    </div>
                     <Markdown value={value} setValue={setValue} bodyRef={bodyRef}/>
                     <div className="flex justify-end my-4">
                         <button 
@@ -115,7 +121,7 @@ const Form = () => {
                 <div className="w-1/5 ml-4 ">
                     {marksArr.map( (s, index) => (
                         <div key={index}>
-                            <Marks props={s}/>
+                            <Marks markTitle={s}/>
                         </div>
                     ))}
                 </div>

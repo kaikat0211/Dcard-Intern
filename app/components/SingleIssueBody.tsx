@@ -1,6 +1,8 @@
-import React from 'react'
+'use client'
+import React, { useState } from 'react'
 import { IoMdArrowDropdown } from "react-icons/io";
 import { TbDots } from "react-icons/tb";
+import Markdown from './Markdown';
 
 interface Label {
     name: string;
@@ -29,6 +31,8 @@ interface Props {
     userIdentity: string | undefined
 }
 const SingleIssueBody = ({ issueInfo, markdown, userIdentity} : Props) => {
+    const [editBody, setEditBody] = useState(false)
+    const [updateValue, setUpdateValue] = useState<string | undefined>(issueInfo?.body)
     const addClassNameToHTML = (htmlString: string): string => {
         const modifiedHTML = htmlString.replace(/<[^>]+>/g, match => `<div class="mb-4">${match}</div>`)
         return modifiedHTML
@@ -53,11 +57,12 @@ const SingleIssueBody = ({ issueInfo, markdown, userIdentity} : Props) => {
                             {userIdentity}
                         </div>)
                     }
-                    <TbDots className='text-xl text-textgray hover:text-dotblue cursor-pointer'/>
+                    <TbDots className='text-xl text-textgray hover:text-dotblue cursor-pointer' onClick={()=>setEditBody(!editBody)}/>
                 </div>
             </div>
-            <div className='text-white p-4' dangerouslySetInnerHTML={{ __html: modifiedMarkdown }}>
-            </div>
+            {!editBody ? (<div className='text-white p-4' dangerouslySetInnerHTML={{ __html: modifiedMarkdown }}>
+            </div>) : (<Markdown value={updateValue} setValue={setUpdateValue}/>)}
+
         </div>
     </div>
   )

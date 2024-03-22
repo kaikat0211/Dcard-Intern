@@ -14,7 +14,7 @@ const labelsSlice = createSlice({
     name: 'labels',
     initialState: initialLabels,
     reducers:{
-        setLebels(state, action: PayloadAction<string[]>){
+        setLabels(state, action: PayloadAction<string[]>){
             state.labels = action.payload;
         },
         setColor(state, action: PayloadAction<string[]>) {
@@ -23,5 +23,5 @@ const labelsSlice = createSlice({
     }
 })
 
-export const { setLebels, setColor } = labelsSlice.actions
+export const { setLabels, setColor } = labelsSlice.actions
 export default labelsSlice.reducer

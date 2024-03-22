@@ -7,7 +7,7 @@ import Image from 'next/image';
 import Check from '@/public/check.svg'
 import Delete from '@/public/delete.svg'
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { setColor, setLebels } from '@/lib/features/labelsSlice';
+import { setColor, setLabels } from '@/lib/features/labelsSlice';
 interface LabelsData {
     name: string
     color: string
@@ -16,15 +16,17 @@ interface LabelsData {
 interface LabelSelectorProps {
     open: boolean;
     labelSelectorRef: React.RefObject<HTMLDivElement>;
+    initLabels?: LabelsData[]
 }
 
-const LabelSelelctor = ({ open, labelSelectorRef }: LabelSelectorProps) => {
+const LabelSelelctor = ({ open, labelSelectorRef, initLabels }: LabelSelectorProps) => {
     const pathname = usePathname()
-    const [selectedLabels, setSelectedLabels] = useState<string[]>([])
+    const [selectedLabels, setSelectedLabels] = useState<string[] | undefined>([])
     const [customLabels, setcustomLabels] = useState<LabelsData[]>([])
     const [searchValue, setSearchValue] = useState<string>('')
     const dispatch = useAppDispatch()
     const token = useAppSelector(state => state.user.token)
+    const initLabelsName = initLabels?.map(label => label.name)
     const getLebels = async () => {
         const octokit = new Octokit({
             auth: token
@@ -43,14 +45,14 @@ const LabelSelelctor = ({ open, labelSelectorRef }: LabelSelectorProps) => {
         }))
     }
     const handleLabelsState = (name : string) => {
-        if(!selectedLabels.includes(name)) {
+        if(selectedLabels && !selectedLabels?.includes(name)) {
             const newLabels = [...selectedLabels, name]
             setSelectedLabels(newLabels)
-            dispatch(setLebels(newLabels))
+            dispatch(setLabels(newLabels))
         }else{
-            const newLabels = selectedLabels.filter(label => label !== name);
+            const newLabels = selectedLabels?.filter(label => label !== name)
             setSelectedLabels(newLabels)
-            dispatch(setLebels(newLabels))
+            dispatch(setLabels(newLabels!))
         }
         
     }
@@ -70,6 +72,10 @@ const LabelSelelctor = ({ open, labelSelectorRef }: LabelSelectorProps) => {
                 const colors = allLabels.map(label => label.color);
                 setcustomLabels(allLabels)
                 dispatch(setColor(colors));
+                if(initLabels){
+                    setSelectedLabels(initLabelsName)
+                    dispatch(setLabels(initLabelsName!))
+                }
                 console.log('getLables')
             }catch(error){
                 console.error('Error fetching labels:', error);
@@ -97,11 +103,11 @@ const LabelSelelctor = ({ open, labelSelectorRef }: LabelSelectorProps) => {
                 <div className='pl-[30px] py-2 pr-2 border-b border-bordercolor hover:bg-labelshover group cursor-pointer' key={label.name} onClick={() => handleLabelsState(label.name)}>
                     <div>
                         <div className='flex mb-1 relative items-center'>
-                            {selectedLabels.includes(label.name) && <Image alt='checkIcon' src={Check} width={16} height={16} className=' absolute left-[-8%]'/>}
+                            {selectedLabels?.includes(label.name) && <Image alt='checkIcon' src={Check} width={16} height={16} className=' absolute left-[-8%]'/>}
                             <div className='rounded-full w-[14px] h-[14px] mt-0.5 mr-2' style={{backgroundColor: `#${label.color}`}}>
                             </div>
-                            <span className='text-xs'>{label.name}</span>
-                            {selectedLabels.includes(label.name) && <Image alt='deleteIcon' src={Delete} width={14} height={12} className=' absolute right-[3%]'/>}
+                            <span className='text-xs text-white'>{label.name}</span>
+                            {selectedLabels?.includes(label.name) && <Image alt='deleteIcon' src={Delete} width={14} height={12} className=' absolute right-[3%]'/>}
                         </div>
                         <div className='text-xs text-textgray group-hover:text-white'>{label.description}</div>
                     </div>
