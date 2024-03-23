@@ -108,7 +108,7 @@ const LabelSelelctor = ({ open, labelSelectorRef, initLabels }: LabelSelectorPro
                             <div className='rounded-full w-[14px] h-[14px] mt-0.5 mr-2' style={{backgroundColor: `#${label.color}`}}>
                             </div>
                             <span className='text-xs text-white'>{label.name}</span>
-                            {selectedLabels!.some(l => l.label === label.name) && <Image alt='deleteIcon' src={Delete} width={14} height={12} className=' absolute right-[3%]'/>}
+                            {selectedLabels!.some(l => l.label === label.name) && <Image alt='deleteIcon' src={Delete} width={14} height={12} className=' absolute right-[3%] w-[14px] h-[12px]'/>}
                         </div>
                         <div className='text-xs text-textgray group-hover:text-white'>{label.description}</div>
                     </div>

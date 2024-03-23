@@ -39,7 +39,8 @@ const config: Config = {
         'hoverblue' : '#2D7BEC',
         'issuebodyblueborder' : "#1F4272",
         'issuebodyblueheader' : "#131D2E",
-        'dotblue' : "#4493F8"
+        'dotblue' : "#4493F8",
+        'closebuttonbg' : '#292E36',
       }
     },
   },

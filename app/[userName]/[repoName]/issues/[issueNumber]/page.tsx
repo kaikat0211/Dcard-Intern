@@ -47,6 +47,12 @@ const getAuthorPhoto = async (username: string | undefined) => {
     const res = await fetch(`https://api.github.com/users/${username}`)
     return res.json()
 }
+interface updateIssueInfo {
+    token: string,
+    owner: string,
+    repo: string,
+    issueNumber: number,
+}
 const marksArr = [['Assignees', 'No one—'],['Labels', 'none yet'],['Projects', 'none yet'],['Milestone', 'No milestone']]
 const page = async ({ params } : { params: { userName: string, repoName: string , issueNumber: number } }) => {
     const issueData: SingleIssue | undefined = await fetchSingleIssues({ownerName: params.userName, repoName: params.repoName, issueNumber: params.issueNumber})
@@ -57,11 +63,17 @@ const page = async ({ params } : { params: { userName: string, repoName: string 
     const markdownBody = await getMarkDown({body: issueData?.body || "", token: token})
     const userID = user.userId
     let userIdentity = userID === params.userName ? 'Owner' : 'viewer'
+    const patchInfo: updateIssueInfo = {
+        token: token,
+        owner: params.userName,
+        repo: params.repoName,
+        issueNumber: params.issueNumber
+    }
   return (
     <>
         <div className='mt-6 mx-20 px-10'>
             <div className='mb-8'>
-                <SingleIssuePageTitle issueInfo={issueData}/>
+                <SingleIssuePageTitle issueInfo={issueData} patchInfo={patchInfo}/>
                 <SingleIssueTitleDescription issueInfo={issueData}/>
             </div>
             <div className='relative flex gap-4'>

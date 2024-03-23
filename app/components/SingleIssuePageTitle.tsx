@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import EditTitleButton from './EditTitleButton'
 import CreateIssueButton from './CreateIssueButton'
 import SaveEditButton from './SaveEditTitleButton'
@@ -26,15 +26,24 @@ interface SingleIssue {
         nodes?: Label[]
     };
 }
-const SingleIssuePageTitle = ({ issueInfo } : { issueInfo :  SingleIssue | undefined }) => {
+
+interface updateIssueInfo {
+    token: string,
+    owner: string,
+    repo: string,
+    issueNumber: number,
+}
+
+const SingleIssuePageTitle = ({ issueInfo, patchInfo } : { issueInfo :  SingleIssue | undefined, patchInfo: updateIssueInfo }) => {
     const [edit, setEdit] = useState(false) //評估是否redux
-    const [title, setTitle] = useState(issueInfo?.title)
+    const [title, setTitle] = useState(issueInfo?.title || "")
+    const [issueTitle, setIssueTitle] = useState<string | undefined>(issueInfo?.title)
   return (
     <div className='flex justify-between min-w-[768px]'>
         {!edit ?
             <h1 className='text-[32px] mb-2'>
                 <div className='text-white'>
-                    {issueInfo?.title} <span className=' text-textgray'>#{issueInfo?.number}</span>
+                    {issueTitle} <span className=' text-textgray'>#{issueInfo?.number}</span>
                 </div>
             </h1>
         :
@@ -54,9 +63,8 @@ const SingleIssuePageTitle = ({ issueInfo } : { issueInfo :  SingleIssue | undef
                 </>
             :
                 <>
-                    <SaveEditButton edit={edit} setEdit={setEdit}/>
+                    <SaveEditButton edit={edit} setEdit={setEdit} patchInfo={patchInfo} title={title} setIssueTitle={setIssueTitle}/>
                     <CancelEditButton edit={edit} setEdit={setEdit}/>
-                    
                 </>
             }
 

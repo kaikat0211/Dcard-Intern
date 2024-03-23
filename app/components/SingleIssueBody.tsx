@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { IoMdArrowDropdown } from "react-icons/io";
 import { TbDots } from "react-icons/tb";
 import Markdown from './Markdown';
+import CloseIssueButton from './CloseIssueButton';
 
 interface Label {
     name: string;
@@ -64,6 +65,7 @@ const SingleIssueBody = ({ issueInfo, markdown, userIdentity} : Props) => {
             </div>) : (<Markdown value={updateValue} setValue={setUpdateValue}/>)}
 
         </div>
+        <CloseIssueButton />
     </div>
   )
 }
