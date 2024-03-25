@@ -4,18 +4,21 @@ import { IoMdArrowDropdown } from "react-icons/io";
 import { TbDots } from "react-icons/tb";
 import Markdown from './Markdown';
 import CloseIssueButton from './CloseIssueButton';
+import { useRouter } from 'next/navigation';
+import patchIssue from '@/lib/update/patchIssue';
 
 interface Label {
-    name: string;
-    color: string;
-    description: string;
+    name: string
+    color: string
+    description: string
 }
 interface SingleIssue {
-    number: number;
-    title: string;
-    body: string;
-    createdAt: string;
-    updatedAt: string;
+    number: number
+    title: string
+    body: string
+    state: string
+    createdAt: string
+    updatedAt: string
     comments: {
         totalCount: number
     }
@@ -24,25 +27,47 @@ interface SingleIssue {
     }
     labels: {
         nodes?: Label[]
-    };
+    }
+}
+interface updateIssueInfo {
+    token: string
+    owner: string
+    repo: string
+    issueNumber: number
 }
 interface Props {
     issueInfo : SingleIssue | undefined
-    markdown : string | undefined
+    markdown : string
     userIdentity: string | undefined
+    patchInfo: updateIssueInfo
 }
-const SingleIssueBody = ({ issueInfo, markdown, userIdentity} : Props) => {
+
+const SingleIssueBody = ({ issueInfo, markdown, userIdentity, patchInfo} : Props) => {
     const [editBody, setEditBody] = useState(false)
     const [updateValue, setUpdateValue] = useState<string | undefined>(issueInfo?.body)
+    const [isUpdate, setIsUpdate] = useState(false)
+    const router = useRouter()
     const addClassNameToHTML = (htmlString: string): string => {
         const modifiedHTML = htmlString.replace(/<[^>]+>/g, match => `<div class="mb-4">${match}</div>`)
         return modifiedHTML
     };
-
     const modifiedMarkdown = markdown ? addClassNameToHTML(markdown) : ''
+    const handleEditBody = () =>{
+        if(issueInfo?.body === updateValue) return
+        if(updateValue) {
+            patchIssue(patchInfo, { body :updateValue})
+            setIsUpdate(true)
+            router.refresh()
+        }
+        setTimeout(()=>{
+            setEditBody(!editBody)
+            setIsUpdate(false)
+        },2500)
+      }
+
   return (
-    <div className='ml-10 pl-4'>
-        <div className='border border-issuebodyblueborder w-[840px] rounded-lg'>
+    <div className='ml-10 pl-4 grow'>
+        <div className='border border-issuebodyblueborder rounded-lg '>
             <div className='text-white bg-issuebodyblueheader px-4 text-sm rounded-t-lg issueBefore border-b border-issuebodyblueborder flex items-center justify-between'>
                 <div className='font-medium leading-9 flex gap-1' >
                     {issueInfo?.author.login}
@@ -61,13 +86,36 @@ const SingleIssueBody = ({ issueInfo, markdown, userIdentity} : Props) => {
                     <TbDots className='text-xl text-textgray hover:text-dotblue cursor-pointer' onClick={()=>setEditBody(!editBody)}/>
                 </div>
             </div>
-            {!editBody ? (<div className='text-white p-4' dangerouslySetInnerHTML={{ __html: modifiedMarkdown }}>
-            </div>) : (<Markdown value={updateValue} setValue={setUpdateValue}/>)}
+            <div className='p-2'>
+                {
+                !editBody ? (<div className='text-white p-4' dangerouslySetInnerHTML={{ __html: modifiedMarkdown }}>
+                </div>) : (<Markdown value={updateValue} setValue={setUpdateValue}/>)
+                }
+            </div>
+            <div className='mb-2 mr-2'>
+                {editBody && (
+                <div className='flex justify-end items-center gap-1'>
+                    <button 
+                    className={`leading-8 px-3 font-medium text-sm ring-1 ring-githubBorder rounded-lg text-cancelred bg-bordercolor hover:bg-cancelhoverbgred hover:text-white hover:ring-0 ${isUpdate && 'opacity-60'}`}
+                    onClick={()=>setEditBody(!editBody)}
+                    disabled={isUpdate}
+                    >
+                        Cancel
+                    </button>
+                    <button 
+                    className={`leading-8 px-3 font-medium text-sm rounded-lg bg-submitbuttonhovercolor ${isUpdate && 'opacity-60'} text-white hover:bg-submitbuttoncolor`}
+                    onClick={handleEditBody}
+                    disabled={isUpdate}
+                    >
+                        Update Comment
+                    </button>
+                </div>
+                )}
+            </div>
 
         </div>
-        <CloseIssueButton />
+        <CloseIssueButton issueInfo={issueInfo} patchInfo={patchInfo}/>
     </div>
   )
 }
-
 export default SingleIssueBody

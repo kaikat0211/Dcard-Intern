@@ -71,7 +71,7 @@ import { usePathname, useRouter } from 'next/navigation';
           </div>
         </div>
         <div className='flex gap-2.5 h-[32px]'>
-          <button className='border p-1 border-githubBorder rounded-md flex items-center gap-1 justify-between w-[350px]'>
+          <button className='border p-1 border-githubBorder rounded-md flex items-center gap-1 justify-between w-[350px] max-lg:hidden'>
               <div className='flex items-center'>
                   <IoSearchOutline className='m-[3px] text-md text-slate-400'/>
                   <div className='text-sm font-light text-slate-400 ml-1'>Type <span className='text-[12px] border-[0.5px]  rounded-sm border-slate-400 px-1 py-[1px]'>/</span> to search</div>
@@ -80,15 +80,18 @@ import { usePathname, useRouter } from 'next/navigation';
                   <LiaGreaterThanEqualSolid className='ml-2 text-slate-400'/>
               </div>
           </button>
-          <div className='my-1.5 border-[0.5px] border-githubBorder'></div>
-          <button className='borderButtonStyle hover:bg-repohover flex gap-1 items-center'>
+          <button className='border p-1 border-githubBorder rounded-md lg:hidden'>
+              <IoSearchOutline className='m-[3px] text-md text-slate-400'/>
+          </button>
+          <div className='my-1.5 border-[0.5px] border-githubBorder max-md:hidden'></div>
+          <button className='borderButtonStyle hover:bg-repohover flex gap-1 items-center max-md:hidden'>
               <FaPlus className='ml-1 text-slate-400 text-sm'/>
               <IoMdArrowDropdown className='mr-1 text-slate-400'/>
           </button>
-          <button className='borderButtonStyle hover:bg-repohover center' onClick={()=> router.push('http://localhost:3000/issues')}>
+          <button className='borderButtonStyle hover:bg-repohover center max-md:hidden' onClick={()=> router.push('http://localhost:3000/issues')}>
               <VscRecord className='text-slate-400 text-[18px]'/>
           </button>
-          <button className='borderButtonStyle hover:bg-repohover center'>
+          <button className='borderButtonStyle hover:bg-repohover center max-md:hidden'>
               <Image alt='pulls' src={pullRequest} width={20} height={20}/>
           </button>
           <button className='borderButtonStyle hover:bg-repohover center'>

@@ -58,7 +58,7 @@ const renderChooseLabels = () => {
     }, [labelSelectorRef]);
 
   return (
-    <div className="border-b pb-4 border-githubBorder relative " key={markTitle[0]}>
+    <div className="border-b pb-4 border-githubBorder relative w-full" key={markTitle[0]}>
         <div className="flex justify-between text-textgray hover:text-inputcolor text-xs font-semibold cursor-pointer relative pt-4" onClick={handleOpenLabelSelector} ref={divRef}>
             <div>{markTitle[0]}</div>
             <IoSettingsOutline className=" w-[15px] h-[16px]"/>

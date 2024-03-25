@@ -14,7 +14,7 @@ const Markdown = ({value, setValue, bodyRef} : BodyInputProps) => {
         <MDEditor
         value={value}
         ref={bodyRef}
-        onChange={(newValue) => setValue(newValue || '')}
+        onChange={(newValue) => setValue(newValue || '')}      
         />
       </div>
     </>

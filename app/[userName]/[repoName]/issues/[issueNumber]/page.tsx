@@ -21,6 +21,7 @@ interface SingleIssue {
     body: string;
     createdAt: string;
     updatedAt: string;
+    state: string
     comments: {
         totalCount: number
     }
@@ -71,17 +72,17 @@ const page = async ({ params } : { params: { userName: string, repoName: string 
     }
   return (
     <>
-        <div className='mt-6 mx-20 px-10'>
+        <div className='mt-6 xl:mx-12 max-lg:px-6 lg:px-8'>
             <div className='mb-8'>
                 <SingleIssuePageTitle issueInfo={issueData} patchInfo={patchInfo}/>
                 <SingleIssueTitleDescription issueInfo={issueData}/>
             </div>
-            <div className='relative flex gap-4'>
+            <div className='relative flex md:gap-2 lg:gap-4 justify-between'>
                 <Link href={`/${IssueAuthor.login}`} className='absolute left-0 top-0'>
                     <Image alt="photo" src={IssueAuthor.avatar_url} width={40} height={40} className='rounded-full'/>
                 </Link>   
-                <SingleIssueBody issueInfo={issueData} markdown={markdownBody} userIdentity={userIdentity}/>
-                <div className='w-1/4'>
+                <SingleIssueBody issueInfo={issueData} markdown={markdownBody} userIdentity={userIdentity} patchInfo={patchInfo}/>
+                <div className='w-1/4 min-w-[256px]:'>
                     {marksArr.map( (s, index) => (
                         <div key={index}>
                             <Marks markTitle={s} initLabels={issueData?.labels.nodes}/>

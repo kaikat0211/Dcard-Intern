@@ -14,11 +14,11 @@ const ListInput = ({ search, userID } : { search : string | undefined , userID?:
     }
   }, [search]);
   return (
-    <div className='w-full pl-4'>
+    <div className='w-full pl-4 max-md:pl-0 max-md:mt-4'>
         <form className='relative'>
         <Image alt='searchicon' src={Search} width={15} height={15} className='absolute left-2 bottom-2'/>
         <input type='text' 
-        className='w-full text-sm rounded-md outline-0 border border-githubBorder pl-8 pr-3 py-[5px]  focus:ring-inputcolor focus:ring-2 text-textgray' 
+        className='w-full text-sm rounded-md outline-0 border border-githubBorder bg-labelscolor pl-8 pr-3 py-[5px]  focus:ring-inputcolor focus:ring-2 text-textgray focus:bg-bodycolor' 
         style={{background: '#02040A'}}
         name='p'
         value={value}

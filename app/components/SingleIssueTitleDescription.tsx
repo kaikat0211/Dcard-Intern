@@ -10,6 +10,7 @@ interface SingleIssue {
     number: number;
     title: string;
     body: string;
+    state: string
     createdAt: string;
     updatedAt: string;
     comments: {
@@ -25,7 +26,7 @@ interface SingleIssue {
 const SingleIssueTitleDescription = ({ issueInfo } : { issueInfo :  SingleIssue | undefined }) => {
   return (
     <>
-        <div className='flex border-b border-bordercolor pb-2'>
+        <div className='flex border-b border-bordercolor pb-2 mt-2 w-full '>
             <div className='mb-2 flex items-center '>
                 <div className='mr-2 px-3 py-[5px] flex rounded-full bg-submitbuttoncolor items-center gap-1 text-white  font-medium'>
                     <GoIssueOpened className='text-base'/><span className=' text-sm'>Open</span>

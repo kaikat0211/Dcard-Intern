@@ -14,6 +14,7 @@ interface SingleIssue {
     number: number;
     title: string;
     body: string;
+    state: string;
     createdAt: string;
     updatedAt: string;
     comments: {
@@ -39,9 +40,9 @@ const SingleIssuePageTitle = ({ issueInfo, patchInfo } : { issueInfo :  SingleIs
     const [title, setTitle] = useState(issueInfo?.title || "")
     const [issueTitle, setIssueTitle] = useState<string | undefined>(issueInfo?.title)
   return (
-    <div className='flex justify-between min-w-[768px]'>
+    <div className='flex justify-between w-full'>
         {!edit ?
-            <h1 className='text-[32px] mb-2'>
+            <h1 className='text-[32px] '>
                 <div className='text-white'>
                     {issueTitle} <span className=' text-textgray'>#{issueInfo?.number}</span>
                 </div>
@@ -59,11 +60,11 @@ const SingleIssuePageTitle = ({ issueInfo, patchInfo } : { issueInfo :  SingleIs
             {!edit ? 
                 <>
                     <EditTitleButton edit={edit} setEdit={setEdit}/>
-                    <CreateIssueButton />
+                    <CreateIssueButton patchInfo={patchInfo}/>
                 </>
             :
                 <>
-                    <SaveEditButton edit={edit} setEdit={setEdit} patchInfo={patchInfo} title={title} setIssueTitle={setIssueTitle}/>
+                    <SaveEditButton edit={edit} setEdit={setEdit} patchInfo={patchInfo} title={title} setIssueTitle={setIssueTitle} issueInfo={issueInfo}/>
                     <CancelEditButton edit={edit} setEdit={setEdit}/>
                 </>
             }

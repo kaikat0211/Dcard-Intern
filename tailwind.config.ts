@@ -29,8 +29,9 @@ const config: Config = {
         'aftercolor' : '#F68166',
         'bodycolor' : '#0E1117',
         'inputcolor' : '#3080F7',
-        'submitbuttoncolor' : '#238636',
-        'submitbuttonhovercolor' : '#2DA042',
+        'submitbuttoncolor' : '#2DA042',
+        'submitbuttonhovercolor' : '#238636',
+        'disablesubmitbuttoncolor' : '#11351E',
         'disablecolor' : '#7F9D83',
         'textgray' : '#848D97',
         'labelscolor' : '#161B22',
@@ -41,6 +42,8 @@ const config: Config = {
         'issuebodyblueheader' : "#131D2E",
         'dotblue' : "#4493F8",
         'closebuttonbg' : '#292E36',
+        'cancelred' : '#F85149',
+        'cancelhoverbgred' : '#B62324'
       }
     },
   },

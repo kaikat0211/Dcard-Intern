@@ -1,14 +1,18 @@
 'use client'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 import React from 'react'
 
-const CreateIssueButton = () => {
-  const pathname = usePathname()
+interface updateIssueInfo {
+  token: string,
+  owner: string,
+  repo: string,
+  issueNumber: number,
+}
+const CreateIssueButton = ({ patchInfo } : { patchInfo : updateIssueInfo }) => {
   
   return (
     <>
-      <Link href={`${pathname}/new`} className='bg-submitbuttonhovercolor px-2 rounded-md font-medium text-xs leading-7 text-white hover:bg-submitbuttoncolor'>New issue</Link>
+      <Link href={`http://localhost:3000/${patchInfo.owner}/${patchInfo.repo}/issues/new`} className='bg-submitbuttonhovercolor text-white hover:bg-submitbuttoncolor px-2 rounded-md font-medium text-xs leading-7 '>New issue</Link>
     </>
   )
 }

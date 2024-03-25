@@ -55,8 +55,6 @@ const IssueTableContent = ({ initIssue, newIssue, setNewIssue } : Props) => {
     );
     const [time, setTime] = useState(initIssue && initIssue.length > 0 ? initIssue[initIssue?.length - 1].node.createdAt : "")
     const [ref, inView] = useInView()
-    const switchTimeFunc = () => {
-    }
     async function fetchMoreIssues() {
         const openIssueQuery = "is:open is:issue"
         const issues = await fetchNewIssues({

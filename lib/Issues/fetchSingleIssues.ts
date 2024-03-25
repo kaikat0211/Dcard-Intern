@@ -11,6 +11,7 @@ interface SingleIssue {
     number: number;
     title: string;
     body: string;
+    state: string;
     createdAt: string;
     updatedAt: string;
     comments: {
@@ -39,6 +40,7 @@ const getSingleIssue = async (ownerName : string , repoName: string, IssueNumber
                 title
                 number
                 body
+                state
                 createdAt
                 updatedAt
                 comments {

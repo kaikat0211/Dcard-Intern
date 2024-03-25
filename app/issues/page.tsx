@@ -49,8 +49,8 @@ const page = async ({
     return (
       <div className='w-full flex justify-center'>
           <div className='flex justify-center bg-bodycolor w-full pt-6 max-lg:px-10 lg:px-4'>
-              <div className='bg-bodycolor w-[980px] min-w-[980px] flex-row'>
-                  <div className='flex w-full'>
+              <div className='bg-bodycolor grow max-w-[980px]'>
+                  <div className='flex w-full max-md:flex-col '>
                       <LinkGroup />
                       <ListInput search={search} userID={userID}/>
                   </div>

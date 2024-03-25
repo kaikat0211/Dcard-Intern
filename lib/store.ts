@@ -7,7 +7,7 @@ export const makeStore = () => {
   return configureStore({
     reducer: {
         user : userSlice,
-        labels: labelsSlice
+        labels: labelsSlice,
     }
   })
 }

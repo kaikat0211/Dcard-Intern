@@ -44,7 +44,7 @@ interface Props {
 const IssueTable = ({ initIssue } : Props) => {
     const [newIssue, setNewIssue] = useState<FullIssue[]>(initIssue)
   return (
-    <div className='w-full mt-5 border border-githubBorder rounded-md'>
+    <div className='w-full mt-5 border border-githubBorder rounded-md '>
         <div className='p-4 bg-labelscolor rounded-md flex justify-between'>
             <div className='flex gap-4'>
                 <Link className='flex items-center text-white cursor-pointer' href={'/'}>
