@@ -5,37 +5,9 @@ import CreateIssueButton from './CreateIssueButton'
 import SaveEditButton from './SaveEditTitleButton'
 import CancelEditButton from './CancelEditTitleButton'
 
-interface Label {
-    name: string;
-    color: string;
-    description: string;
-}
-interface SingleIssue {
-    number: number;
-    title: string;
-    body: string;
-    state: string;
-    createdAt: string;
-    updatedAt: string;
-    comments: {
-        totalCount: number
-    }
-    author :{
-        login : string
-    }
-    labels: {
-        nodes?: Label[]
-    };
-}
+import { SingleIssue, updateIssueInfo } from "@/app/types/singleIssueTypes";
 
-interface updateIssueInfo {
-    token: string,
-    owner: string,
-    repo: string,
-    issueNumber: number,
-}
-
-const SingleIssuePageTitle = ({ issueInfo, patchInfo } : { issueInfo :  SingleIssue | undefined, patchInfo: updateIssueInfo }) => {
+const SingleIssuePageTitle = ({ issueInfo, patchInfo, userIdentity } : { issueInfo :  SingleIssue | undefined, patchInfo: updateIssueInfo, userIdentity : string | undefined }) => {
     const [edit, setEdit] = useState(false) //評估是否redux
     const [title, setTitle] = useState(issueInfo?.title || "")
     const [issueTitle, setIssueTitle] = useState<string | undefined>(issueInfo?.title)
@@ -59,7 +31,7 @@ const SingleIssuePageTitle = ({ issueInfo, patchInfo } : { issueInfo :  SingleIs
         <div className='flex items-center gap-1'>
             {!edit ? 
                 <>
-                    <EditTitleButton edit={edit} setEdit={setEdit}/>
+                    {userIdentity === "Owner" && <EditTitleButton edit={edit} setEdit={setEdit}/>}
                     <CreateIssueButton patchInfo={patchInfo}/>
                 </>
             :

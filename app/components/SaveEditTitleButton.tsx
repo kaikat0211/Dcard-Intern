@@ -1,34 +1,8 @@
 'use client'
 import React, { useState } from 'react'
 import patchIssue from '@/lib/update/patchIssue';
-interface updateIssueInfo {
-  token: string,
-  owner: string,
-  repo: string,
-  issueNumber: number,
-}
-interface Label {
-  name: string;
-  color: string;
-  description: string;
-}
-interface SingleIssue {
-    number: number;
-    title: string;
-    body: string;
-    state: string;
-    createdAt: string;
-    updatedAt: string;
-    comments: {
-        totalCount: number
-    }
-    author :{
-        login : string
-    }
-    labels: {
-        nodes?: Label[]
-    };
-}
+import { SingleIssue, updateIssueInfo } from "@/app/types/singleIssueTypes";
+
 interface Props {
   edit: boolean
   setEdit: (edit: boolean) => void

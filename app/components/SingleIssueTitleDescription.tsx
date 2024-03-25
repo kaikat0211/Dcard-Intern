@@ -1,28 +1,7 @@
 import React from 'react'
 import { GoIssueOpened } from "react-icons/go";
+import { SingleIssue } from "@/app/types/singleIssueTypes";
 
-interface Label {
-    name: string;
-    color: string;
-    description: string;
-}
-interface SingleIssue {
-    number: number;
-    title: string;
-    body: string;
-    state: string
-    createdAt: string;
-    updatedAt: string;
-    comments: {
-        totalCount: number
-    }
-    author :{
-        login : string
-    }
-    labels: {
-        nodes?: Label[]
-    };
-}
 const SingleIssueTitleDescription = ({ issueInfo } : { issueInfo :  SingleIssue | undefined }) => {
   return (
     <>

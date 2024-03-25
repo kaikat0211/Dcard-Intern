@@ -25,12 +25,13 @@ function hexToRgba(hex: string, alpha: number): string {
     return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
-const Marks = ({ markTitle, initLabels } : { markTitle : string[], initLabels?: Label[] | undefined}) => {
+const Marks = ({ markTitle, initLabels, userIdentity } : { markTitle : string[], initLabels?: Label[] | undefined, userIdentity ?: string | undefined}) => {
     const [open, setOpen] = useState(false)
     const labelSelectorRef = useRef<HTMLDivElement>(null)
     const divRef = useRef<HTMLDivElement>(null)
     const labelsState = useAppSelector(state => state.labels.labels)
     const handleOpenLabelSelector = () => {
+        if(userIdentity !== 'Owner') return
         setOpen(!open)
     }
 const renderChooseLabels = () => {

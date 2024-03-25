@@ -3,34 +3,8 @@ import patchIssue from '@/lib/update/patchIssue';
 import React, { useState } from 'react'
 import { BsCheckCircle } from "react-icons/bs";
 import { VscIssueReopened } from "react-icons/vsc";
-interface updateIssueInfo {
-  token: string
-  owner: string
-  repo: string
-  issueNumber: number
-}
-interface Label {
-  name: string;
-  color: string;
-  description: string;
-}
-interface SingleIssue {
-  number: number;
-  title: string;
-  body: string;
-  state: string;
-  createdAt: string;
-  updatedAt: string;
-  comments: {
-      totalCount: number
-  }
-  author :{
-      login : string
-  }
-  labels: {
-      nodes?: Label[]
-  };
-}
+import { SingleIssue, updateIssueInfo } from "@/app/types/singleIssueTypes";
+
 const CloseIssueButton = ({issueInfo, patchInfo } : {issueInfo: SingleIssue | undefined, patchInfo : updateIssueInfo}) => {
   const [open, setOpen] = useState((issueInfo?.state)?.toLowerCase())
   const [patching, setPatching] = useState(false)

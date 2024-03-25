@@ -17,7 +17,6 @@ const page = async () => {
           <div className='bg-black p-4'>123</div>
           <Issue token={token}/>
         </div>
-        <CreateIssueButton />
       </div>
     </>
   )

@@ -7,42 +7,22 @@ import CloseIssueButton from './CloseIssueButton';
 import { useRouter } from 'next/navigation';
 import patchIssue from '@/lib/update/patchIssue';
 
-interface Label {
-    name: string
-    color: string
-    description: string
-}
-interface SingleIssue {
-    number: number
-    title: string
-    body: string
-    state: string
-    createdAt: string
-    updatedAt: string
-    comments: {
-        totalCount: number
-    }
-    author :{
-        login : string
-    }
-    labels: {
-        nodes?: Label[]
-    }
-}
-interface updateIssueInfo {
-    token: string
-    owner: string
-    repo: string
-    issueNumber: number
+import { SingleIssue, updateIssueInfo } from "@/app/types/singleIssueTypes";
+import SingleIssueComments from './SingleIssueComments';
+
+interface AuthorInfo {
+    login: string
+    avatar_url: string
 }
 interface Props {
     issueInfo : SingleIssue | undefined
     markdown : string
     userIdentity: string | undefined
     patchInfo: updateIssueInfo
+    commentsAuthorsArray: AuthorInfo[] | undefined
 }
 
-const SingleIssueBody = ({ issueInfo, markdown, userIdentity, patchInfo} : Props) => {
+const SingleIssueBody = ({ issueInfo, markdown, userIdentity, patchInfo, commentsAuthorsArray} : Props) => {
     const [editBody, setEditBody] = useState(false)
     const [updateValue, setUpdateValue] = useState<string | undefined>(issueInfo?.body)
     const [isUpdate, setIsUpdate] = useState(false)
@@ -67,8 +47,8 @@ const SingleIssueBody = ({ issueInfo, markdown, userIdentity, patchInfo} : Props
 
   return (
     <div className='ml-10 pl-4 grow'>
-        <div className='border border-issuebodyblueborder rounded-lg '>
-            <div className='text-white bg-issuebodyblueheader px-4 text-sm rounded-t-lg issueBefore border-b border-issuebodyblueborder flex items-center justify-between'>
+        <div className={`border ${userIdentity === "Owner" ? 'border-issuebodyblueborder' : 'border-githubBorder'} rounded-lg `}>
+            <div className={`text-white px-4 text-sm rounded-t-lg border-b ${userIdentity === "Owner" ? 'border-issuebodyblueborder bg-issuebodyblueheader' : 'border-githubBorder bg-labelscolor'} flex items-center justify-between`}>
                 <div className='font-medium leading-9 flex gap-1' >
                     {issueInfo?.author.login}
                     <span className='text-textgray font-normal'> commented last week •</span>
@@ -79,11 +59,14 @@ const SingleIssueBody = ({ issueInfo, markdown, userIdentity, patchInfo} : Props
                 </div>
                 <div className='flex items-center gap-2'>
                     {userIdentity === "Owner" && 
-                        (<div className='border border-issuebodyblueborder leading-[20px] px-[7px] rounded-full text-xs text-textgray font-medium'>
+                        (<div className={`border ${userIdentity === "Owner" ? 'border-issuebodyblueborder' : 'border-githubBorder'} leading-[20px] px-[7px] rounded-full text-xs text-textgray font-medium`}>
                             {userIdentity}
                         </div>)
                     }
-                    <TbDots className='text-xl text-textgray hover:text-dotblue cursor-pointer' onClick={()=>setEditBody(!editBody)}/>
+                    <TbDots className='text-xl text-textgray hover:text-dotblue cursor-pointer' onClick={()=>{
+                        if(userIdentity !== "Owner") return
+                        setEditBody(!editBody)
+                    }}/>
                 </div>
             </div>
             <div className='p-2'>
@@ -114,7 +97,8 @@ const SingleIssueBody = ({ issueInfo, markdown, userIdentity, patchInfo} : Props
             </div>
 
         </div>
-        <CloseIssueButton issueInfo={issueInfo} patchInfo={patchInfo}/>
+        {/* <SingleIssueComments issueInfo={issueInfo} commentsAuthorsArray={commentsAuthorsArray} userIdentity={userIdentity}/> */}
+        {userIdentity === "Owner" &&  <CloseIssueButton issueInfo={issueInfo} patchInfo={patchInfo}/>}
     </div>
   )
 }

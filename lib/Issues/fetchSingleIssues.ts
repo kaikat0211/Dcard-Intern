@@ -1,29 +1,7 @@
 import { graphql } from "@octokit/graphql";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { getServerSession } from "next-auth";
-interface Label {
-    name: string;
-    color: string;
-    description: string;
-}
-
-interface SingleIssue {
-    number: number;
-    title: string;
-    body: string;
-    state: string;
-    createdAt: string;
-    updatedAt: string;
-    comments: {
-        totalCount: number
-    }
-    author :{
-        login : string
-    }
-    labels: {
-        nodes?: Label[]
-    };
-}
+import { SingleIssue } from "@/app/types/singleIssueTypes";
 interface Response {
     repository? : {
         issue?: SingleIssue
@@ -43,8 +21,15 @@ const getSingleIssue = async (ownerName : string , repoName: string, IssueNumber
                 state
                 createdAt
                 updatedAt
-                comments {
+                comments(first: 100) {
                     totalCount
+                    nodes {
+                        body
+                        createdAt
+                        author {
+                          login
+                        }
+                    }
                 }
                 author{
                     login
