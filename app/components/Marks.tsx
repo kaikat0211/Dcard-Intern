@@ -9,17 +9,20 @@ interface Props {
     markTitle: string[]
     initLabels?: Label[] | undefined
     userIdentity?: string | undefined
-    patchInfo?: updateIssueInfo
+    patchInfo?: updateIssueInfo | undefined
+    createNewIssue?: boolean | undefined
 }
-const Marks = ({ markTitle, initLabels, userIdentity , patchInfo} : Props) => {
+const Marks = ({ markTitle, initLabels, userIdentity , patchInfo, createNewIssue} : Props) => {
     const [open, setOpen] = useState(false)
     const [firstLoad, setFirstLoad] = useState(true)
     const labelSelectorRef = useRef<HTMLDivElement>(null)
     const divRef = useRef<HTMLDivElement>(null)
     const labelsState = useAppSelector(state => state.labels.labels)
     const handleOpenLabelSelector = () => {
-        if(userIdentity !== 'Owner') return
-        setOpen(!open)
+        if(createNewIssue || userIdentity === 'Owner'){
+            setOpen(!open)
+        }else return
+        
     }
     const renderChooseLabels = () => {
         if(firstLoad) {
@@ -71,7 +74,7 @@ const Marks = ({ markTitle, initLabels, userIdentity , patchInfo} : Props) => {
                     {renderChooseLabels()} 
                 </div>
             ) }
-            {markTitle[0] === 'Labels' ? (initLabels && initLabels?.length > 0 ? '' : markTitle[1]) : markTitle[1]}
+            {markTitle[0] === 'Labels' ? (initLabels && initLabels?.length > 0 ? '' : labelsState.length > 0 ? '' : markTitle[1]) : markTitle[1]}
             {markTitle[0] === 'Assignees' && <span className='text-textgray hover:text-inputcolor text-xs underline underline-offset-2 cursor-pointer'>assign yourself</span>}
         </div>   
     </div>

@@ -88,7 +88,7 @@ import { usePathname, useRouter } from 'next/navigation';
               <FaPlus className='ml-1 text-slate-400 text-sm'/>
               <IoMdArrowDropdown className='mr-1 text-slate-400'/>
           </button>
-          <button className='borderButtonStyle hover:bg-repohover center max-md:hidden' onClick={()=> router.push('http://localhost:3000/issues')}>
+          <button className='borderButtonStyle hover:bg-repohover center max-md:hidden' onClick={()=> router.push('/issues')}>
               <VscRecord className='text-slate-400 text-[18px]'/>
           </button>
           <button className='borderButtonStyle hover:bg-repohover center max-md:hidden'>

@@ -4,13 +4,14 @@ import "@uiw/react-markdown-preview/markdown.css"
 import React, { FormEvent, useRef, useState, ReactNode, useEffect} from 'react'
 import { z } from 'zod'
 import Image from "next/image";
-import { useAppSelector } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import Link from "next/link";
 import Marks from "./Marks";
 import { Octokit } from "@octokit/core";
 import { usePathname, useRouter } from "next/navigation";
 import Title from "./Title";
 import Markdown from "./Markdown";
+import { setLabels } from "@/lib/features/labelsSlice";
 
 
 const UserSchema = z.object({
@@ -26,11 +27,12 @@ interface IssueData {
     body: string;
     labels: string[];
 }
-const Form = () => {
+const Form = ({ userPhoto } : { userPhoto : string }) => {
     const [value, setValue] = useState('');
     const [error, setError] = useState<ReactNode>(null)
     const [titleValue, setTitleValue] = useState('');
     const [isTitleEmpty, setIsTitleEmpty] = useState(true)
+    const dispatch = useAppDispatch()
     const userState = useAppSelector(state => state.user)
     const labelsState = useAppSelector(state => state.labels)
     const titleRef = useRef<HTMLInputElement>(null)
@@ -38,9 +40,7 @@ const Form = () => {
     const router = useRouter()
     const pathname = usePathname()
     const token = userState.token
-    useEffect(()=> {
-        setIsTitleEmpty(!titleValue)
-    },[titleValue])
+    const createNewIssue = true
     const postIssue = async ({token, owner, repo, title, body, labels}: IssueData) => {
         const octokit = new Octokit({
             auth: token
@@ -79,7 +79,7 @@ const Form = () => {
             e.currentTarget.reset()
             setValue('')
             setIsTitleEmpty(true)
-            router.push(`http://localhost:3000/${pathname.split('/')[1]}/${pathname.split('/')[2]}/issues`)
+            router.push(`/${pathname.split('/')[1]}/${pathname.split('/')[2]}/issues`)
         }else{
             const errorMsg = validationResult.error.issues.map(( issue ) => (
                 <div key={issue.message} className=''>
@@ -89,13 +89,19 @@ const Form = () => {
             setError(errorMsg)
         }
     }
+    useEffect(()=> {
+        setIsTitleEmpty(!titleValue)
+    },[titleValue])
+    useEffect(()=> {
+        dispatch(setLabels([]))
+    },[])
     return (
         <form onSubmit={handleSubmitForm}>
             <div className='text-white mt-6 mx-20 px-10 flex'>
                 <div className='mr-4'>
-                {userState.photo && (
+                {userPhoto && (
                     <Link href={'/'} className="inline-block">
-                        <Image src={userState.photo} alt={userState.name} width={40} height={40} className="rounded-full"/>
+                        <Image src={userPhoto} alt={userState.name} width={40} height={40} className="rounded-full"/>
                     </Link>
                 )}
                 </div>
@@ -121,7 +127,7 @@ const Form = () => {
                 <div className="w-1/5 ml-4 ">
                     {marksArr.map( (s, index) => (
                         <div key={index}>
-                            <Marks markTitle={s}/>
+                            <Marks markTitle={s} initLabels={undefined} userIdentity={undefined} patchInfo={undefined} createNewIssue={createNewIssue}/>
                         </div>
                     ))}
                 </div>
