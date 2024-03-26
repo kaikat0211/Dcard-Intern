@@ -47,7 +47,7 @@ import { usePathname, useRouter } from 'next/navigation';
           <LeftDrawer />
           <div 
           className='cursor-pointer' 
-          onClick={() => {router.push('http://localhost:3000/')}}
+          onClick={() => {router.push('/')}}
           >
               <Image src={WhiteMark} alt='mark' width={32} height={32}  className='w-[32px] h-[32px]'/>
           </div>
@@ -55,7 +55,7 @@ import { usePathname, useRouter } from 'next/navigation';
               {pathname.split('/')[1] !== 'issues' ? 
               (<button 
                 className={`simpleButtonStyle ${path ? 'font-light' : 'font-semibold'}`}
-                onClick={() => {router.push('http://localhost:3000/')}}
+                onClick={() => {router.push('/')}}
                 >
                 {pathname.split('/')[1]}
                 </button>

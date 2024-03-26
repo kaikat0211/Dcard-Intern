@@ -94,7 +94,7 @@ const Form = () => {
             <div className='text-white mt-6 mx-20 px-10 flex'>
                 <div className='mr-4'>
                 {userState.photo && (
-                    <Link href={'http://localhost:3000/'} className="inline-block">
+                    <Link href={'/'} className="inline-block">
                         <Image src={userState.photo} alt={userState.name} width={40} height={40} className="rounded-full"/>
                     </Link>
                 )}
