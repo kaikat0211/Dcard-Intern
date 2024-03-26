@@ -2,6 +2,7 @@ import { graphql } from "@octokit/graphql";
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { getServerSession } from "next-auth";
 import { SingleIssue } from "@/app/types/singleIssueTypes";
+import { CustomSession } from "@/app/types/userTypes";
 interface Response {
     repository? : {
         issue?: SingleIssue
@@ -10,7 +11,7 @@ interface Response {
 const getSingleIssue = async (ownerName : string , repoName: string, IssueNumber : number) => {
     try {
         const session = await getServerSession(options)
-        const token = session?.token
+        const token = (session as CustomSession)?.token
         const res : Response = await graphql(`
         query{
             repository(owner:"${ownerName}" name:"${repoName}") {

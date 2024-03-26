@@ -11,6 +11,7 @@ import { getServerSession } from 'next-auth';
 import { Octokit } from '@octokit/core';
 import Marks from '@/app/components/Marks';
 import { SingleIssue, updateIssueInfo } from "@/app/types/singleIssueTypes";
+import { CustomSession } from '@/app/types/userTypes';
 const getMarkDown = async ({ body, token } : {body: string | "", token: string}) => {
     const octokit = new Octokit({
         auth: token
@@ -33,7 +34,7 @@ const page = async ({ params } : { params: { userName: string, repoName: string 
     const issueData: SingleIssue | undefined = await fetchSingleIssues({ownerName: params.userName, repoName: params.repoName, issueNumber: params.issueNumber})
     const user = await getUserGitHubId()
     const session = await getServerSession(options)
-    const token = session?.token
+    const token = (session as CustomSession)?.token;
     const IssueAuthor = await getAuthorPhoto(issueData?.author.login)
     const commentAuthor = issueData?.comments?.nodes!.map(c => c.author.login)
     const getCommentsAuthorPhoto = async () => {

@@ -1,6 +1,7 @@
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { getServerSession } from "next-auth";
 import { graphql } from "@octokit/graphql";
+import { CustomSession } from "@/app/types/userTypes";
 interface Label {
 name: string;
 color: string;
@@ -50,7 +51,7 @@ const queryFunc = (query : string | undefined, userID?: string | undefined) => {
 }
 const getNewIssues = async (cursor?: string | undefined, query?: string | undefined, userID?: string | undefined, time?: string | undefined) => {
     const session = await getServerSession(options)
-    const token = session?.token
+    const token = (session as CustomSession)?.token
     const searchQuery = `${queryFunc(query, userID)} ${time !== undefined ? `created:<${time}` : ''}`
     try {
         const response:  Response  = await graphql(`

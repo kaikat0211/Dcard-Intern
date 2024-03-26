@@ -1,10 +1,11 @@
 import { getServerSession } from 'next-auth'
 import { Octokit } from '@octokit/core'
 import { options } from './api/auth/[...nextauth]/options'
+import { CustomSession } from './types/userTypes'
 
 export async function getUserGitHubId() {
   const session = await getServerSession(options)
-  const accessToken = session?.token
+  const accessToken = (session as CustomSession)?.token
 
   if (!accessToken) {
     throw new Error('User token not found')

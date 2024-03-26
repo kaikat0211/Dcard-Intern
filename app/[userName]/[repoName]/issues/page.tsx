@@ -1,11 +1,12 @@
 import { auth } from '@/app/api/auth/[...nextauth]/options';
 import CreateIssueButton from '@/app/components/CreateIssueButton'
 import Issue from '@/app/components/Issue'
+import { CustomSession } from '@/app/types/userTypes';
 import React from 'react'
 
 async function getToken() {
   const session = await auth();
-  const token = session?.token;
+  const token = (session as CustomSession)?.token;
   return token
 }
 const page = async () => {
