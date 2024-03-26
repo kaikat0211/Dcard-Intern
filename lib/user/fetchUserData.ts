@@ -1,7 +1,7 @@
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { CustomSession } from "@/app/types/userTypes";
 import { getServerSession } from "next-auth";
-async function getUserData(userID : string) {
+async function getUserData(userID : string | undefined) {
     const session = await getServerSession(options)
     const token = (session as CustomSession)?.token
     const response = await fetch(`https://api.github.com/users/${userID}`, {

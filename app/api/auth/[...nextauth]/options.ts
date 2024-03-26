@@ -20,30 +20,6 @@ const githubConfig = {
  const options: NextAuthOptions = {
   providers: [
     GithubProvider (githubConfig),
-    // CredentialsProvider({
-    //     name: "Credentials",
-    //     credentials: {
-    //         username: {
-    //             label: "Username",
-    //             type: "text",
-    //             placeholder: "your username"
-    //         },
-    //         password: {
-    //             label: "password",
-    //             type: "password",
-    //             placeholder: "your password"
-    //         }
-    //     },
-    //     async authorize(credentials){
-    //         const user = { id:'22', name:'kai', password: '123321abc' }
-
-    //         if(credentials?.username === user.name && credentials?.password === user.password){
-    //             return user
-    //         } else{
-    //             return null
-    //         }
-    //     }
-    // })
   ],
     session: {
         strategy: 'jwt',
@@ -65,6 +41,9 @@ const githubConfig = {
             // If we want to make the accessToken available in components, then we have to explicitly forward it here.
             return { ...session, token: token.accessToken }
         },
+    },
+    pages: {
+        signIn: "/auth/signin",
     },
     secret: process.env.NEXTAUTH_SECRET,
   

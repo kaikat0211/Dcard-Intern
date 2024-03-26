@@ -45,7 +45,8 @@ const page = async ({ params } : { params: { userName: string, repoName: string 
     }
     const commentsAuthorsArray = await getCommentsAuthorPhoto()
     const markdownBody = await getMarkDown({body: issueData?.body || "", token: token})
-    const userID = user.userId
+    let userID 
+    if(user) userID = user.userId
     let userIdentity = userID === params.userName ? 'Owner' : 'viewer'
     const patchInfo: updateIssueInfo = {
         token: token,

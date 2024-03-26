@@ -13,7 +13,8 @@ const page = async ({
 {
     const search = typeof searchParams.p === 'string' ? searchParams.p : undefined
     const userInfo = await getUserGitHubId()
-    const userID = userInfo.userId
+    let userID
+    if(userInfo) userID = userInfo.userId
     const data: FullIssue[] = await fetchNewIssues({cursor : undefined, query: search, userID: userID,}) || [];
     return (
       <div className='w-full flex justify-center'>

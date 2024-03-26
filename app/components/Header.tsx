@@ -32,7 +32,7 @@ import { usePathname, useRouter } from 'next/navigation';
       };
     }
 
-    export default  function Header({ profileData , photo} : { profileData: ProfileData , photo : string}) {
+    export default  function Header({ profileData , photo} : { profileData: ProfileData , photo : string | undefined}) {
     const dispatch = useAppDispatch();
     const pathname = usePathname()
     const router = useRouter()

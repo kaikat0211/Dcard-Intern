@@ -6,9 +6,8 @@ import Markdown from './Markdown';
 import CloseIssueButton from './CloseIssueButton';
 import { useRouter } from 'next/navigation';
 import patchIssue from '@/lib/update/patchIssue';
-
 import { SingleIssue, updateIssueInfo } from "@/app/types/singleIssueTypes";
-import SingleIssueComments from './SingleIssueComments';
+
 
 interface AuthorInfo {
     login: string
