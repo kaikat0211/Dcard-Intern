@@ -5,39 +5,10 @@ import { fetchNewIssues } from '../issues/issuesactions';
 import { useSearchParams } from 'next/navigation';
 import IssueContent from './IssueContent';
 import { useAppSelector } from '@/lib/hooks';
+import { FullIssue } from '../types/allIssueTypes';
 
-interface Label {
-    name: string;
-    color: string;
-    description: string;
-}
-interface Issue {
-    id: string;
-    number: number;
-    title: string;
-    body: string;
-    createdAt: string;
-    updatedAt: string;
-    author: {
-        login: string;
-    }
-    labels: {
-        nodes: Label[];
-    };
-    comments: {
-        totalCount: number;
-    };
-    repository: {
-        nameWithOwner: string;
-    };
-}
-interface Cursor {
-    cursor: string
-  }
-interface FullIssue {
-    cursor: Cursor
-    node: Issue
-}
+
+
 interface Props {
     initIssue: FullIssue[]
     newIssue: FullIssue[] 
@@ -94,7 +65,6 @@ const IssueTableContent = ({ initIssue, newIssue, setNewIssue } : Props) => {
     {newIssue!.map(i => (
         <IssueContent issue={i} key={i.node.id}/>
     ))}
-
     {!end && <div
     ref={ref}
     className='col-span-1 mb-3  flex items-center justify-center sm:col-span-2 md:col-span-3 lg:col-span-4'

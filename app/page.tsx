@@ -9,7 +9,7 @@ export default function Home() {
 
   useEffect(() => {
     if (userName) {
-      router.push(`/${userName}`)
+      router.push(`/issues`)
     }
   }, [userName])
 

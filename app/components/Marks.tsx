@@ -4,23 +4,7 @@ import { IoSettingsOutline } from "react-icons/io5";
 import LabelSelelctor from "./LabelSelelctor";
 import { useAppSelector } from '@/lib/hooks';
 import { Label, updateIssueInfo } from '../types/singleIssueTypes';
-
-function hexToRgba(hex: string, alpha: number): string {
-    const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-    hex = hex.replace(shorthandRegex, (m, r, g, b) => {
-        return r + r + g + g + b + b;
-    });
-
-    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    if (result === null) {
-        throw new Error("Invalid hex color string");
-    }
-    const r = parseInt(result[1]!, 16);
-    const g = parseInt(result[2]!, 16);
-    const b = parseInt(result[3]!, 16);
-
-    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-}
+import { hexToRgba } from '@/lib/simple/hexToRgbaFunc';
 interface Props {
     markTitle: string[]
     initLabels?: Label[] | undefined
@@ -37,7 +21,7 @@ const Marks = ({ markTitle, initLabels, userIdentity , patchInfo} : Props) => {
         if(userIdentity !== 'Owner') return
         setOpen(!open)
     }
-const renderChooseLabels = () => {
+    const renderChooseLabels = () => {
         if(firstLoad) {
             return(initLabels?.map((label) => (<span 
                 style={{

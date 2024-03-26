@@ -55,7 +55,6 @@ const Form = () => {
               'X-GitHub-Api-Version': '2022-11-28'
             }
           })
-        //handle error 
     }
     const handleSubmitForm = (e: FormEvent<HTMLFormElement>) =>{
         e.preventDefault()

@@ -14,7 +14,6 @@ export async function getUserGitHubId() {
 
   try {
     const response = await octokit.request('GET /user')
-
     const userId = response.data.login
     const userPhoto = response.data.avatar_url
     return {userId, userPhoto}

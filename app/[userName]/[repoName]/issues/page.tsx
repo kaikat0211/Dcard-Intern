@@ -15,7 +15,6 @@ const page = async () => {
       <div className='mx-20 mt-6 px-8 border border-bordercolor rounded-lg'>
         <div>
           <div className='bg-black p-4'>123</div>
-          <Issue token={token}/>
         </div>
       </div>
     </>

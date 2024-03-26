@@ -1,12 +1,11 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import { Octokit } from "@octokit/core";
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname} from 'next/navigation';
 
 interface Label {
     name: string;
     color: string;
-    default: boolean;
     description: string;
 }
 interface User {
@@ -20,7 +19,6 @@ interface IssueData {
 } 
 const Issue = ({token} : { token : string }) => {
     const pathname = usePathname()
-    const router = useRouter()
     const [issues, setIssues] = useState<IssueData[]>([])
     const getIssues = async () => {
         const octokit = new Octokit({

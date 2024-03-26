@@ -7,7 +7,6 @@ const IssueHomePageLink = ({type} : {type: string}) => {
     const path = pathname.split('/')[2]
     const search = useSearchParams()
     const compareType = type.toLowerCase() 
-    // 
     const router = (type: string) => {
         switch(type){
             case 'Created' :

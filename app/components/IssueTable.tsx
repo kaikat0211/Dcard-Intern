@@ -5,43 +5,9 @@ import { IoMdCheckmark } from "react-icons/io";
 import { GoIssueOpened } from "react-icons/go";
 import { IoMdArrowDropdown } from "react-icons/io";
 import IssueTableContent from './IssueTableContent';
+import { FullIssue } from '../types/allIssueTypes';
 
-interface Label {
-    name: string;
-    color: string;
-    description: string;
-}    
-interface Cursor {
-  cursor: string
-}
-interface Issue {
-    id: string;
-    number: number;
-    title: string;
-    body: string;
-    createdAt: string;
-    updatedAt: string;
-    author: {
-        login: string;
-    }
-    labels: {
-        nodes: Label[];
-    };
-    comments: {
-        totalCount: number;
-    };
-    repository: {
-        nameWithOwner: string;
-    };
-}
-interface FullIssue {
-    cursor: Cursor
-    node: Issue
-}
-interface Props {
-    initIssue: FullIssue[] 
-}
-const IssueTable = ({ initIssue } : Props) => {
+const IssueTable = ({ initIssue } : { initIssue: FullIssue[] }) => {
     const [newIssue, setNewIssue] = useState<FullIssue[]>(initIssue)
   return (
     <div className='w-full mt-5 border border-githubBorder rounded-md '>
