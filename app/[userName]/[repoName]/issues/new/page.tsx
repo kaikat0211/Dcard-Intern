@@ -6,8 +6,7 @@ import { getUserGitHubId } from '@/app/useractions';
 
 const page = async () => {
   const user = await getUserGitHubId()
-  let userPhoto
-  if(user) userPhoto = user.userPhoto
+  const userPhoto = user ? user.userPhoto : null
   return (
     <>
         <Form userPhoto={userPhoto}/>    

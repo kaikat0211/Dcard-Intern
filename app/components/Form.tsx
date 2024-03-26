@@ -27,7 +27,7 @@ interface IssueData {
     body: string;
     labels: string[];
 }
-const Form = ({ userPhoto } : { userPhoto : string }) => {
+const Form = ({ userPhoto } : { userPhoto : string | null}) => {
     const [value, setValue] = useState('');
     const [error, setError] = useState<ReactNode>(null)
     const [titleValue, setTitleValue] = useState('');
