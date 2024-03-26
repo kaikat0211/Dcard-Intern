@@ -8,28 +8,30 @@ import Check from '@/public/check.svg'
 import Delete from '@/public/delete.svg'
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { setLabels } from '@/lib/features/labelsSlice';
-interface LabelsData {
-    name: string
-    color: string
-    description: string
-} 
+import patchIssue from '@/lib/update/patchIssue';
+import { Label, updateIssueInfo } from '../types/singleIssueTypes';
+
 interface LabelSelectorProps {
     open: boolean;
     labelSelectorRef: React.RefObject<HTMLDivElement>;
-    initLabels?: LabelsData[]
+    initLabels?: Label[]
+    patchInfo?: updateIssueInfo
 }
 interface SelectLabels{
     label : string
     color : string
 }
-const LabelSelelctor = ({ open, labelSelectorRef, initLabels }: LabelSelectorProps) => {
+const LabelSelelctor = ({ open, labelSelectorRef, initLabels, patchInfo }: LabelSelectorProps) => {
     const pathname = usePathname()
     const [selectedLabels, setSelectedLabels] = useState<SelectLabels[] | undefined>([])
-    const [customLabels, setcustomLabels] = useState<LabelsData[]>([])
+    const [searchLabels, setSearchLabels] = useState<Label[]>([])
     const [searchValue, setSearchValue] = useState<string>('')
+    const initLabelsName = initLabels?.map(label => label.name)
+    const [updateLabels, setUpdateLabels] = useState<string[] | undefined>(initLabelsName)
     const dispatch = useAppDispatch()
     const token = useAppSelector(state => state.user.token)
-    const initLabelsName = initLabels?.map(label => ({ label: label.name, color: label.color }));
+    
+    const initLabelsNameWithColor = initLabels?.map(label => ({ label: label.name, color: label.color }));
     const getLebels = async () => {
         const octokit = new Octokit({
             auth: token
@@ -50,10 +52,12 @@ const LabelSelelctor = ({ open, labelSelectorRef, initLabels }: LabelSelectorPro
     const handleLabelsState = (name: string, color: string) => {
         if (selectedLabels && !selectedLabels.some(label => label.label === name)) {
             const newLabels = [...selectedLabels, { label: name, color }];
+            setUpdateLabels(prev => [...(prev || []), name])
             setSelectedLabels(newLabels)
             dispatch(setLabels(newLabels))
         } else {
             const newLabels = selectedLabels?.filter(label => label.label !== name);
+            setUpdateLabels(prev => (prev || []).filter(l => l !== name))
             setSelectedLabels(newLabels)
             dispatch(setLabels(newLabels!))
         }
@@ -61,9 +65,9 @@ const LabelSelelctor = ({ open, labelSelectorRef, initLabels }: LabelSelectorPro
     const LabelArr = () => {
         let mapArr
         if(searchValue) {
-            mapArr = customLabels.filter( label => label.name.includes(searchValue) || label.description.includes(searchValue))
+            mapArr = searchLabels.filter( label => label.name.includes(searchValue) || label.description.includes(searchValue))
         }else{
-            mapArr = customLabels
+            mapArr = searchLabels
         }
         return mapArr
     }
@@ -71,19 +75,20 @@ const LabelSelelctor = ({ open, labelSelectorRef, initLabels }: LabelSelectorPro
         const fetchLabels = async () => {
             try {
                 const allLabels = await getLebels()
-                const colors = allLabels.map(label => label.color);
-                setcustomLabels(allLabels)
+                setSearchLabels(allLabels)
                 if(initLabels){
-                    setSelectedLabels(initLabelsName)
+                    setSelectedLabels(initLabelsNameWithColor)
                     dispatch(setLabels(initLabels!.map(label => ({ label: label.name, color: `${label.color}` }))))
                 }
-                console.log('getLables')
             }catch(error){
                 console.error('Error fetching labels:', error);
             }
         }
         fetchLabels()
     },[])
+    useEffect(()=>{
+        if(patchInfo) patchIssue(patchInfo, {labels : updateLabels})
+    },[updateLabels])
   return (
     <div className={`absolute right-0 border border-githubBorder rounded-md bg-labelscolor w-[300px]  z-20 ${!open && 'hidden'}`} ref={labelSelectorRef}>
         <div className='sticky top-0 border-b border-bordercolor bg-labelscolor z-30'>

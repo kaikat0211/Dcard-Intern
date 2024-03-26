@@ -9,6 +9,7 @@ interface updateDataType {
     title?: string
     body?: string
     state?: string
+    labels?: string[]
 }
 const patchIssue = async (patchInfo : updateIssueInfo , updateData : updateDataType) => {
     const octokit = new Octokit({

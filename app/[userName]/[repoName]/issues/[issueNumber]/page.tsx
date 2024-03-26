@@ -67,7 +67,7 @@ const page = async ({ params } : { params: { userName: string, repoName: string 
                 <div className='w-1/4 min-w-[256px]'>
                     {marksArr.map( (s, index) => (
                         <div key={index}>
-                            <Marks markTitle={s} initLabels={issueData?.labels.nodes} userIdentity={userIdentity}/>
+                            <Marks markTitle={s} initLabels={issueData?.labels.nodes} userIdentity={userIdentity} patchInfo={patchInfo}/>
                         </div>
                     ))}
                 </div>
