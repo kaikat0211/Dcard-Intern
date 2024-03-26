@@ -91,6 +91,7 @@ const getNewIssues = async (cursor?: string | undefined, query?: string | undefi
         `, {
             headers: {
                 authorization: `token ${token}`,
+                "cache-control": "no-cache",
             },
         });
         if (response && response?.search && response?.search?.edges) {
