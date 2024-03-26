@@ -18,9 +18,9 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) 
 {
-  const isUserLoggedIn = await getUserGitHubId()
+  const isUserLogIn = await getUserGitHubId()
   
-  if (!isUserLoggedIn) {
+  if (!isUserLogIn) {
     return (
     <StoreProvider>
       <html lang="en">
