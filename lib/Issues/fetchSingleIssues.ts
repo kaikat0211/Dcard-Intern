@@ -48,6 +48,7 @@ const getSingleIssue = async (ownerName : string , repoName: string, IssueNumber
         `,{
             headers: {
                 authorization: `token ${token}`,
+                "cache-control": "no-cache",
             },
         })
         if(res && res?.repository && res?.repository?.issue){
