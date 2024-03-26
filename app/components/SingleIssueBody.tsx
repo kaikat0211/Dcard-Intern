@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { IoMdArrowDropdown } from "react-icons/io";
 import { TbDots } from "react-icons/tb";
 import Markdown from './Markdown';
@@ -41,9 +41,13 @@ const SingleIssueBody = ({ issueInfo, markdown, userIdentity, patchInfo, comment
         setTimeout(()=>{
             setEditBody(!editBody)
             setIsUpdate(false)
-        },2500)
+        },3000)
       }
-
+    useEffect(()=>{
+        if (isUpdate) {
+            router.refresh();
+        }
+    },[isUpdate])
   return (
     <div className='ml-10 pl-4 grow'>
         <div className={`border ${userIdentity === "Owner" ? 'border-issuebodyblueborder' : 'border-githubBorder'} rounded-lg `}>
