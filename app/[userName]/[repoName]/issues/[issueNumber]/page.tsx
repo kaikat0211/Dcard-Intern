@@ -47,7 +47,7 @@ const page = async ({ params } : { params: { userName: string, repoName: string 
     const markdownBody = await getMarkDown({body: issueData?.body || "", token: token})
     let userID 
     if(user) userID = user.userId
-    let userIdentity = userID === params.userName ? 'Owner' : 'viewer'
+    let userIdentity = userID === issueData?.author.login ? 'Owner' : 'viewer'
     const patchInfo: updateIssueInfo = {
         token: token,
         owner: params.userName,
