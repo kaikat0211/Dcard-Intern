@@ -4,7 +4,7 @@ import "./globals.css";
 import StoreProvider from "./StoreProvider";
 import { getUserGitHubId } from "./useractions";
 import getUserData from "@/lib/user/fetchUserData";
-
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 export const metadata: Metadata = {
   title: "Dcard Intern",
@@ -52,6 +52,7 @@ export default async function RootLayout({
         <body className='bg-bodycolor'>
           <Header profileData={data} photo={photo}/>
           {children}
+          <SpeedInsights />
         </body>
     </html>
   </StoreProvider>
