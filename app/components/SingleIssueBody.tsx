@@ -7,7 +7,7 @@ import CloseIssueButton from './CloseIssueButton';
 import { useRouter } from 'next/navigation';
 import patchIssue from '@/lib/update/patchIssue';
 import { SingleIssue, updateIssueInfo } from "@/app/types/singleIssueTypes";
-
+import SingleIssueComments from './SingleIssueComments';
 
 interface AuthorInfo {
     login: string
@@ -100,7 +100,7 @@ const SingleIssueBody = ({ issueInfo, markdown, userIdentity, patchInfo, comment
             </div>
 
         </div>
-        {/* <SingleIssueComments issueInfo={issueInfo} commentsAuthorsArray={commentsAuthorsArray} userIdentity={userIdentity}/> */}
+        <SingleIssueComments issueInfo={issueInfo} commentsAuthorsArray={commentsAuthorsArray} userIdentity={userIdentity}/>
         {userIdentity === "Owner" &&  <CloseIssueButton issueInfo={issueInfo} patchInfo={patchInfo}/>}
     </div>
   )
