@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Head from "next/head";
 import Header from './components/Header'
 import "./globals.css";
 import StoreProvider from "./StoreProvider";
@@ -49,6 +50,9 @@ export default async function RootLayout({
   return (
   <StoreProvider>
     <html lang="en">
+        <Head>
+          <meta name="google-site-verification" content="c_qStRKUBS9cJtGsE-N_VWnMerZoTiNAOyFpQcXWVJg" />
+        </Head>
         <body className='bg-bodycolor'>
           <Header profileData={data} photo={photo}/>
           {children}
