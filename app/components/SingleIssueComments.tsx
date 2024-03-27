@@ -8,11 +8,15 @@ interface AuthorInfo {
     login: string
     avatar_url: string
 }
-const SingleIssueComments = ({ issueInfo, commentsAuthorsArray, userIdentity} : { issueInfo: SingleIssue | undefined, commentsAuthorsArray: AuthorInfo[] | undefined, userIdentity: string | undefined}) => {
+interface Props {
+    issueInfo: SingleIssue | undefined
+    commentsAuthorsArray: AuthorInfo[] | undefined
+    userIdentity: string | undefined
+}
+const SingleIssueComments = ({ issueInfo, commentsAuthorsArray, userIdentity} : Props) => {
     
     const addClassNameToHTML = (htmlString: string): string => {
-        const modifiedHTML = htmlString.replace(/<[^>]+>/g, match => `<div class="mb-4">${match}</div>`)
-        return modifiedHTML
+        return htmlString.replace(/<[^>]+>/g, match => `<div class="mb-4">${match}</div>`)
     }
   return (
     <>

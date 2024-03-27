@@ -27,22 +27,20 @@ const SingleIssueBody = ({ issueInfo, markdown, userIdentity, patchInfo, comment
     const [isUpdate, setIsUpdate] = useState(false)
     const router = useRouter()
     const addClassNameToHTML = (htmlString: string): string => {
-        const modifiedHTML = htmlString.replace(/<[^>]+>/g, match => `<div class="mb-4">${match}</div>`)
-        return modifiedHTML
+        return htmlString.replace(/<[^>]+>/g, match => `<div class="mb-4">${match}</div>`)
     };
     const modifiedMarkdown = markdown ? addClassNameToHTML(markdown) : ''
     const handleEditBody = () =>{
-        if(issueInfo?.body === updateValue) return
-        if(updateValue) {
-            patchIssue(patchInfo, { body :updateValue})
-            setIsUpdate(true)
-            router.refresh()
-        }
-        setTimeout(()=>{
-            setEditBody(!editBody)
-            setIsUpdate(false)
-        },3000)
+        if (issueInfo?.body === updateValue || !updateValue) return;
+        patchIssue(patchInfo, { body: updateValue });
+        setIsUpdate(true);
+        setTimeout(() => {
+            setEditBody(false);
+            setIsUpdate(false);
+            router.refresh();
+        }, 3000);
       }
+    
     useEffect(()=>{
         if (isUpdate) {
             router.refresh();
