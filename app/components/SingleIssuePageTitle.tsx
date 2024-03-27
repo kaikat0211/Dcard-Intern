@@ -6,12 +6,18 @@ import SaveEditButton from './SaveEditTitleButton'
 import CancelEditButton from './CancelEditTitleButton'
 
 import { SingleIssue, updateIssueInfo } from "@/app/types/singleIssueTypes";
+import { useRouter } from 'next/navigation'
 
 const SingleIssuePageTitle = ({ issueInfo, patchInfo, userIdentity } : { issueInfo :  SingleIssue | undefined, patchInfo: updateIssueInfo, userIdentity : string | undefined }) => {
     const [edit, setEdit] = useState(false) //評估是否redux
     const [title, setTitle] = useState(issueInfo?.title || "")
     const [issueTitle, setIssueTitle] = useState<string | undefined>(issueInfo?.title)
+    const router = useRouter()
+    useEffect(()=>{
+        router.refresh()
+    },[issueTitle])
   return (
+   
     <div className='flex justify-between w-full'>
         {!edit ?
             <h1 className='text-[32px] '>
