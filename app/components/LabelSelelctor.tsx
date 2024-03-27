@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Octokit } from "@octokit/core";
 import { usePathname } from 'next/navigation';
 import { SlPencil } from "react-icons/sl";
@@ -30,8 +30,9 @@ const LabelSelelctor = ({ open, labelSelectorRef, initLabels, patchInfo }: Label
     const [updateLabels, setUpdateLabels] = useState<string[] | undefined>(initLabelsName)
     const dispatch = useAppDispatch()
     const token = useAppSelector(state => state.user.token)
-    
-    const initLabelsNameWithColor = initLabels?.map(label => ({ label: label.name, color: label.color }));
+    const initLabelsNameWithColor = useMemo(()=>{
+        return initLabels?.map(label => ({ label: label.name, color: label.color }))
+    },[initLabels]);
     const getLebels = async () => {
         const octokit = new Octokit({
             auth: token
@@ -49,6 +50,9 @@ const LabelSelelctor = ({ open, labelSelectorRef, initLabels, patchInfo }: Label
             description: label.description
         }))
     }
+    const getLebelsResult = useMemo(() => {
+        return getLebels();
+    }, []);
     const handleLabelsState = (name: string, color: string) => {
         if (selectedLabels && !selectedLabels.some(label => label.label === name)) {
             const newLabels = [...selectedLabels, { label: name, color }];
@@ -62,19 +66,17 @@ const LabelSelelctor = ({ open, labelSelectorRef, initLabels, patchInfo }: Label
             dispatch(setLabels(newLabels!))
         }
     }
-    const LabelArr = () => {
-        let mapArr
-        if(searchValue) {
-            mapArr = searchLabels.filter( label => label.name.includes(searchValue) || label.description.includes(searchValue))
-        }else{
-            mapArr = searchLabels
+    const LabelArr = useMemo(() => {
+        if (!searchValue) {
+            return searchLabels;
         }
-        return mapArr
-    }
+        return searchLabels.filter(label => label.name.includes(searchValue) || label.description.includes(searchValue));
+    }, [searchLabels, searchValue]);
+
     useEffect(()=>{
         const fetchLabels = async () => {
             try {
-                const allLabels = await getLebels()
+                const allLabels = await getLebelsResult
                 setSearchLabels(allLabels)
                 if(initLabels){
                     setSelectedLabels(initLabelsNameWithColor)
@@ -105,7 +107,7 @@ const LabelSelelctor = ({ open, labelSelectorRef, initLabels, patchInfo }: Label
         </div>
         <div className='overflow-auto h-[380px]'>
             {
-                LabelArr().map((label) => (
+                LabelArr.map((label) => (
                 <div className='pl-[30px] py-2 pr-2 border-b border-bordercolor hover:bg-labelshover group cursor-pointer' key={label.name} onClick={() => handleLabelsState(label.name, label.color)}>
                     <div>
                         <div className='flex mb-1 relative items-center'>
