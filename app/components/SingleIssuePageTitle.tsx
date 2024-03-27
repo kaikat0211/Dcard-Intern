@@ -14,7 +14,7 @@ const SingleIssuePageTitle = ({ issueInfo, patchInfo, userIdentity } : { issueIn
     const [issueTitle, setIssueTitle] = useState<string | undefined>(issueInfo?.title)
     const router = useRouter()
     useEffect(()=>{
-        router.refresh()
+        if(issueInfo?.title !== issueTitle) router.refresh()
     },[issueTitle])
   return (
    
