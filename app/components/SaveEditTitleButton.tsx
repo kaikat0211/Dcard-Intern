@@ -15,17 +15,20 @@ interface Props {
 
 const SaveEditButton = ({edit, setEdit, patchInfo, title, setIssueTitle, issueInfo} : Props) => {
   const [update, setUpdate] = useState(false) 
-  const handleSaveEdit = () => {
+  const handleSaveEdit = async () => {
     if(issueInfo?.title === title || !title) return
-    
-    patchIssue(patchInfo, { title: title }) 
-    setIssueTitle(title)
-    setUpdate(true)
-    
-    setTimeout(()=>{
-      setEdit(!edit)
-      setUpdate(false)
-    },2000)
+    const response = await patchIssue(patchInfo, { title: title }) 
+    if(response.state_reason === "completed"){
+      setIssueTitle(title)
+      setUpdate(true)
+      
+      setTimeout(()=>{
+        setEdit(!edit)
+        setUpdate(false)
+      },2000)
+    }else{
+      return
+    }
   }
   return (
     <button className={`text-sm bg-bordercolor rounded-lg border border-githubBorder leading-8 px-3 font-medium ${!update ? "hover:border-buttonhover hover:bg-githubBorder" : "flex items-center gap-2"} `}

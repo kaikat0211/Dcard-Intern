@@ -17,7 +17,7 @@ const patchIssue = async (patchInfo : updateIssueInfo , updateData : updateDataT
     });
 
     try {
-        await octokit.request(`PATCH /repos/${patchInfo.owner}/${patchInfo.repo}/issues/${patchInfo.issueNumber}`, {
+        const res = await octokit.request(`PATCH /repos/${patchInfo.owner}/${patchInfo.repo}/issues/${patchInfo.issueNumber}`, {
             owner: patchInfo.owner,
             repo: patchInfo.repo,
             issue_number: patchInfo.issueNumber,
@@ -26,6 +26,7 @@ const patchIssue = async (patchInfo : updateIssueInfo , updateData : updateDataT
                 'X-GitHub-Api-Version': '2022-11-28'
             }
         });
+        return res.data
     } catch (error) {
         console.error('Error patching single issues', error);
     }

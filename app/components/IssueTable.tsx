@@ -1,14 +1,19 @@
 'use client'
 import Link from 'next/link'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { IoMdCheckmark } from "react-icons/io";
 import { GoIssueOpened } from "react-icons/go";
 import { IoMdArrowDropdown } from "react-icons/io";
 import IssueTableContent from './IssueTableContent';
 import { FullIssue } from '../types/allIssueTypes';
+import { useRouter } from 'next/navigation';
 
 const IssueTable = ({ initIssue } : { initIssue: FullIssue[] }) => {
     const [newIssue, setNewIssue] = useState<FullIssue[]>(initIssue)
+    const router = useRouter()
+    useEffect(()=>{
+        router.refresh()
+    },[])
   return (
     <div className='w-full mt-5 border border-githubBorder rounded-md '>
         <div className='p-4 bg-labelscolor rounded-md flex justify-between'>

@@ -85,16 +85,17 @@ const Form = ({ userPhoto } : { userPhoto : string | null}) => {
         }
         if(validationResult.success){
             setError([])
-            const responseData = await postIssue(postIssueData);
-            if(!responseData) {
+            const response = await postIssue(postIssueData);
+            if(response.OK) {
+                setTitleValue('')
+                setValue('')
+                setPostError(false)
+                setIsTitleEmpty(true)
+                router.push(`/${pathname.split('/')[1]}/${pathname.split('/')[2]}/issues/${response.number}`)
+            }else{
                 setPostError(true)
                 return
             }
-            setTitleValue('')
-            setValue('')
-            setPostError(false)
-            setIsTitleEmpty(true)
-            router.push(`/${pathname.split('/')[1]}/${pathname.split('/')[2]}/issues/${responseData.number}`)
         }else{
             const errorMsg = validationResult.error.issues.map(( issue ) => (
                 issue.message

@@ -30,15 +30,20 @@ const SingleIssueBody = ({ issueInfo, markdown, userIdentity, patchInfo, comment
         return htmlString.replace(/<[^>]+>/g, match => `<div class="mb-4">${match}</div>`)
     };
     const modifiedMarkdown = markdown ? addClassNameToHTML(markdown) : ''
-    const handleEditBody = () =>{
+    const handleEditBody = async () =>{
         if (issueInfo?.body === updateValue || !updateValue) return;
-        patchIssue(patchInfo, { body: updateValue });
-        setIsUpdate(true);
-        setTimeout(() => {
-            setEditBody(false);
-            setIsUpdate(false);
-            router.refresh();
-        }, 3000);
+        const response = await patchIssue(patchInfo, { body: updateValue });
+        if(response.state_reason === "completed"){
+            setIsUpdate(true);
+            setTimeout(() => {
+                setEditBody(false);
+                setIsUpdate(false);
+                router.refresh();
+            }, 3000);
+        }else {
+            return
+        }
+        
       }
     
     useEffect(()=>{
