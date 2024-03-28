@@ -10,13 +10,11 @@ interface BodyInputProps {
 const Markdown = ({value, setValue, bodyRef} : BodyInputProps) => {
   return (
     <>
-      <div>
         <MDEditor
         value={value}
         ref={bodyRef}
         onChange={(newValue) => setValue(newValue || '')}      
         />
-      </div>
     </>
   )
 }

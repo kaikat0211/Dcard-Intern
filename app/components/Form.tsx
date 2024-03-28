@@ -15,8 +15,10 @@ import { setLabels } from "@/lib/features/labelsSlice";
 
 
 const UserSchema = z.object({
-    title: z.string().min(1, {message: '請輸入標題'}),
-    body: z.string().min(30, {message: '至少需要30字'})
+    title: z.string().refine((val) => val.trim() !== '', {
+        message: '標題不得為空',
+      }),
+    body: z.string().min(30, {message: '內容需要至少30字'})
 })
 const marksArr = [['Assignees', 'No one—'],['Labels', 'none yet'],['Projects', 'none yet'],['Milestone', 'No milestone']]
 interface IssueData {
@@ -29,9 +31,10 @@ interface IssueData {
 }
 const Form = ({ userPhoto } : { userPhoto : string | null}) => {
     const [value, setValue] = useState('');
-    const [error, setError] = useState<ReactNode>(null)
+    const [error, setError] = useState<ReactNode[]>([])
     const [titleValue, setTitleValue] = useState('');
     const [isTitleEmpty, setIsTitleEmpty] = useState(true)
+    const [postError, setPostError] = useState(false)
     const dispatch = useAppDispatch()
     const userState = useAppSelector(state => state.user)
     const labelsState = useAppSelector(state => state.labels)
@@ -42,21 +45,28 @@ const Form = ({ userPhoto } : { userPhoto : string | null}) => {
     const token = userState.token
     const createNewIssue = true
     const postIssue = async ({token, owner, repo, title, body, labels}: IssueData) => {
-        const octokit = new Octokit({
-            auth: token
-        });
-        await octokit.request(`POST /repos/${owner}/${repo}/issues`, {
-            owner: owner,
-            repo: repo,
-            title: title,
-            body: body,
-            labels: labels,
-            headers: {
-              'X-GitHub-Api-Version': '2022-11-28'
-            }
-          })
+        try{
+            const octokit = new Octokit({
+                auth: token
+            });
+            const response = await octokit.request(`POST /repos/${owner}/${repo}/issues`, {
+                owner: owner,
+                repo: repo,
+                title: title,
+                body: body,
+                labels: labels,
+                headers: {
+                  'X-GitHub-Api-Version': '2022-11-28'
+                }
+              })    
+            return response.data
+        }
+        catch(error){
+            console.log('fail to post issue', error)
+        }
+        
     }
-    const handleSubmitForm = (e: FormEvent<HTMLFormElement>) =>{
+    const handleSubmitForm = async (e: FormEvent<HTMLFormElement>) =>{
         e.preventDefault()
         const titleValue = titleRef.current!.value
         const bodyValue = value
@@ -74,17 +84,20 @@ const Form = ({ userPhoto } : { userPhoto : string | null}) => {
             labels: postLabelsArr
         }
         if(validationResult.success){
-            setError(null)
-            postIssue(postIssueData)
-            e.currentTarget.reset()
+            setError([])
+            const responseData = await postIssue(postIssueData);
+            if(!responseData) {
+                setPostError(true)
+                return
+            }
+            setTitleValue('')
             setValue('')
+            setPostError(false)
             setIsTitleEmpty(true)
-            router.push(`/${pathname.split('/')[1]}/${pathname.split('/')[2]}/issues`)
+            router.push(`/${pathname.split('/')[1]}/${pathname.split('/')[2]}/issues/${responseData.number}`)
         }else{
             const errorMsg = validationResult.error.issues.map(( issue ) => (
-                <div key={issue.message} className=''>
-                    {issue.path[0]} : {issue.message}
-                </div>
+                issue.message
             ))
             setError(errorMsg)
         }
@@ -106,14 +119,15 @@ const Form = ({ userPhoto } : { userPhoto : string | null}) => {
                 )}
                 </div>
                 <div className="w-3/4">
-                    <Title titleValue={titleValue} setTitleValue={setTitleValue} titleRef={titleRef}/>
+                    <Title titleValue={titleValue} setTitleValue={setTitleValue} titleRef={titleRef} error={error}/>
                     <div className='mt-3'>
                         <legend>
-                            <h3 className='font-semibold mb-2'>Add a description</h3>
+                            <h3 className={`font-semibold mb-2 ${error?.some(item => typeof item === 'string' && item.includes("內容")) ? 'after:content-["*需30字"] after:text-red-500 after:text-sm' : ''}}`}>Add a description</h3>
                         </legend>
-
                     </div>
-                    <Markdown value={value} setValue={setValue} bodyRef={bodyRef}/>
+                    <div>
+                        <Markdown value={value} setValue={setValue} bodyRef={bodyRef} />
+                    </div>         
                     <div className="flex justify-end my-4">
                         <button 
                         className={`bg-submitbuttoncolor px-4 py-[5px] ml-2 rounded-lg font-semibold text-sm ${isTitleEmpty ? 'text-disablecolor' : 'text-white'}`} 
@@ -121,8 +135,8 @@ const Form = ({ userPhoto } : { userPhoto : string | null}) => {
                         >
                             Submit new issue
                         </button>
-                        {error && <div className=' text-red-600'>{error}</div>}
                     </div>
+                    {postError && <span className="text-red-500">請再試一次</span>}
                 </div>
                 <div className="w-1/5 ml-4 ">
                     {marksArr.map( (s, index) => (
