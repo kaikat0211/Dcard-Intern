@@ -4,26 +4,28 @@ import React, { useState } from 'react'
 import { BsCheckCircle } from "react-icons/bs";
 import { VscIssueReopened } from "react-icons/vsc";
 import { SingleIssue, updateIssueInfo } from "@/app/types/singleIssueTypes";
+import { useRouter } from 'next/navigation';
 
 const CloseIssueButton = ({issueInfo, patchInfo } : {issueInfo: SingleIssue | undefined, patchInfo : updateIssueInfo}) => {
   const [open, setOpen] = useState((issueInfo?.state)?.toLowerCase())
   const [patching, setPatching] = useState(false)
-    const handleClose = () => {
-      patchIssue(patchInfo, {state: "closed"})
+  const router = useRouter()
+    const handleClose = async () => {
       setPatching(true)
-      setTimeout(() => {
+      const response = await patchIssue(patchInfo, {state: "closed"})
+      if(response){
         setOpen('closed')
-        setPatching(false)
-      }, 1000);
-      
+        router.push('/issues')
+      }
+      setPatching(false)
     }
-    const handleOpen = () => {
-      patchIssue(patchInfo, {state: "open"})
+    const handleOpen = async () => {
       setPatching(true)
-      setTimeout(() => {
+      const response = await patchIssue(patchInfo, {state: "open"})
+      if(response){
         setOpen('open')
-        setPatching(false)
-      }, 1000);
+      }
+      setPatching(false)
     }
   return (
     <div className='flex justify-end'>

@@ -31,17 +31,13 @@ const SingleIssueBody = ({ issueInfo, markdown, userIdentity, patchInfo, comment
     };
     const modifiedMarkdown = markdown ? addClassNameToHTML(markdown) : ''
     const handleEditBody = async () =>{
-        if (issueInfo?.body === updateValue || !updateValue) return;
+        setIsUpdate(true);
         const response = await patchIssue(patchInfo, { body: updateValue });
-        if(response.state_reason === "completed"){
-            setIsUpdate(true);
+        if(response){
             router.refresh();
-            setEditBody(false);
-        }else {
-            setIsUpdate(false);
-            return
+            setEditBody(!editBody);
         }
-        
+        setIsUpdate(false);
       }
     
     useEffect(()=>{

@@ -17,16 +17,13 @@ const SaveEditButton = ({edit, setEdit, patchInfo, title, setIssueTitle, issueIn
   const [update, setUpdate] = useState(false) 
   const handleSaveEdit = async () => {
     if(issueInfo?.title === title || !title) return
-    const response = await patchIssue(patchInfo, { title: title }) 
-    if(response.state_reason === "completed"){
+    setUpdate(true)
+    const response = await patchIssue(patchInfo, { title: title })
+    if(response){
       setIssueTitle(title)
-      setUpdate(true)
-
-    }else{
       setEdit(!edit)
-      setUpdate(false)
-      return
     }
+    setUpdate(false)
   }
   return (
     <button className={`text-sm bg-bordercolor rounded-lg border border-githubBorder leading-8 px-3 font-medium ${!update ? "hover:border-buttonhover hover:bg-githubBorder" : "flex items-center gap-2"} `}
