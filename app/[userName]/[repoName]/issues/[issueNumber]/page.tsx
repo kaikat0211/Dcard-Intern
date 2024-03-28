@@ -12,6 +12,21 @@ import { Octokit } from '@octokit/core';
 import Marks from '@/app/components/Marks';
 import { SingleIssue, updateIssueInfo } from "@/app/types/singleIssueTypes";
 import { CustomSession } from '@/app/types/userTypes';
+import { Metadata } from 'next';
+interface IssuesPageProps {
+    params: {
+    userName: string,
+    repoName: string,
+    issueNumber: number
+    }
+}
+export async function genereatMetadata({ params : { userName, repoName, issueNumber} } : IssuesPageProps) : Promise<Metadata> {
+    const issueData: SingleIssue | undefined = await fetchSingleIssues({ownerName: userName, repoName: repoName, issueNumber: issueNumber})
+    return {
+        title: `${issueData?.title}`,
+        description: `${issueData?.body}`,
+    }
+}
 const getMarkDown = async ({ body, token } : {body: string | "", token: string}) => {
     const octokit = new Octokit({
         auth: token
