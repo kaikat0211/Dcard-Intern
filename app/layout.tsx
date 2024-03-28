@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import Head from "next/head";
 import Header from './components/Header'
 import "./globals.css";
 import StoreProvider from "./StoreProvider";
 import { getUserGitHubId } from "./useractions";
 import getUserData from "@/lib/user/fetchUserData";
 import { SpeedInsights } from '@vercel/speed-insights/next';
-
+import Footer from "./components/Footer";
+import { GoogleAnalytics } from '@next/third-parties/google'
 export const metadata: Metadata = {
   title: "GitHub Issue Blog",
   description: "Created by kaikat0211 from Taipei",
@@ -56,7 +56,9 @@ export default async function RootLayout({
         <body className='bg-bodycolor'>
           <Header profileData={data} photo={photo}/>
           {children}
+          <Footer />
           <SpeedInsights />
+          <GoogleAnalytics gaId="G-X4BRE95QVC" />
         </body>
     </html>
   </StoreProvider>
