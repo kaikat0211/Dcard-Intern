@@ -21,12 +21,10 @@ const SaveEditButton = ({edit, setEdit, patchInfo, title, setIssueTitle, issueIn
     if(response.state_reason === "completed"){
       setIssueTitle(title)
       setUpdate(true)
-      
-      setTimeout(()=>{
-        setEdit(!edit)
-        setUpdate(false)
-      },2000)
+
     }else{
+      setEdit(!edit)
+      setUpdate(false)
       return
     }
   }

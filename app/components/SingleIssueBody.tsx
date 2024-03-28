@@ -35,12 +35,10 @@ const SingleIssueBody = ({ issueInfo, markdown, userIdentity, patchInfo, comment
         const response = await patchIssue(patchInfo, { body: updateValue });
         if(response.state_reason === "completed"){
             setIsUpdate(true);
-            setTimeout(() => {
-                setEditBody(false);
-                setIsUpdate(false);
-                router.refresh();
-            }, 3000);
+            router.refresh();
+            setEditBody(false);
         }else {
+            setIsUpdate(false);
             return
         }
         
