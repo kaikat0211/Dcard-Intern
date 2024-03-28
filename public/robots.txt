@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://dcard-intern.vercel.app/
+
+# Sitemaps
+Sitemap: https://dcard-intern.vercel.app/sitemap.xml
