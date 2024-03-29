@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { IoMdArrowDropdown } from "react-icons/io";
 import { TbDots } from "react-icons/tb";
 import Markdown from './Markdown';
@@ -34,35 +34,33 @@ const SingleIssueBody = ({ issueInfo, markdown, userIdentity, patchInfo, comment
     const addClassNameToHTML = (htmlString: string): string => {
         return htmlString.replace(/<[^>]+>/g, match => `<div class="mb-4">${match}</div>`)
     };
-    const modifiedMarkdown = markdown ? addClassNameToHTML(markdown) : ''
-    const handleEditBody = async () =>{
+    const modifiedMarkdown = useMemo(() => {
+        return markdown ? addClassNameToHTML(markdown) : '';
+      }, [markdown]);
+    const handleEditBody = useCallback(async () => {
         const validationResult = UserSchema.safeParse({
-            body: updateValue
-          })
+          body: updateValue,
+        });
         setIsUpdate(true);
-        if(validationResult.success){
-            const response = await patchIssue(patchInfo, { body: updateValue });
-            if(response){
-                router.refresh();
-                setError([])
-                setEditBody(!editBody);
-                setIsUpdate(false);
-            }
-        }else{
-            const errorMsg = validationResult.error.issues.map(( issue ) => (
-                issue.message
-            ))
-            setError(errorMsg)
+        if (validationResult.success) {
+          const response = await patchIssue(patchInfo, { body: updateValue });
+          if (response) {
+            router.refresh();
+            setError([]);
+            setEditBody(!editBody);
             setIsUpdate(false);
+          }
+        } else {
+          const errorMsg = validationResult.error.issues.map((issue) => issue.message);
+          setError(errorMsg);
+          setIsUpdate(false);
         }
-       
-        
-    }
-    const cancelEdit = () => {
-        setEditBody(!editBody)
-        setUpdateValue(issueInfo?.body)
-        setError([])
-    }
+      }, [updateValue, patchInfo, router, editBody]);
+    const cancelEdit = useCallback(() => {
+        setEditBody(!editBody);
+        setUpdateValue(issueInfo?.body);
+        setError([]);
+      }, [editBody, issueInfo]);
     useEffect(()=>{
         if (isUpdate) {
             router.refresh();

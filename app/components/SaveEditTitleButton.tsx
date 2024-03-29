@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import patchIssue from '@/lib/update/patchIssue';
 import { updateIssueInfo } from "@/app/types/singleIssueTypes";
 import LoadingIcon from './LoadingIcon';
@@ -21,7 +21,7 @@ const UserSchema = z.object({
 const SaveEditButton = ({edit, setEdit, patchInfo, title, setIssueTitle, setError} : Props) => {
   const [update, setUpdate] = useState(false) 
   
-  const handleSaveEdit = async () => {
+  const handleSaveEdit = useCallback(async() => {
     const validationResult = UserSchema.safeParse({
       title: title
     })
@@ -40,7 +40,7 @@ const SaveEditButton = ({edit, setEdit, patchInfo, title, setIssueTitle, setErro
       setUpdate(false)
     }
     setUpdate(false)
-  }
+  },[update, edit, patchInfo, setError])  
   return (
     <button className={`text-sm bg-bordercolor rounded-lg border border-githubBorder leading-8 px-3 font-medium ${!update ? "hover:border-buttonhover hover:bg-githubBorder" : "flex items-center gap-2"} `}
     style={{color: '#c9d1d9'}}
