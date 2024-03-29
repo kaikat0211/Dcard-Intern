@@ -17,7 +17,6 @@ const SingleIssuePageTitle = ({ issueInfo, patchInfo, userIdentity } : Props) =>
     const [title, setTitle] = useState(issueInfo?.title || "")
     const [issueTitle, setIssueTitle] = useState<string | undefined>(issueInfo?.title)
     const [error, setError] = useState<string[]>([])
-    console.log(error)
     const router = useRouter()
     useEffect(()=>{
         if(issueInfo?.title !== issueTitle) router.refresh()

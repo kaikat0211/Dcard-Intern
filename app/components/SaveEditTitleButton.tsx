@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react'
 import patchIssue from '@/lib/update/patchIssue';
-import { SingleIssue, updateIssueInfo } from "@/app/types/singleIssueTypes";
+import { updateIssueInfo } from "@/app/types/singleIssueTypes";
 import LoadingIcon from './LoadingIcon';
 import { z } from 'zod' 
 interface Props {

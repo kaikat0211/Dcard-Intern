@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import patchIssue from '@/lib/update/patchIssue';
 import { SingleIssue, updateIssueInfo } from "@/app/types/singleIssueTypes";
 import SingleIssueComments from './SingleIssueComments';
+import { z } from 'zod'
 
 interface AuthorInfo {
     login: string
@@ -20,26 +21,47 @@ interface Props {
     patchInfo: updateIssueInfo
     commentsAuthorsArray: AuthorInfo[] | undefined
 }
+const UserSchema = z.object({
+    body: z.string().min(30, {message: '內容需要至少30字'})
+  })
 
 const SingleIssueBody = ({ issueInfo, markdown, userIdentity, patchInfo, commentsAuthorsArray} : Props) => {
     const [editBody, setEditBody] = useState(false)
     const [updateValue, setUpdateValue] = useState<string | undefined>(issueInfo?.body)
     const [isUpdate, setIsUpdate] = useState(false)
+    const [error, setError] = useState<string[]>([])
     const router = useRouter()
     const addClassNameToHTML = (htmlString: string): string => {
         return htmlString.replace(/<[^>]+>/g, match => `<div class="mb-4">${match}</div>`)
     };
     const modifiedMarkdown = markdown ? addClassNameToHTML(markdown) : ''
     const handleEditBody = async () =>{
+        const validationResult = UserSchema.safeParse({
+            body: updateValue
+          })
         setIsUpdate(true);
-        const response = await patchIssue(patchInfo, { body: updateValue });
-        if(response){
-            router.refresh();
-            setEditBody(!editBody);
+        if(validationResult.success){
+            const response = await patchIssue(patchInfo, { body: updateValue });
+            if(response){
+                router.refresh();
+                setError([])
+                setEditBody(!editBody);
+            }
+        }else{
+            const errorMsg = validationResult.error.issues.map(( issue ) => (
+                issue.message
+            ))
+            setError(errorMsg)
+            setIsUpdate(false);
         }
-        setIsUpdate(false);
-      }
-    
+       
+        
+    }
+    const cancelEdit = () => {
+        setEditBody(!editBody)
+        setUpdateValue(issueInfo?.body)
+        setError([])
+    }
     useEffect(()=>{
         if (isUpdate) {
             router.refresh();
@@ -75,12 +97,15 @@ const SingleIssueBody = ({ issueInfo, markdown, userIdentity, patchInfo, comment
                 </div>) : (<Markdown value={updateValue} setValue={setUpdateValue}/>)
                 }
             </div>
+            <div className='flex justify-end text-red-500 mr-2'>
+                {error.length > 0 && error[0]}
+            </div>
             <div className='mb-2 mr-2'>
                 {editBody && (
                 <div className='flex justify-end items-center gap-1'>
                     <button 
                     className={`leading-8 px-3 font-medium text-sm ring-1 ring-githubBorder rounded-lg text-cancelred bg-bordercolor hover:bg-cancelhoverbgred hover:text-white hover:ring-0 ${isUpdate && 'opacity-60'}`}
-                    onClick={()=>setEditBody(!editBody)}
+                    onClick={cancelEdit}
                     disabled={isUpdate}
                     >
                         Cancel
