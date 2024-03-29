@@ -56,7 +56,6 @@ const IssueTableContent = ({ initIssue, newIssue, setNewIssue } : Props) => {
         }
         if (inView) {
             fetchMoreIssues()
-            console.log('get more')
         }
       }, [inView])
   return (

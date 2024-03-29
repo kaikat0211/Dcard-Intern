@@ -15,7 +15,7 @@ const CloseIssueButton = ({issueInfo, patchInfo } : {issueInfo: SingleIssue | un
       const response = await patchIssue(patchInfo, {state: "closed"})
       if(response){
         setOpen('closed')
-        router.push('/issues')
+        router.replace('/issues')
       }
       setPatching(false)
     }
