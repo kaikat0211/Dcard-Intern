@@ -46,6 +46,7 @@ const SingleIssueBody = ({ issueInfo, markdown, userIdentity, patchInfo, comment
                 router.refresh();
                 setError([])
                 setEditBody(!editBody);
+                setIsUpdate(false);
             }
         }else{
             const errorMsg = validationResult.error.issues.map(( issue ) => (
@@ -97,7 +98,7 @@ const SingleIssueBody = ({ issueInfo, markdown, userIdentity, patchInfo, comment
                 </div>) : (<Markdown value={updateValue} setValue={setUpdateValue}/>)
                 }
             </div>
-            <div className='flex justify-end text-red-500 mr-2'>
+            <div className='flex justify-end text-red-500 mr-2 mb-2'>
                 {error.length > 0 && error[0]}
             </div>
             <div className='mb-2 mr-2'>
