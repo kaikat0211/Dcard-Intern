@@ -1,7 +1,7 @@
 'use client'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { IoMdArrowDropdown } from "react-icons/io";
-import { TbDots } from "react-icons/tb";
+import { FaPencilAlt } from "react-icons/fa";
 import Markdown from './Markdown';
 import CloseIssueButton from './CloseIssueButton';
 import { useRouter } from 'next/navigation';
@@ -9,6 +9,7 @@ import patchIssue from '@/lib/update/patchIssue';
 import { SingleIssue, updateIssueInfo } from "@/app/types/singleIssueTypes";
 import SingleIssueComments from './SingleIssueComments';
 import { z } from 'zod'
+import getDiffDay from '@/lib/simple/getTimeFunc';
 
 interface AuthorInfo {
     login: string
@@ -72,11 +73,7 @@ const SingleIssueBody = ({ issueInfo, markdown, userIdentity, patchInfo, comment
             <div className={`text-white px-4 text-sm rounded-t-lg border-b ${userIdentity === "Owner" ? 'border-issuebodyblueborder bg-issuebodyblueheader' : 'border-githubBorder bg-labelscolor'} flex items-center justify-between`}>
                 <div className='font-medium leading-9 flex gap-1' >
                     {issueInfo?.author.login}
-                    <span className='text-textgray font-normal'> commented last week •</span>
-                    <button className='flex items-center text-sm text-textgray font-normal gap-1'>
-                        <div>edited</div>
-                        <IoMdArrowDropdown />
-                    </button>
+                    <span className='text-textgray font-normal'> commented {getDiffDay(issueInfo!.createdAt)}</span>
                 </div>
                 <div className='flex items-center gap-2'>
                     {userIdentity === "Owner" && 
@@ -84,7 +81,7 @@ const SingleIssueBody = ({ issueInfo, markdown, userIdentity, patchInfo, comment
                             {userIdentity}
                         </div>)
                     }
-                    <TbDots className='text-xl text-textgray hover:text-dotblue cursor-pointer' onClick={()=>{
+                    <FaPencilAlt className='text-sm text-textgray hover:text-dotblue cursor-pointer' onClick={()=>{
                         if(userIdentity !== "Owner") return
                         setEditBody(!editBody)
                     }}/>
