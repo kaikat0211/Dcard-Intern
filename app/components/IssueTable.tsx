@@ -14,6 +14,9 @@ const IssueTable = ({ initIssue } : { initIssue: FullIssue[] }) => {
     useEffect(()=>{
         router.refresh()
     },[])
+    useEffect(()=>{
+        setNewIssue(initIssue!.filter(i => i.node.state === "OPEN"))
+    },[initIssue])
   return (
     <div className='w-full mt-5 border border-githubBorder rounded-md '>
         <div className='p-4 bg-labelscolor rounded-md flex justify-between'>

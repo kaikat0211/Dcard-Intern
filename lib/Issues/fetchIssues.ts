@@ -2,40 +2,15 @@ import { options } from "@/app/api/auth/[...nextauth]/options";
 import { getServerSession } from "next-auth";
 import { graphql } from "@octokit/graphql";
 import { CustomSession } from "@/app/types/userTypes";
-interface Label {
-name: string;
-color: string;
-description: string;
-}
-interface Cursor {
-    cursor: string
-}
+import { AllIssue, Cursor } from "@/app/types/allIssueTypes";
 
-interface Issue {
-    id: string;
-    number: number;
-    title: string;
-    body: string;
-    createdAt: string;
-    updatedAt: string;
-    author: {
-        login: string;
-    }
-    labels: {
-        nodes: Label[];
-    };
-    comments: {
-        totalCount: number;
-    };
-    repository: {
-        nameWithOwner: string;
-    };
-}
+
+
 interface Response {
     search?: {
         edges?: {
             cursor: Cursor
-            node: Issue
+            node: AllIssue
         }[]
     }
 }
@@ -67,6 +42,7 @@ const getNewIssues = async (cursor?: string | undefined, query?: string | undefi
                     body
                     createdAt
                     updatedAt
+                    state
                     author{
                         login
                     }

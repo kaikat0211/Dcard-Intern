@@ -13,6 +13,7 @@ export interface AllIssue {
     body: string;
     createdAt: string;
     updatedAt: string;
+    state: string;
     author: {
       login: string;
     }

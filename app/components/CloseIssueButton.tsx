@@ -19,17 +19,23 @@ const CloseIssueButton = ({issueInfo, patchInfo } : {issueInfo: SingleIssue | un
       }
       setPatching(false)
     }
-    const handleOpen = async () => {
-      setPatching(true)
-      const response = await patchIssue(patchInfo, {state: "open"})
-      if(response){
-        setOpen('open')
-      }
-      setPatching(false)
-    }
+    // const handleOpen = async () => {
+    //   setPatching(true)
+    //   const response = await patchIssue(patchInfo, {state: "open"})
+    //   if(response){
+    //     setOpen('open')
+    //   }
+    //   setPatching(false)
+    // }
   return (
     <div className='flex justify-end'>
-        {open && open === "open" ? (
+        <button className={`mt-2 border border-githubBorder py-[5px] px-4  flex items-center gap-2 bg-bordercolor hover:bg-closebuttonbg rounded-lg justify-center ${patching && 'opacity-60'}`}
+        onClick={handleClose}
+        >
+            <BsCheckCircle style={{color : '#A371F7'}} className='text-base font-semibold'/>
+            <div style={{color : '#C9D1D9'}} className=' text-sm font-medium'>Close issue</div>
+        </button>
+        {/* {open && open === "open" ? (
         <button className={`mt-2 border border-githubBorder py-[5px] px-4  flex items-center gap-2 bg-bordercolor hover:bg-closebuttonbg rounded-lg justify-center ${patching && 'opacity-60'}`}
         onClick={handleClose}
         >
@@ -44,7 +50,7 @@ const CloseIssueButton = ({issueInfo, patchInfo } : {issueInfo: SingleIssue | un
             <VscIssueReopened style={{color : '#3FB950'}} className='text-lg font-semibold'/>
             <div style={{color : '#C9D1D9'}} className=' text-sm font-medium'>Reopen issue</div>
         </button>
-        )}
+        )} */}
     </div>
   )
 }

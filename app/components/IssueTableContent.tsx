@@ -60,9 +60,10 @@ const IssueTableContent = ({ initIssue, newIssue, setNewIssue } : Props) => {
       }, [inView])
   return (
     <>
-    {newIssue!.map(i => (
+    {newIssue.map(i => (
         <IssueContent issue={i} key={i.node.id}/>
     ))}
+
     {!end && <div
     ref={ref}
     className='col-span-1 mb-3  flex items-center justify-center sm:col-span-2 md:col-span-3 lg:col-span-4'
