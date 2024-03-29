@@ -15,6 +15,7 @@ import pullRequest from '../../public/pullRequest.svg'
 import LeftDrawer from './LeftDrawer';
 import { fetchUser } from '@/lib/features/userSlice';
 import { usePathname, useRouter } from 'next/navigation';
+import SignOut from './SignOut';
 
     interface ProfileData {
       userInfo: UserInfo,
@@ -33,10 +34,25 @@ import { usePathname, useRouter } from 'next/navigation';
     }
 
     export default  function Header({ profileData , photo} : { profileData: ProfileData , photo : string | undefined}) {
+    const [open, setOpen] = React.useState(false)
+    const divRef = React.useRef<HTMLDivElement>(null)
+    const singOutRef = React.useRef<HTMLDivElement>(null)
     const dispatch = useAppDispatch();
     const pathname = usePathname()
     const router = useRouter()
     const path = pathname.split('/')[2]
+    useEffect(() => {
+      const handleClickOutside = (event: MouseEvent) => {
+          if (singOutRef.current && !singOutRef.current.contains(event.target as Node) && divRef.current && !divRef.current.contains(event.target as Node) ) {
+              setOpen(false);
+          }
+      };
+
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+          document.removeEventListener('mousedown', handleClickOutside);
+      };
+  }, [singOutRef]);
     useEffect(() => {
         dispatch(fetchUser(profileData));
     }, [dispatch]);
@@ -97,8 +113,9 @@ import { usePathname, useRouter } from 'next/navigation';
           <button className='borderButtonStyle hover:bg-repohover center'>
               <IoBagHandleOutline className='text-slate-400 text-[18px]'/>
           </button>
-          <div className='rounded-full'>
-              {photo ? <Image alt={photo ?? "Profile Pic"} src={photo} width={32} height={32} className='rounded-full cursor-pointer'/> : <></>}
+          <div className='rounded-full relative' ref={divRef}>
+              {photo ? <Image alt={photo ?? "Profile Pic"} src={photo} width={32} height={32} className='rounded-full cursor-pointer ' onClick={()=>setOpen(true)}/> : <></>}
+              {open && <SignOut singOutRef={singOutRef}/>}
           </div>
         </div>
       </div>
