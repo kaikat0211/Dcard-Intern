@@ -40,7 +40,7 @@ const SaveEditButton = ({edit, setEdit, patchInfo, title, setIssueTitle, setErro
       setUpdate(false)
     }
     setUpdate(false)
-  },[update, edit, patchInfo, setError])  
+  },[update, edit, patchInfo, title, setError])  
   return (
     <button className={`text-sm bg-bordercolor rounded-lg border border-githubBorder leading-8 px-3 font-medium ${!update ? "hover:border-buttonhover hover:bg-githubBorder" : "flex items-center gap-2"} `}
     style={{color: '#c9d1d9'}}
