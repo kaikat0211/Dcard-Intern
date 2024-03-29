@@ -3,25 +3,41 @@ import React, { useState } from 'react'
 import patchIssue from '@/lib/update/patchIssue';
 import { SingleIssue, updateIssueInfo } from "@/app/types/singleIssueTypes";
 import LoadingIcon from './LoadingIcon';
-
+import { z } from 'zod' 
 interface Props {
   edit: boolean
   setEdit: (edit: boolean) => void
   patchInfo: updateIssueInfo
   title: string
   setIssueTitle: (newTitle : string) => void
-  issueInfo :  SingleIssue | undefined
+  setError: (error: string[]) => void
 }
+const UserSchema = z.object({
+  title: z.string().refine((val) => val.trim() !== '', {
+      message: '標題不得為空',
+    }),
+})
 
-const SaveEditButton = ({edit, setEdit, patchInfo, title, setIssueTitle, issueInfo} : Props) => {
+const SaveEditButton = ({edit, setEdit, patchInfo, title, setIssueTitle, setError} : Props) => {
   const [update, setUpdate] = useState(false) 
+  
   const handleSaveEdit = async () => {
-    if(issueInfo?.title === title || !title) return
+    const validationResult = UserSchema.safeParse({
+      title: title
+    })
     setUpdate(true)
-    const response = await patchIssue(patchInfo, { title: title })
-    if(response){
-      setIssueTitle(title)
-      setEdit(!edit)
+    if(validationResult.success){
+      const response = await patchIssue(patchInfo, { title: title })
+      if(response){
+        setIssueTitle(title)
+        setEdit(!edit)
+      }
+    }else{
+      const errorMsg = validationResult.error.issues.map(( issue ) => (
+        issue.message
+      ))
+      setError(errorMsg)
+      setUpdate(false)
     }
     setUpdate(false)
   }

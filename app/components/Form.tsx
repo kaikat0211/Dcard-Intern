@@ -86,7 +86,7 @@ const Form = ({ userPhoto } : { userPhoto : string | null}) => {
         if(validationResult.success){
             setError([])
             const response = await postIssue(postIssueData);
-            if(response.OK) {
+            if(response) {
                 setTitleValue('')
                 setValue('')
                 setPostError(false)

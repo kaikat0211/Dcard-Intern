@@ -16,6 +16,8 @@ const SingleIssuePageTitle = ({ issueInfo, patchInfo, userIdentity } : Props) =>
     const [edit, setEdit] = useState(false) //評估是否redux
     const [title, setTitle] = useState(issueInfo?.title || "")
     const [issueTitle, setIssueTitle] = useState<string | undefined>(issueInfo?.title)
+    const [error, setError] = useState<string[]>([])
+    console.log(error)
     const router = useRouter()
     useEffect(()=>{
         if(issueInfo?.title !== issueTitle) router.refresh()
@@ -31,7 +33,7 @@ const SingleIssuePageTitle = ({ issueInfo, patchInfo, userIdentity } : Props) =>
             </h1>
         :
             <input type='text' 
-            className='w-full text-[16px] rounded-md outline-0 border border-githubBorder px-3 mr-2  focus:ring-inputcolor focus:ring-2 text-white' 
+            className={`w-full text-[16px] rounded-md outline-0 border border-githubBorder px-3 mr-2  focus:ring-inputcolor focus:ring-2 text-white ${error?.some(item => typeof item === 'string' && item.includes("標題")) ? 'ring-2 ring-red-500' : ''} `}
             style={{background: '#02040A'}}
             value={title}
             name='Edit Title'
@@ -41,12 +43,12 @@ const SingleIssuePageTitle = ({ issueInfo, patchInfo, userIdentity } : Props) =>
         <div className='flex items-center gap-1'>
             {!edit ? 
                 <>
-                    {userIdentity === "Owner" && <EditTitleButton edit={edit} setEdit={setEdit}/>}
+                    {userIdentity === "Owner" && <EditTitleButton edit={edit} setEdit={setEdit} issueInfo={issueInfo} setTitle={setTitle} error={error}  setError={setError}/>}
                     <CreateIssueButton patchInfo={patchInfo}/>
                 </>
             :
                 <>
-                    <SaveEditButton edit={edit} setEdit={setEdit} patchInfo={patchInfo} title={title} setIssueTitle={setIssueTitle} issueInfo={issueInfo}/>
+                    <SaveEditButton edit={edit} setEdit={setEdit} patchInfo={patchInfo} title={title} setIssueTitle={setIssueTitle} setError={setError}/>
                     <CancelEditButton edit={edit} setEdit={setEdit}/>
                 </>
             }
