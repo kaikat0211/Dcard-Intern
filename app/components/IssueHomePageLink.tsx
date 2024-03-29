@@ -10,11 +10,11 @@ const IssueHomePageLink = ({type} : {type: string}) => {
     const router = (type: string) => {
         switch(type){
             case 'Created' :
-                return 'http://localhost:3000/issues'
+                return '/issues'
             case 'Assigned' :
-                return 'http://localhost:3000/issues/assigned'
+                return '/issues'
             case 'Mentioned' : 
-                return 'http://localhost:3000/issues/mentioned'
+                return '/issues'
             default:
                 return ''
         }
