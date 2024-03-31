@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { IoSettingsOutline } from "react-icons/io5";
 import LabelSelelctor from "./LabelSelelctor";
 import { useAppSelector } from '@/lib/hooks';
-import { Label, updateIssueInfo } from '../types/singleIssueTypes';
+import { Label, updateIssueInfo } from '../../types/singleIssueTypes';
 import { hexToRgba } from '@/lib/simple/hexToRgbaFunc';
 interface Props {
     markTitle: string[]

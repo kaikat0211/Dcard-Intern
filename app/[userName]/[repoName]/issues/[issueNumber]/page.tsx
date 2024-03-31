@@ -1,15 +1,15 @@
-import SingleIssuePageTitle from '@/app/components/SingleIssuePageTitle'
+import SingleIssuePageTitle from '@/app/components/singleIssue/SingleIssuePageTitle'
 import React from 'react'
 import { fetchSingleIssues } from './issueinfoaction'
-import SingleIssueTitleDescription from '@/app/components/SingleIssueTitleDescription';
+import SingleIssueTitleDescription from '@/app/components/singleIssue/SingleIssueTitleDescription';
 import { getUserGitHubId } from '@/app/useractions';
 import Image from 'next/image';
 import Link from 'next/link';
-import SingleIssueBody from '@/app/components/SingleIssueBody';
+import SingleIssueBody from '@/app/components/singleIssue/SingleIssueBody';
 import { options } from '@/app/api/auth/[...nextauth]/options';
 import { getServerSession } from 'next-auth';
 import { Octokit } from '@octokit/core';
-import Marks from '@/app/components/Marks';
+import Marks from '@/app/components/createIssue/Marks';
 import { SingleIssue, updateIssueInfo } from "@/app/types/singleIssueTypes";
 import { CustomSession } from '@/app/types/userTypes';
 

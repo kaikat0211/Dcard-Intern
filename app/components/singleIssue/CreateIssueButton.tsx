@@ -1,7 +1,7 @@
 'use client'
 import Link from 'next/link'
 import React from 'react'
-import { updateIssueInfo } from '../types/singleIssueTypes'
+import { updateIssueInfo } from '../../types/singleIssueTypes'
 
 
 const CreateIssueButton = ({ patchInfo } : { patchInfo : updateIssueInfo }) => {

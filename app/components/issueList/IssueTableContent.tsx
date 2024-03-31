@@ -1,12 +1,12 @@
 'use client'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useInView } from 'react-intersection-observer';
-import { fetchNewIssues } from '../issues/issuesactions';
+import { fetchNewIssues } from '../../issues/issuesactions';
 import { useSearchParams } from 'next/navigation';
 import IssueContent from './IssueContent';
 import { useAppSelector } from '@/lib/hooks';
-import { FullIssue } from '../types/allIssueTypes';
-import LoadingIcon from './LoadingIcon';
+import { FullIssue } from '../../types/allIssueTypes';
+import LoadingIcon from '../LoadingIcon';
 interface Props {
     initIssue: FullIssue[]
     newIssue: FullIssue[] 
@@ -66,7 +66,7 @@ const IssueTableContent = ({ initIssue, newIssue, setNewIssue } : Props) => {
 
     {!end && <div
     ref={ref}
-    className='col-span-1 mb-3  flex items-center justify-center sm:col-span-2 md:col-span-3 lg:col-span-4'
+    className='col-span-1  pt-3 mb-3 border-t border-githubBorder flex items-center justify-center sm:col-span-2 md:col-span-3 lg:col-span-4'
     >
         <LoadingIcon className={'h-5 w-5 animate-spin fill-sky-600 text-gray-200 dark:text-gray-600'} />
         <span className='sr-only'>Loading...</span>

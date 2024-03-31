@@ -24,7 +24,7 @@ const LeftDrawer = () => {
             return;
         }
 
-        setState({ ...state, [anchor]: open });
+        // setState({ ...state, [anchor]: open });
     };
 
     const list = (anchor: Anchor) => (

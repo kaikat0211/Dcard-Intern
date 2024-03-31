@@ -1,5 +1,5 @@
 import { auth } from '@/app/api/auth/[...nextauth]/options';
-import CreateIssueButton from '@/app/components/CreateIssueButton'
+import CreateIssueButton from '@/app/components/singleIssue/CreateIssueButton'
 import Issue from '@/app/components/Issue'
 import { CustomSession } from '@/app/types/userTypes';
 import React from 'react'

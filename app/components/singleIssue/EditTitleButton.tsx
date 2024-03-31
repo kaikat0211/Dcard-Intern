@@ -1,6 +1,6 @@
 'use client'
 import React from 'react'
-import { SingleIssue } from '../types/singleIssueTypes'
+import { SingleIssue } from '../../types/singleIssueTypes'
 
 interface Props {
     edit: boolean

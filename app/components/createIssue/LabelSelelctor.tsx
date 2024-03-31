@@ -9,7 +9,7 @@ import Delete from '@/public/delete.svg'
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { setLabels } from '@/lib/features/labelsSlice';
 import patchIssue from '@/lib/update/patchIssue';
-import { Label, updateIssueInfo } from '../types/singleIssueTypes';
+import { Label, updateIssueInfo } from '../../types/singleIssueTypes';
 
 interface LabelSelectorProps {
     open: boolean;

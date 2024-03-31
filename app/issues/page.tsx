@@ -1,7 +1,7 @@
 import React from 'react'
-import ListInput from '../components/ListInput'
-import LinkGroup from '../components/LinkGroup'
-import IssueTable from '../components/IssueTable'
+import ListInput from '../components/singleIssue/ListInput'
+import LinkGroup from '../components/issueList/LinkGroup'
+import IssueTable from '../components/issueList/IssueTable'
 import { fetchNewIssues } from './issuesactions';
 import { getUserGitHubId } from '../useractions';
 import { FullIssue } from '../types/allIssueTypes';

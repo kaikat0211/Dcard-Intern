@@ -9,7 +9,7 @@ import Link from "next/link";
 import Marks from "./Marks";
 import { Octokit } from "@octokit/core";
 import { usePathname, useRouter } from "next/navigation";
-import Title from "./Title";
+import Title from "../singleIssue/Title";
 import Markdown from "./Markdown";
 import { setLabels } from "@/lib/features/labelsSlice";
 

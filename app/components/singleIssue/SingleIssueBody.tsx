@@ -2,7 +2,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { IoMdArrowDropdown } from "react-icons/io";
 import { FaPencilAlt } from "react-icons/fa";
-import Markdown from './Markdown';
+import Markdown from '../createIssue/Markdown';
 import CloseIssueButton from './CloseIssueButton';
 import { useRouter } from 'next/navigation';
 import patchIssue from '@/lib/update/patchIssue';

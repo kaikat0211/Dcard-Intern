@@ -1,5 +1,5 @@
 import React from 'react'
-import { SingleIssue } from '../types/singleIssueTypes'
+import { SingleIssue } from '../../types/singleIssueTypes'
 import { IoMdArrowDropdown } from "react-icons/io";
 import { TbDots } from "react-icons/tb";
 import Link from 'next/link';

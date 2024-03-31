@@ -2,7 +2,7 @@
 import React, { useCallback, useState } from 'react'
 import patchIssue from '@/lib/update/patchIssue';
 import { updateIssueInfo } from "@/app/types/singleIssueTypes";
-import LoadingIcon from './LoadingIcon';
+import LoadingIcon from '../LoadingIcon';
 import { z } from 'zod' 
 interface Props {
   edit: boolean
