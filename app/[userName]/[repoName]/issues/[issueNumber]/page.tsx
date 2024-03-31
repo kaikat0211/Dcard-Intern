@@ -62,12 +62,12 @@ const page = async ({ params } : { params: { userName: string, repoName: string 
                 <SingleIssuePageTitle issueInfo={issueData} patchInfo={patchInfo} userIdentity={userIdentity}/>
                 <SingleIssueTitleDescription issueInfo={issueData}/>
             </div>
-            <div className='relative flex md:gap-2 lg:gap-4 justify-between'>
+            <div className='relative flex md:gap-2 lg:gap-4 justify-between max-md:flex-col'>
                 <Link href={`/${IssueAuthor.login}`} className='absolute left-0 top-0'>
-                    <Image alt="photo" src={IssueAuthor.avatar_url} width={40} height={40} className='rounded-full'/>
+                    <Image alt="photo" src={IssueAuthor.avatar_url} width={40} height={40} className='rounded-full max-md:hidden'/>
                 </Link>   
                 <SingleIssueBody issueInfo={issueData} markdown={markdownBody} userIdentity={userIdentity} patchInfo={patchInfo} commentsAuthorsArray={commentsAuthorsArray}/>
-                <div className='w-1/4 min-w-[256px]'>
+                <div className='w-1/4 min-w-[256px] max-md:w-full'>
                     {marksArr.map( (s, index) => (
                         <div key={index}>
                             <Marks markTitle={s} initLabels={issueData?.labels.nodes} userIdentity={userIdentity} patchInfo={patchInfo}/>

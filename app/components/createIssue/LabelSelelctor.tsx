@@ -92,8 +92,8 @@ const LabelSelelctor = ({ open, labelSelectorRef, initLabels, patchInfo }: Label
         if(patchInfo) patchIssue(patchInfo, {labels : updateLabels})
     },[updateLabels])
   return (
-    <div className={`absolute right-0 border border-githubBorder rounded-md bg-labelscolor w-[300px]  z-20 ${!open && 'hidden'}`} ref={labelSelectorRef}>
-        <div className='sticky top-0 border-b border-bordercolor bg-labelscolor z-30'>
+    <div className={`absolute right-0 border border-githubBorder rounded-md bg-labelscolor w-[300px] max-md:w-full  z-20 ${!open && 'hidden'}`} ref={labelSelectorRef}>
+        <div className='sticky top-0 border-b border-bordercolor bg-labelscolor z-30 rounded-t-md'>
             <div className='font-semibold text-white text-xs border-b p-2 border-bordercolor '>Apply labels to this issue
             </div>
             <div className='p-2'>

@@ -3,7 +3,7 @@ import IssueHomePageLink from './IssueHomePageLink'
 
 const LinkGroup = () => {
   return (
-    <nav className='flex flex-grow-0'>
+    <nav className='flex max-xs:w-full max-xs:px-4'>
         <IssueHomePageLink type={'Created'}/>
         <IssueHomePageLink type={'Assigned'}/>
         <IssueHomePageLink type={'Mentioned'}/>

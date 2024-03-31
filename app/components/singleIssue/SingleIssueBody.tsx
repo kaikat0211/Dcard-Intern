@@ -1,6 +1,5 @@
 'use client'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import { IoMdArrowDropdown } from "react-icons/io";
 import { FaPencilAlt } from "react-icons/fa";
 import Markdown from '../createIssue/Markdown';
 import CloseIssueButton from './CloseIssueButton';
@@ -68,10 +67,10 @@ const SingleIssueBody = ({ issueInfo, markdown, userIdentity, patchInfo, comment
         }
     },[isUpdate])
   return (
-    <div className='ml-10 pl-4 grow'>
+    <div className='md:ml-10 md:pl-4 grow'>
         <div className={`border ${userIdentity === "Owner" ? 'border-issuebodyblueborder' : 'border-githubBorder'} rounded-lg `}>
             <div className={`text-white px-4 text-sm rounded-t-lg border-b ${userIdentity === "Owner" ? 'border-issuebodyblueborder bg-issuebodyblueheader' : 'border-githubBorder bg-labelscolor'} flex items-center justify-between`}>
-                <div className='font-medium leading-9 flex gap-1' >
+                <div className='font-medium leading-9 ' >
                     {issueInfo?.author.login}
                     <span className='text-textgray font-normal'> commented {getDiffDay(issueInfo!.createdAt)}</span>
                 </div>

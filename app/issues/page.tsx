@@ -1,5 +1,5 @@
 import React from 'react'
-import ListInput from '../components/singleIssue/ListInput'
+import ListInput from '../components/issueList/ListInput'
 import LinkGroup from '../components/issueList/LinkGroup'
 import IssueTable from '../components/issueList/IssueTable'
 import { fetchNewIssues } from './issuesactions';
@@ -18,9 +18,9 @@ const page = async ({
     const data: FullIssue[] = await fetchNewIssues({cursor : undefined, query: search, userID: userID,}) || [];
     return (
       <div className='w-full flex justify-center'>
-          <div className='flex justify-center bg-bodycolor w-full pt-6 max-lg:px-10 lg:px-4'>
+          <div className='flex justify-center bg-bodycolor w-full pt-6 max-lg:px-10 lg:px-4 max-xs:px-0'>
               <div className='bg-bodycolor grow max-w-[980px]'>
-                  <div className='flex w-full max-md:flex-col '>
+                  <div className='flex w-full max-md:flex-col'>
                       <LinkGroup />
                       <ListInput search={search} userID={userID}/>
                   </div>

@@ -14,7 +14,7 @@ const ListInput = ({ search, userID } : { search : string | undefined , userID?:
     }
   }, [search]);
   return (
-    <div className='w-full pl-4 max-md:pl-0 max-md:mt-4'>
+    <div className='w-full pl-4 max-md:pl-0 max-md:mt-4 max-xs:px-4'>
         <form className='relative'>
         <Image alt='searchicon' src={Search} width={15} height={15} className='absolute left-2 bottom-2'/>
         <input type='text' 

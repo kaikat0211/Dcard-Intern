@@ -80,7 +80,7 @@ import SignOut from './SignOut';
           </div>
         </div>
         <div className='flex gap-2.5 h-[32px]'>
-          <button className='borderButtonStyle hover:bg-repohover center max-md:hidden' onClick={()=> router.push('/issues')}>
+          <button className='borderButtonStyle hover:bg-repohover center' onClick={()=> router.push('/issues')}>
               <VscRecord className='text-slate-400 text-[18px]'/>
           </button>
           <div className='rounded-full relative' ref={divRef}>

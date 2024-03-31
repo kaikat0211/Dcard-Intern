@@ -16,7 +16,7 @@ const IssueTable = ({ initIssue } : { initIssue: FullIssue[] }) => {
         setNewIssue(initIssue!.filter(i => i.node.state === "OPEN"))
     },[initIssue])
   return (
-    <div className='w-full mt-5 border border-githubBorder rounded-md'>
+    <div className='w-full mt-5 border border-githubBorder rounded-md max-xs:rounded-none max-xs:border-y'>
         <div className='p-4 bg-labelscolor rounded-md flex justify-between'>
             <div className='flex gap-4'>
                 <Link className='flex items-center text-white cursor-pointer' href={'/'}>

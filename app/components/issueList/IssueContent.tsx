@@ -13,7 +13,7 @@ const IssueContent = ({ issue } : { issue: FullIssue }) => {
             <div className='pt-1'>
                 <GoIssueOpened style={{color: '#3FB950'}} className='text-md mr-2'/>
             </div>
-            <div className='w-3/4'>
+            <div className='w-full'>
                 <div className='flex items-center gap-1  flex-auto flex-wrap'>
                     <div>
                         <Link href={'/'} className='font-semibold text-textgray hover:text-hoverblue pr-1'>{issue.node.repository.nameWithOwner}</Link>

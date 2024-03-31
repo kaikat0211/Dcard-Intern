@@ -23,7 +23,7 @@ const SingleIssuePageTitle = ({ issueInfo, patchInfo, userIdentity } : Props) =>
     },[issueTitle])
   return (
    
-    <div className='flex justify-between w-full'>
+    <div className='flex justify-between w-full max-md:flex-col-reverse'>
         {!edit ?
             <h1 className='text-[32px] '>
                 <div className='text-white'>

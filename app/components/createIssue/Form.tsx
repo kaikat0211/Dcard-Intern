@@ -111,15 +111,15 @@ const Form = ({ userPhoto } : { userPhoto : string | null}) => {
     },[])
     return (
         <form onSubmit={handleSubmitForm}>
-            <div className='text-white mt-6 mx-20 px-10 flex'>
-                <div className='mr-4'>
+            <div className='text-white mt-6 md:mx-20 px-10 flex max-md:flex-col'>
+                <div className='mr-4 max-md:hidden'>
                 {userPhoto && (
                     <Link href={'/'} className="inline-block">
                         <Image src={userPhoto} alt={userState.name} width={40} height={40} className="rounded-full"/>
                     </Link>
                 )}
                 </div>
-                <div className="w-3/4">
+                <div className="w-3/4 max-md:w-full">
                     <Title titleValue={titleValue} setTitleValue={setTitleValue} titleRef={titleRef} error={error}/>
                     <div className='mt-3'>
                         <legend>
@@ -139,7 +139,7 @@ const Form = ({ userPhoto } : { userPhoto : string | null}) => {
                     </div>
                     {postError && <span className="text-red-500">請再試一次</span>}
                 </div>
-                <div className="w-1/5 ml-4 ">
+                <div className="w-1/5 md:ml-4 max-md:w-full">
                     {marksArr.map( (s, index) => (
                         <div key={index}>
                             <Marks markTitle={s} initLabels={undefined} userIdentity={undefined} patchInfo={undefined} createNewIssue={createNewIssue}/>
