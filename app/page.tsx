@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import LoginButton from './components/LoginButton'
 import { getUserGitHubId } from './useractions'
 import HomePageRedirect from './components/HomePageRedirect'

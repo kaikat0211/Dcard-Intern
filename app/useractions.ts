@@ -5,9 +5,9 @@ import { CustomSession } from './types/userTypes'
 
 export async function getUserGitHubId() {
   const session = await getServerSession(options)
-  const accessToken = (session as CustomSession)?.token
+  if(!session) return false
 
-  if (!accessToken) return false
+  const accessToken = (session as CustomSession)?.token
 
   const octokit = new Octokit({ auth: accessToken })
 
