@@ -10,6 +10,9 @@ import { GoogleAnalytics } from '@next/third-parties/google'
 export const metadata: Metadata = {
   title: "GitHub Issue Blog",
   description: "Created by kaikat0211 from Taipei",
+  icons:{
+    icon:'/github.ico'
+  },
   verification: {
     google: 'c_qStRKUBS9cJtGsE-N_VWnMerZoTiNAOyFpQcXWVJg',
   },
